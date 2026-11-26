@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a0907">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="The Schatz">
 <meta name="description" content="The Schatz — a private card room. Blackjack, Texas Hold'em, Omaha, Draw, Stud and Four Card Poker with friends. Play chips only.">
 <title>The Schatz · Card Room</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230a0907' stroke='%23c9a45c' stroke-width='3'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23c9a45c' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
@@ -100,7 +104,7 @@ button.choice:hover{border-color:var(--gold)}
 .room-code small{font-family:var(--sans);letter-spacing:.14em;color:var(--muted);font-size:.6rem;margin-right:8px}
 .room-code:hover{border-color:var(--gold)}
 .badge-dot{display:inline-block;min-width:16px;height:16px;line-height:16px;border-radius:8px;background:var(--red);color:#fff;font-size:.62rem;letter-spacing:0;margin-left:5px;padding:0 4px;vertical-align:1px}
-.table-area{position:relative;display:grid;grid-template-columns:1fr 300px;min-height:0}
+.table-area{position:relative;display:grid;grid-template-columns:1fr 300px;min-height:0;overflow:hidden}
 .felt-zone{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden}
 
 /* the table */
@@ -412,6 +416,114 @@ button.choice:hover{border-color:var(--gold)}
   .plate .nm{font-size:.72rem}.plate .ch{font-size:.8rem}
   .row2{grid-template-columns:1fr}
 }
+/* ---------- phones: menu, rotate prompt, compact table ---------- */
+#btnMenu{display:none}
+#btnVideo.on{color:var(--gold-hi);border-color:var(--line)}
+#btnVideo.live:after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#e0485e;margin-left:6px;vertical-align:2px}
+.rotate{position:absolute;inset:0;z-index:40;background:rgba(8,7,6,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:12px}
+.rotate .ph{width:44px;height:76px;border:2px solid var(--gold);border-radius:8px;position:relative;animation:rot 2.6s ease-in-out infinite;margin-bottom:10px}
+.rotate .ph:after{content:"";position:absolute;left:50%;bottom:6px;width:10px;height:2px;margin-left:-5px;background:var(--gold)}
+@keyframes rot{0%,25%{transform:rotate(0)}55%,85%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+.rotate h3{font-family:var(--serif);font-weight:400;color:var(--gold-hi);margin:0;font-size:1.4rem;letter-spacing:.06em}
+.rotate p{color:var(--ivory);font-size:.88rem;margin:0;max-width:300px;line-height:1.5}
+.rotate p.tiny{color:var(--muted);font-size:.74rem}
+.sheet-btns{display:grid;gap:8px;margin-bottom:6px}
+.sheet-btns .btn{width:100%;padding:1em 1.1em;font-size:.78rem;text-align:left;display:flex;justify-content:space-between;align-items:center}
+.sheet-btns .btn span{color:var(--muted);font-size:.68rem;letter-spacing:.06em;text-transform:none}
+.vpill{pointer-events:auto;background:rgba(12,10,8,.94);border:1px solid var(--gold-lo);color:var(--gold-hi);border-radius:16px;padding:6px 12px;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+.vpill:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#e0485e;margin-right:7px;vertical-align:1px}
+.chiprow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.seat.side-l,.seat.side-r{align-items:center;gap:4px}
+.seat.side-l{flex-direction:row-reverse;transform:translate(-28%,-50%)}
+.seat.side-r{flex-direction:row;transform:translate(-72%,-50%)}
+.seat.side-l .hname,.seat.side-r .hname{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:2px;z-index:2}
+
+body.compact #btnGuide,body.compact #btnOdds,body.compact #btnSettings,body.compact #btnSound,body.compact #btnLeave{display:none!important}
+body.compact #btnMenu{display:inline-block}
+body.compact .topbar{min-height:0;padding:4px max(10px,env(safe-area-inset-right)) 4px max(10px,env(safe-area-inset-left))}
+body.compact .tb-game{display:none}
+body.compact .mini-mark{font-size:.78rem;letter-spacing:.22em}
+body.compact .tb-right{flex-wrap:nowrap;gap:0}
+body.compact .tb-right .btn.ghost{padding:.5em .55em;font-size:.62rem;letter-spacing:.12em}
+body.compact .room-code{font-size:.68rem;padding:.3em .5em;margin-right:2px}
+body.compact .room-code small{display:none}
+body.compact .tb-tour{font-size:.5rem;padding:2px 5px}
+body.compact .table-wrap{--cw:clamp(16px,4.6cqw,34px)}
+body.compact .seat{gap:3px}
+body.compact .seat.me{--cw:clamp(21px,5.8cqw,44px)}
+body.compact .plate{min-width:0;padding:.26em .5em .3em;border-radius:3px}
+body.compact .plate .nm{font-size:.62rem;max-width:86px}
+body.compact .plate .ch{font-size:.7rem}
+body.compact .plate .st{font-size:.48rem;letter-spacing:.08em;margin-top:1px}
+body.compact .plate .tag{font-size:.4rem;top:-7px;right:-4px;padding:1px 3px;letter-spacing:.1em}
+body.compact .plate .tag.host{left:-4px}
+body.compact .hname{font-size:.5rem;padding:1px 5px}
+body.compact .won{font-size:.7rem}
+body.compact .stack{--chip:14px!important;height:22px!important}
+body.compact .bet{gap:3px}
+body.compact .bet span{font-size:.56rem;padding:0 5px}
+body.compact .tot{font-size:.54rem;padding:0 5px}
+body.compact .res{font-size:.44rem;padding:1px 3px}
+body.compact .stage{font-size:.48rem;letter-spacing:.24em}
+body.compact .pot{font-size:.7rem;padding:1px 8px 1px 4px;gap:4px}
+body.compact .pot small{font-size:.46rem}
+body.compact .banner{font-size:.66rem;padding:3px 8px}
+body.compact .notice{font-size:.58rem;padding:4px 8px}
+body.compact .dealer-plq{font-size:.42rem;padding:.2em .6em;letter-spacing:.2em}
+body.compact .open-seat{display:none}
+body.compact .open-seat.add{display:flex;width:auto;height:auto;padding:3px 6px;font-size:.42rem;letter-spacing:.1em}
+body.compact .dbtn{width:14px;height:14px;font-size:8px}
+body.compact .bj-hands{gap:4px}
+body.compact .card.back{border-width:2px}
+body.compact .circle{width:26px;height:18px}
+body.compact #videoCtl .vctl,body.compact #videoCtl .vjoin{display:none}
+body.compact .vpill{font-size:.5rem;padding:5px 10px;letter-spacing:.12em}
+body.compact .toast{font-size:.74rem;padding:8px 12px;max-width:80vw}
+body.compact .halfmoon .plate{padding:.2em .4em .24em}
+body.compact .halfmoon .plate .nm{max-width:62px;font-size:.56rem}
+body.compact .halfmoon .plate .ch{font-size:.62rem}
+body.compact .halfmoon .plate .st{font-size:.44rem;letter-spacing:.04em}
+body.compact .halfmoon .plate{min-width:0;max-width:78px}
+body.land .vstrip{bottom:auto}
+
+/* landscape phone: controls move to a column on the right */
+body.land #tableScreen{grid-template-columns:1fr minmax(170px,28vw);grid-template-rows:auto 1fr}
+body.land .topbar{grid-column:1 / -1}
+body.land .table-area{grid-column:1;grid-row:2;padding-left:env(safe-area-inset-left)}
+body.land .actionbar{grid-column:2;grid-row:2;border-top:none;border-left:1px solid rgba(201,164,92,.14);padding:8px max(8px,env(safe-area-inset-right)) 8px 8px;align-items:stretch;overflow-y:auto;min-height:0}
+body.land .ab{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:8px;justify-content:flex-start}
+body.land .ab-info{min-width:0;margin:0;text-align:left;align-items:flex-start}
+body.land .ab-info .l1{font-size:.84rem}
+body.land .ab-info .l2{font-size:.52rem}
+body.land .l3{font-size:.6rem}
+body.land .ab-timer{width:100%}
+body.land .ab-btns{flex-direction:column;align-items:stretch;gap:6px}
+body.land .ab-btns>.btn{width:100%;padding:.62em .5em;font-size:.64rem;letter-spacing:.1em}
+body.land .raise{flex-wrap:wrap;justify-content:center;padding:6px;gap:4px}
+body.land .raise input[type=range]{width:100%}
+body.land .raise .amt{width:100%;font-size:.85rem}
+body.land .pre{font-size:.5rem;padding:.4em .45em}
+body.land .chipbtn{--chip:28px}
+body.land .betshow{font-size:1rem}
+body.land .tog{justify-content:center;font-size:.6rem}
+body.land .side{width:min(300px,60vw)}
+body.land .vstrip{flex-direction:column;top:6px;bottom:6px;left:6px;right:auto;justify-content:flex-start;align-items:flex-start}
+body.land .vtiles{flex-direction:column;overflow-y:auto;overflow-x:hidden;max-height:100%}
+body.land .vtile{width:80px;height:60px}
+body.land .modal{padding:8px}
+body.land .modal-card.panel{padding:16px 18px;max-height:96dvh}
+body.land .modal-card h2{font-size:1.15rem}
+body.land .modal-card .sub{margin-bottom:10px;font-size:.74rem}
+body.land .modal-card .choice{padding:9px 14px;margin-top:6px}
+body.land .modal-card .choice-t{font-size:1rem}
+body.land .sheet-btns .btn{padding:.7em 1em}
+
+/* portrait phone */
+body.port .actionbar{padding:6px 8px calc(6px + env(safe-area-inset-bottom));min-height:0}
+body.port .ab{gap:6px}
+body.port .ab-info .l1{font-size:.9rem}
+body.port .ab-btns .btn.big{font-size:.68rem;padding:.7em .85em}
+body.port .raise{flex-wrap:wrap;justify-content:center}
 </style>
 </head>
 <body>
@@ -441,12 +553,14 @@ button.choice:hover{border-color:var(--gold)}
     <div class="tb-left"><span class="mini-mark">THE SCHATZ</span><span class="tb-game" id="tbGame"></span><span class="tb-tour hidden" id="tbTour"></span></div>
     <div class="tb-right">
       <button class="room-code" id="roomCode" title="Copy invite link"></button>
+      <button class="btn ghost hidden" id="btnVideo">Join Video</button>
       <button class="btn ghost" id="btnGuide">Hand Rankings</button>
       <button class="btn ghost" id="btnOdds" title="Beginner odds helper">Odds</button>
       <button class="btn ghost" id="btnSettings">Table</button>
       <button class="btn ghost" id="btnPanel">Chat</button>
       <button class="btn ghost" id="btnSound">Sound</button>
       <button class="btn ghost" id="btnLeave">Leave</button>
+      <button class="btn ghost" id="btnMenu">Menu</button>
     </div>
   </header>
   <div class="table-area">
@@ -462,6 +576,13 @@ button.choice:hover{border-color:var(--gold)}
     </aside>
   </div>
   <footer class="actionbar" id="actionBar"></footer>
+  <div id="rotateHint" class="rotate hidden">
+    <div class="ph"></div>
+    <h3>Turn your phone sideways</h3>
+    <p>The table, cards and buttons are much bigger in landscape.</p>
+    <p class="tiny">Tip: on iPhone, tap Share → Add to Home Screen to open The Schatz full screen.</p>
+    <div class="mfoot" style="justify-content:center"><button class="btn primary hidden" id="rhFull">Go Full Screen</button><button class="btn ghost" id="rhStay">Stay in Portrait</button></div>
+  </div>
 </section>
 
 <div id="modal" class="modal hidden"><div class="modal-card panel" id="modalCard"></div></div>
@@ -2627,13 +2748,13 @@ function enterTable() {
   App.inTable = true;
   $('#lobby').classList.add('hidden'); $('#tableScreen').classList.remove('hidden');
   App.abSig = ''; App.feedSig = ''; App.guideSig = ''; App.seenNo = -1;
-  onResize();
+  onResize(); updateRotateHint();
 }
 function showLobby() {
   App.inTable = false;
   $('#tableScreen').classList.add('hidden'); $('#lobby').classList.remove('hidden');
   $('#guide').classList.remove('open'); $('#side').classList.remove('open'); $('.table-area').classList.remove('guide-on');
-  App.guideOpen = false; banner('');
+  App.guideOpen = false; banner(''); updateRotateHint();
   renderVideo(); renderResume();
 }
 function cleanup() {
@@ -2728,7 +2849,7 @@ function seatPos(seat, mySeat, half) {
     return { x: P[0], y: P[1], d };
   }
   if (half) {
-    const t2 = (30 + 120 * seat / (MAXSEATS - 1)) * Math.PI / 180;
+    const t2 = (App.land ? 20 + 140 * seat / (MAXSEATS - 1) : 30 + 120 * seat / (MAXSEATS - 1)) * Math.PI / 180;
     return { x: 50 + 46 * Math.cos(t2), y: -8 + 100 * Math.sin(t2) };
   }
   const d = ((seat - mySeat) % MAXSEATS + MAXSEATS) % MAXSEATS;
@@ -2759,14 +2880,17 @@ function miniCard(c) {
 }
 function sizeTable(half) {
   const z = $('#feltZone'), wrap = $('#tableWrap');
-  const vs = $('#videoStrip'), sh = vs && !vs.classList.contains('hidden') ? vs.offsetHeight + 10 : 0;
-  z.style.paddingTop = sh + 'px';
-  const W = z.clientWidth, H = z.clientHeight - sh;
+  const vs = $('#videoStrip'), on = vs && !vs.classList.contains('hidden');
+  const tiles = on && typeof Vid !== 'undefined' && Vid.on && !Vid.collapsed && Vid.tiles.size ? $('#videoTiles') : null;
+  const sw = App.land && tiles ? tiles.offsetWidth + 14 : 0;
+  const sh = App.land ? 0 : tiles ? vs.offsetHeight + 10 : on ? vs.offsetHeight + 6 : 0;
+  z.style.paddingTop = sh + 'px'; z.style.paddingLeft = sw + 'px';
+  const W = z.clientWidth - sw, H = z.clientHeight - sh;
   const aspect = App.portrait ? 0.74 : half ? 2.0 : 2.08;
-  let w = App.portrait ? Math.min(W * 0.8, H * 0.8 * aspect) : Math.min(W * 0.84, H * 0.74 * aspect);
+  let w = App.portrait ? Math.min(W * 0.8, H * 0.8 * aspect) : App.land ? Math.min(W * 0.88, H * 0.84 * aspect) : Math.min(W * 0.84, H * 0.74 * aspect);
   w = Math.max(240, w);
   wrap.style.width = w + 'px'; wrap.style.height = (w / aspect) + 'px';
-  wrap.style.marginTop = half && !App.portrait ? '-4%' : '0';
+  wrap.style.marginTop = half && !App.portrait && !App.land ? '-4%' : '0';
 }
 const FELT_TEXT = {
   blackjack: ['BLACKJACK PAYS 3 TO 2', 'DEALER MUST STAND ON ALL 17s  ·  INSURANCE PAYS 2 TO 1'],
@@ -2821,7 +2945,10 @@ function plateHTML(v, p, status, timer) {
   return `<div class="plate">${tag}<span class="nm">${esc(p.name)}${isMe ? ' (You)' : ''}</span><div class="ch">${fmt(p.chips)}</div><div class="st">${status || '&nbsp;'}</div>${timer ? '<div class="tbar" data-timer="1"><i></i></div>' : ''}</div>`;
 }
 function seatClasses(v, p, pos, extra) {
-  const cls = ['seat']; if (p.id === v.me) cls.push('me'); if (pos.y < 35 && pos.d != null) cls.push('top');
+  const cls = ['seat']; if (p.id === v.me) cls.push('me');
+  if (App.portrait && pos.d != null && pos.x < 20) cls.push('side-l');
+  else if (App.portrait && pos.d != null && pos.x > 80) cls.push('side-r');
+  else if (pos.y < 35 && pos.d != null) cls.push('top');
   if (!p.connected && !p.bot) cls.push('away');
   return cls.concat(extra.filter(Boolean)).join(' ');
 }
@@ -2922,7 +3049,7 @@ function bjSeat(v, p, pos, C) {
   }
   let status = '';
   if (!s) status = idleStatus(v, p);
-  else if (h.phase === 'bet') status = s.bet ? `Bet ${fmt(s.bet)}` : s.skipped ? 'Sitting out' : 'Placing bet…';
+  else if (h.phase === 'bet') status = s.bet ? `Bet ${fmt(s.bet)}` : s.skipped ? 'Sitting out' : 'Betting…';
   else if (h.phase === 'insurance' && pend) status = 'Insurance?';
   else if (s.skipped) status = 'Sitting out';
   else if (net != null) status = net > 0 ? `<span class="won">+${fmt(net)}</span>` : net < 0 ? `−${fmt(-net)}` : 'Push';
@@ -2951,7 +3078,7 @@ function tgSeat(v, p, pos, C) {
   const hname = showName ? `<div class="hname${s.result === 'Win' ? ' gold' : ''}">${esc(s.handName)}</div>` : '';
   let status = '';
   if (!s) status = idleStatus(v, p);
-  else if (h.phase === 'bet') status = s.ante ? betSummary(k, s) : s.skipped ? 'Sitting out' : 'Placing bets…';
+  else if (h.phase === 'bet') status = s.ante ? betSummary(k, s) : s.skipped ? 'Sitting out' : 'Betting…';
   else if (s.skipped) status = 'Sitting out';
   else if (net != null) status = net > 0 ? `<span class="won">+${fmt(net)}</span>` : net < 0 ? `−${fmt(-net)}` : 'Even';
   else if (s.folded) status = 'Folded';
@@ -3107,7 +3234,7 @@ function pokerBar(v, h, s, me) {
 }
 function chipButtons(min, max) {
   const vals = [1, 5, 10, 20, 50, 100].map(m => min * m).filter(x => x <= max);
-  return vals.map(x => `<button class="chipbtn" style="--c:${chipColor(x)}" data-add="${x}" title="Add ${fmt(x)}"><span>${shortAmt(x)}</span></button>`).join('');
+  return '<div class="chiprow">' + vals.map(x => `<button class="chipbtn" style="--c:${chipColor(x)}" data-add="${x}" title="Add ${fmt(x)}"><span>${shortAmt(x)}</span></button>`).join('') + '</div>';
 }
 function bjBar(v, h, s, me) {
   const live = !h.over, pend = live && (h.pending || []).includes(v.me);
@@ -3469,10 +3596,59 @@ setInterval(() => {
 }, 300);
 
 function onResize() {
-  App.portrait = window.innerWidth < 760 && window.innerHeight > window.innerWidth * 1.05;
-  if (App.inTable && App.view) { App.abSig = ''; render(); }
+  const W = window.innerWidth, H = window.innerHeight;
+  App.land = H <= 520 && W > H;
+  App.portrait = W < 760 && H > W * 1.05;
+  App.compact = App.land || App.portrait;
+  document.body.classList.toggle('land', App.land);
+  document.body.classList.toggle('port', App.portrait);
+  document.body.classList.toggle('compact', App.compact);
+  updateRotateHint();
+  if (App.inTable && App.view) { App.abSig = ''; render(); if (typeof renderVideo === 'function') { Vid.ctlSig = ''; renderVideo(); } }
 }
 window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', () => setTimeout(onResize, 350));
+const isTouch = () => window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+function keepPortrait() { try { return sessionStorage.getItem('schatz.portrait') === '1'; } catch (e) { return false; } }
+function updateRotateHint() {
+  const show = App.inTable && App.portrait && isTouch() && !keepPortrait();
+  $('#rotateHint').classList.toggle('hidden', !show);
+  $('#rhFull').classList.toggle('hidden', !document.fullscreenEnabled);
+}
+function goFullscreen() {
+  const el = document.documentElement;
+  if (!el.requestFullscreen) return toast('Full screen is not available in this browser.');
+  el.requestFullscreen({ navigationUI: 'hide' }).then(() => {
+    try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {}); } catch (e) {}
+  }).catch(() => toast('Full screen is not available here.'));
+}
+function menuSheet() {
+  const v = App.view; if (!v) return;
+  const h = v.hand, type = h ? h.type : v.game, kind = GAMES[type].kind, isHost = v.me === v.hostId;
+  const items = [
+    ['guide', (kind === 'blackjack' || kind === 'baccarat') ? 'Rules & Payouts' : 'Hand Rankings', ''],
+    kind === 'poker' && v.settings.allowOdds ? ['odds', 'Odds Helper', App.odds ? 'On' : 'Off'] : null,
+    videoAllowed(v) ? ['video', 'Video Chat', Vid.on ? 'On' : 'Off'] : null,
+    ['panel', 'Chat, Log & Scores', App.unread ? App.unread + ' new' : ''],
+    isHost ? ['settings', 'Table Settings', 'Host'] : null,
+    ['sound', 'Sound', App.sound ? 'On' : 'Off'],
+    document.fullscreenEnabled && !document.fullscreenElement ? ['full', 'Full Screen', ''] : null,
+    ['leave', App.mode === 'host' ? 'Close Table' : 'Leave Table', ''],
+  ].filter(Boolean);
+  openModal(`<h2>Menu</h2><div class="sub">${App.mode === 'solo' ? 'Solo table' : 'Room ' + esc(v.code)}</div><div class="sheet-btns">${items.map(([k, l, d]) => `<button class="btn${k === 'leave' ? ' danger' : ''}" data-menu="${k}">${l}<span>${esc(d)}</span></button>`).join('')}</div><div class="mfoot"><button class="btn ghost" data-close>Close</button></div>`);
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-menu]'); if (!t) return;
+  const k = t.dataset.menu; closeModal();
+  if (k === 'guide') $('#btnGuide').click();
+  else if (k === 'odds') $('#btnOdds').click();
+  else if (k === 'video') videoSheet();
+  else if (k === 'panel') $('#btnPanel').click();
+  else if (k === 'settings') settingsModal();
+  else if (k === 'sound') $('#btnSound').click();
+  else if (k === 'full') goFullscreen();
+  else if (k === 'leave') leaveTable();
+});
 
 function renderResume() {
   const m = savedMeta(), box = $('#resumeBox');
@@ -3515,6 +3691,10 @@ function init() {
   $('#btnPanel').onclick = () => { $('#side').classList.toggle('open'); App.feedSig = ''; if (App.view) renderSide(App.view); };
   $('#btnSound').onclick = () => { App.sound = !App.sound; store.set('sound', App.sound ? '1' : '0'); $('#btnSound').textContent = App.sound ? 'Sound On' : 'Sound Off'; if (App.sound) chime(); };
   $('#btnLeave').onclick = leaveTable;
+  $('#btnMenu').onclick = menuSheet;
+  $('#btnVideo').onclick = () => videoSheet();
+  $('#rhStay').onclick = () => { try { sessionStorage.setItem('schatz.portrait', '1'); } catch (e) {} updateRotateHint(); };
+  $('#rhFull').onclick = goFullscreen;
   for (const b of document.querySelectorAll('.tabs button')) b.onclick = () => {
     App.tab = b.dataset.tab; for (const x of document.querySelectorAll('.tabs button')) x.classList.toggle('on', x === b);
     App.feedSig = ''; if (App.view) renderSide(App.view);
@@ -3643,6 +3823,8 @@ function vidInitial(n) { return esc(String(n || '?').trim().charAt(0).toUpperCas
 function renderVideo() {
   const v = App.view, bar = $('#videoStrip');
   const show = App.inTable && videoAllowed(v);
+  if (show && !Vid.on && Vid.hinted !== v.code) { Vid.hinted = v.code; setTimeout(() => toast('Video chat is on at this table. Tap “Join Video” at the top to join.', 5000), 800); }
+  $('#btnVideo').classList.toggle('hidden', !show);
   bar.classList.toggle('hidden', !show);
   if (!show) { for (const t of Vid.tiles.values()) t.remove(); Vid.tiles.clear(); return; }
   const others = v.players.filter(q => q.id !== v.me && !q.bot && q.av && q.av.on).sort((a, b) => (a.seat ?? 99) - (b.seat ?? 99));
@@ -3650,7 +3832,8 @@ function renderVideo() {
   // controls
   let ctl;
   const a = Vid.local && Vid.local.getAudioTracks()[0], cam = Vid.local && Vid.local.getVideoTracks()[0];
-  if (!Vid.on) {
+  if (App.compact) ctl = Vid.on ? '' : `<button class="vpill" data-vid="sheet">Video chat${others.length ? ` · ${others.length} on` : ''} · Tap to join</button>`;
+  else if (!Vid.on) {
     const names = others.map(q => esc(q.name)).join(', ');
     ctl = `<div class="vjoin"><div class="vt">Video chat${others.length ? ` · <span>${names} ${others.length === 1 ? 'is' : 'are'} on</span>` : ''}</div><div class="vb"><button class="btn primary" data-vid="full">Camera &amp; Mic</button><button class="btn" data-vid="audio">Mic Only</button><button class="btn ghost" data-vid="watch">Watch Only</button></div></div>`;
   } else {
@@ -3687,7 +3870,37 @@ function renderVideo() {
     el.querySelector('.vph').innerHTML = `<span>${vidInitial(w.name)}</span><small>${w.kind === 'watch' ? 'Watching' : !w.self && !w.stream ? 'Connecting…' : w.kind === 'audio' ? 'Mic only' : 'Camera off'}</small>`;
     el.querySelector('.vname').innerHTML = `${esc(w.name)}${w.kind !== 'watch' && !w.mic ? ' <b class="muted">muted</b>' : ''}`;
   }
+  // top-bar Video button
+  const bv = $('#btnVideo');
+  const mic = Vid.local && Vid.local.getAudioTracks()[0];
+  bv.textContent = Vid.on ? (mic && !mic.enabled ? 'Video · Muted' : 'Video') : 'Join Video';
+  bv.classList.toggle('on', Vid.on); bv.classList.toggle('live', !Vid.on && others.length > 0);
   sizeTableForVideo();
+}
+function videoSheet() {
+  const v = App.view; if (!videoAllowed(v)) return toast('Video chat is off at this table. The host can turn it on.');
+  const others = v.players.filter(q => q.id !== v.me && !q.bot && q.av && q.av.on);
+  const names = others.map(q => esc(q.name)).join(', ');
+  if (!Vid.on) {
+    openModal(`<h2>Video Chat</h2><div class="sub">See and hear the other players at your table. Your camera and mic only turn on if you pick them, and you can turn them off any time.${names ? `<br><br>On video now: <b style="color:var(--gold-hi)">${names}</b>` : ''}</div>
+      <button class="choice" data-vid="full"><span class="choice-t">Camera &amp; Mic</span><span class="choice-d">Everyone sees and hears you</span></button>
+      <button class="choice" data-vid="audio"><span class="choice-t">Mic Only</span><span class="choice-d">Talk without video. Easier on battery and data</span></button>
+      <button class="choice" data-vid="watch"><span class="choice-t">Watch Only</span><span class="choice-d">See and hear others without sharing anything</span></button>
+      <div class="sub" style="margin:14px 0 0">The first time, your browser will ask to use your camera and microphone. Tap Allow.</div>
+      <div class="mfoot"><button class="btn ghost" data-close>Not Now</button></div>`);
+    return;
+  }
+  const a = Vid.local && Vid.local.getAudioTracks()[0], cam = Vid.local && Vid.local.getVideoTracks()[0];
+  const as = { full: 'Camera & Mic', audio: 'Mic Only', watch: 'Watch Only' }[Vid.kind];
+  const rows = [
+    a ? ['mic', a.enabled ? 'Mute My Mic' : 'Unmute My Mic', a.enabled ? 'Mic is on' : 'Muted'] : null,
+    cam ? ['cam', cam.enabled ? 'Turn Camera Off' : 'Turn Camera On', cam.enabled ? 'Camera is on' : 'Camera is off'] : null,
+    Vid.kind !== 'full' ? ['full', 'Turn On My Camera', ''] : null,
+    Vid.kind === 'watch' ? ['audio', 'Turn On My Mic Only', ''] : null,
+    [Vid.collapsed ? 'expand' : 'collapse', Vid.collapsed ? 'Show Video' : 'Hide Video', Vid.collapsed ? 'You can still hear everyone' : 'Sound keeps playing'],
+    ['leave', 'Leave Video Chat', ''],
+  ].filter(Boolean);
+  openModal(`<h2>Video Chat</h2><div class="sub">You're on as <b style="color:var(--gold-hi)">${as}</b>. ${others.length ? `Also on: ${names}.` : 'Nobody else has joined yet.'}</div><div class="sheet-btns">${rows.map(([k, l, d]) => `<button class="btn${k === 'leave' ? ' danger' : ''}" data-vid="${k}">${l}<span>${esc(d)}</span></button>`).join('')}</div><div class="mfoot"><button class="btn primary" data-close>Done</button></div>`);
 }
 function sizeTableForVideo() { if (App.inTable && App.view) { const h = App.view.hand; sizeTable(h ? GAMES[h.type].kind !== 'poker' : GAMES[App.view.game].kind !== 'poker'); } }
 
@@ -3714,7 +3927,9 @@ setInterval(() => { if (Vid.on && App.inTable) reconcileVideo(); }, 2000);
 
 document.addEventListener('click', e => {
   const t = e.target.closest('[data-vid]'); if (!t) return;
-  const k = t.dataset.vid;
+  const k = t.dataset.vid, inSheet = !!t.closest('#modalCard');
+  if (k === 'sheet') return videoSheet();
+  if (inSheet) { closeModal(); if (['mic', 'cam', 'collapse', 'expand'].includes(k)) setTimeout(videoSheet, 60); }
   if (k === 'full' || k === 'audio' || k === 'watch') { if (Vid.on) switchVideo(k); else joinVideo(k); }
   else if (k === 'mic' || k === 'cam') toggleTrack(k);
   else if (k === 'leave') leaveVideo(false);
