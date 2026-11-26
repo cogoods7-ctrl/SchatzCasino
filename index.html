@@ -564,6 +564,25 @@ body.land .reqbar{bottom:12px;left:40%}
 .tile .k{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 .tile .v{font-family:var(--serif);font-size:1.5rem;color:var(--gold-hi);margin-top:4px;font-variant-numeric:tabular-nums}
 .tile .v.live:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#3fbf6a;margin-right:8px;vertical-align:4px}
+.av{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;background:var(--avc);color:#15110a;font-size:.78em;line-height:1;margin-right:6px;vertical-align:middle;border:1px solid rgba(255,255,255,.35);box-shadow:0 1px 3px rgba(0,0,0,.5);cursor:pointer;flex:none;font-family:'Segoe UI Symbol','Apple Symbols',sans-serif}
+.av.big{width:64px;height:64px;font-size:34px;margin-right:14px;cursor:default;border-width:2px}
+.plate .nm .av{font-size:.72em}
+.phead{display:flex;align-items:center;margin-bottom:14px}
+.otag{font-size:.55rem;letter-spacing:.14em;padding:2px 6px;border:1px solid var(--gold-lo);color:var(--gold);border-radius:2px;vertical-align:5px;font-family:var(--sans,inherit)}
+.pstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pstat{border:1px solid rgba(201,164,92,.18);border-radius:4px;padding:8px 10px;background:rgba(0,0,0,.25)}
+.pstat .k{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pstat .v{font-size:1.15rem;color:var(--gold-hi);margin-top:2px}.pstat .v.pos{color:#9fd8a8}.pstat .v.neg{color:#f0b8c1}
+.symgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:10px}
+.sym{font-size:1.3rem;padding:6px 0;background:rgba(0,0,0,.3);border:1px solid rgba(201,164,92,.25);color:var(--gold-hi);border-radius:4px;cursor:pointer}
+.sym.on{border-color:var(--gold);background:rgba(201,164,92,.2)}
+.colgrid{display:flex;gap:8px;flex-wrap:wrap}
+.col{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer}
+.col.on{border-color:#fff;box-shadow:0 0 0 2px var(--gold)}
+.lbtabs{display:flex;gap:6px;flex-wrap:wrap}.lbtabs .btn.on{border-color:var(--gold);color:var(--gold-hi)}
+.dtable.lb tr[data-prof]{cursor:pointer}.dtable.lb tr.me td{color:var(--gold-hi)}.dtable.lb .rk{width:40px;text-align:center}
+.dtable.lb td{padding:9px 8px;font-size:.95rem}
+@media (max-width:560px){.pstats{grid-template-columns:repeat(2,1fr)}.symgrid{grid-template-columns:repeat(6,1fr)}}
 .dsec{margin-bottom:18px}
 .dsec .panel{padding:16px 18px}
 .dsec h3{font-family:var(--serif);font-weight:400;color:var(--gold-hi);margin:0 0 10px;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1061,7 +1080,7 @@ const BOT_LEVELS = {
 };
 const fmt = n => Math.round(n).toLocaleString('en-US');
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)]);
-const PERSIST_KEYS = ['code','hostId','settings','players','hand','handNo','buttonSeat','log','chat','paused','nextHandAt','shoe','bacShoe','botSeq','lastBets','lastPick','stats','game','orbitLeft','choice','chooserSeat','orbitStarted','tourney','tourneyPending','dbTable','leftover'];
+const PERSIST_KEYS = ['code','hostId','settings','players','hand','handNo','buttonSeat','log','chat','paused','nextHandAt','shoe','bacShoe','botSeq','lastBets','lastPick','stats','game','orbitLeft','choice','chooserSeat','orbitStarted','tourney','tourneyPending','dbTable','leftover','listId'];
 
 class Table {
   constructor(code, hostId, opts = {}) {
@@ -1069,7 +1088,7 @@ class Table {
     this.now = opts.now || (() => Date.now());
     this.onChange = opts.onChange || (() => {});
     this.rnd = opts.rnd || Math.random;
-    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true, video: false, account: false, rebuyLimit: 2, rebuyHalf: false, rebuyApproval: false, loanShark: false };
+    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true, video: false, account: false, rebuyLimit: 2, rebuyHalf: false, rebuyApproval: false, loanShark: false, listed: false };
     this.players = []; this.hand = null; this.handNo = 0; this.buttonSeat = -1;
     this.log = []; this.chat = []; this.paused = false; this.nextHandAt = 0;
     this.shoe = null; this.bacShoe = null; this.botSeq = 0; this.lastBets = {}; this.lastPick = {}; this.waitMsg = '';
@@ -1347,7 +1366,7 @@ class Table {
       case 'kick': if (isHost && c.id !== this.hostId) this.removePlayer(c.id); break;
       case 'pause': if (isHost) { this.paused = !!c.v; this.addLog(this.paused ? 'The host paused the table after this hand.' : 'The host resumed the table.'); this.changed(); } break;
       case 'dealNow': if (isHost && (!this.hand || this.hand.over)) { this.nextHandAt = 0; this.paused = false; this.changed(); } break;
-      case 'startTourney': if (isHost && !this.tourney) {
+      case 'startTourney': if (isHost && !this.tourney && !this.settings.account) {
         this.tourneyPending = { stack: Math.max(1000, Math.min(1000000, Math.floor(+c.stack) || 10000)), levelMins: Math.max(2, Math.min(60, Math.floor(+c.levelMins) || 8)) };
         this.paused = false; this.nextHandAt = Math.min(this.nextHandAt, this.now() + 2500);
         this.addLog('The host is starting a tournament. It begins with the next hand.'); this.changed();
@@ -1367,6 +1386,7 @@ class Table {
     if (s.rebuyHalf != null) st.rebuyHalf = !!s.rebuyHalf;
     if (s.rebuyApproval != null) st.rebuyApproval = !!s.rebuyApproval;
     if (s.loanShark != null) st.loanShark = !!s.loanShark;
+    if (s.listed != null) st.listed = !!s.listed;
     if (s.allowOdds != null) st.allowOdds = !!s.allowOdds;
     if (s.video != null && !!s.video !== st.video) {
       st.video = !!s.video;
@@ -3069,7 +3089,7 @@ async function startHost(cfg) {
   if (cfg.account) {
     try { await openAccountTable(cfg); }
     catch (e) { clearInterval(App.loop); App.table = null; App.mode = null; try { peer.destroy(); } catch (x) {} App.peer = null; closeModal(); return toast(e.message, 6000); }
-  }
+  } else if (cfg.listed) setListed(true);
   closeModal(); enterTable(); saveNow();
   toast(`Your table is open. Room code ${code}`, 4500);
 }
@@ -3273,6 +3293,7 @@ function leaveTable() {
     const scores = App.table ? App.table.scores() : (App.view ? App.view.scores : null);
     if (App.mode === 'client') send({ t: 'leave' });
     if (App.mode === 'host' && T && T.settings && T.settings.account) { busy('Cashing everyone out…'); await closeAccountTable(); closeModal(); }
+    else if (App.mode === 'host' && T && T.listId) DB.rpc('close_table', { p_table: T.listId }).catch(() => {});
     if ((App.mode === 'host' || App.mode === 'solo') && !tdLive) clearSave();
     setTimeout(() => { cleanup(); showLobby(); refreshLobby(); if (scores && scores.length) showSummary(scores, 'Your session'); }, 150);
   };
@@ -3451,7 +3472,7 @@ function renderTable(v, type, kind) {
 function plateHTML(v, p, status, timer) {
   const isMe = p.id === v.me;
   const tag = p.bot ? `<span class="tag">${esc((p.style || 'House').toUpperCase())}</span>` : (p.id === v.hostId && App.mode !== 'solo' ? '<span class="tag host">HOST</span>' : '');
-  return `<div class="plate">${tag}<span class="nm">${esc(p.name)}${isMe ? ' (You)' : ''}</span><div class="ch">${fmt(p.chips)}</div><div class="st">${status || '&nbsp;'}</div>${p.debt > 0 ? `<div class="debtline">Owes ${fmt(p.debt)}</div>` : ''}${timer ? '<div class="tbar" data-timer="1"><i></i></div>' : ''}</div>`;
+  return `<div class="plate">${tag}<span class="nm">${lookBadge(p)}${esc(p.name)}${isMe ? ' (You)' : ''}</span><div class="ch">${fmt(p.chips)}</div><div class="st">${status || '&nbsp;'}</div>${p.debt > 0 ? `<div class="debtline">Owes ${fmt(p.debt)}</div>` : ''}${timer ? '<div class="tbar" data-timer="1"><i></i></div>' : ''}</div>`;
 }
 function seatClasses(v, p, pos, extra) {
   const cls = ['seat']; if (p.id === v.me) cls.push('me');
@@ -3989,7 +4010,8 @@ function setupModal(mode) {
     <label class="field"><span>Game</span><select id="sGame">${gameSelect(last.game || 'holdem')}</select></label>
     <div class="row2"><label class="field"><span>Stakes (blinds · table minimum)</span><select id="sStakes">${optionList(STAKE_OPTS, last.stakes ?? 2)}</select></label>
     <label class="field"><span>Starting chips</span><select id="sStack">${optionList(STACK_OPTS, last.startStack || 10000)}</select></label></div>
-    ${solo ? '' : `<label class="field"><span>Chips</span><select id="sAcct">${optionList([[0, 'Play money — balances are not affected'], [1, 'Account chips — buy in from real balances']], last.account ? 1 : 0)}</select></label>`}
+    ${solo ? '' : `<div class="row2"><label class="field"><span>Chips</span><select id="sAcct">${optionList([[0, 'Play money — balances are not affected'], [1, 'Account chips — buy in from real balances']], last.account ? 1 : 0)}</select></label>
+    <label class="field"><span>Who can find it</span><select id="sList">${optionList([[0, 'Private — friends need the room code'], [1, 'Listed — shows in everyone\'s lobby']], last.listed ? 1 : 0)}</select></label></div>`}
     ${rebuyFields(last)}
     <div class="row2"><label class="field"><span>House bots</span><select id="sBots">${optionList(botOpts, solo ? (last.soloBots || 3) : (last.bots ?? 0))}</select></label>
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, last.botLevel || 'normal')}</select></label></div>
@@ -3998,7 +4020,7 @@ function setupModal(mode) {
     <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="sGo">Open Table</button></div>`);
   $('#sGo').onclick = () => {
     const account = !solo && $('#sAcct').value === '1';
-    const cfg = Object.assign({ game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: account ? 0 : +$('#sBots').value, botLevel: $('#sSkill').value, video: !solo && $('#sVideo').value === '1', account }, readRebuyFields());
+    const cfg = Object.assign({ game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: account ? 0 : +$('#sBots').value, botLevel: $('#sSkill').value, video: !solo && $('#sVideo').value === '1', account, listed: !solo && $('#sList').value === '1' }, readRebuyFields());
     if (account && DB.profile && DB.profile.balance < cfg.startStack) return toast(`Your balance (${fmt(DB.profile.balance)}) is less than the ${fmt(cfg.startStack)} buy-in.`, 5000);
     store.set('setup', JSON.stringify(Object.assign(last, cfg, solo ? { soloBots: cfg.bots } : { bots: cfg.bots })));
     if (solo) { closeModal(); startSolo(cfg); } else startHost(cfg);
@@ -4028,7 +4050,8 @@ function settingsModal() {
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, s.botLevel)}</select></label></div>
     <div class="sect">Rebuys</div>${rebuyFields(s)}
     <label class="chk"><input type="checkbox" id="sOdds"${s.allowOdds ? ' checked' : ''}> Allow the beginner odds helper (each player turns it on for themselves)</label>
-    ${App.mode === 'host' ? `<label class="chk"><input type="checkbox" id="sVideo"${s.video ? ' checked' : ''}> Video chat (each player chooses whether to turn on their camera)</label>` : ''}
+    ${App.mode === 'host' ? `<label class="chk"><input type="checkbox" id="sVideo"${s.video ? ' checked' : ''}> Video chat (each player chooses whether to turn on their camera)</label>
+    <label class="chk"><input type="checkbox" id="sListed"${s.listed ? ' checked' : ''}> List this table in the lobby so anyone signed in can join</label>` : ''}
     ${s.account ? '<div class="sect">Account chips</div><div class="sub">This table plays for real account balances, so house bots are off. Players are cashed out when they leave or when you close the table.</div>' : `<div class="sect">House bots · ${bots} seated · ${open} open seat${open === 1 ? '' : 's'}</div>
     <div class="botrow"><button class="btn" data-cmd="addBot"${open ? '' : ' disabled'}>+ Add Bot</button><button class="btn" data-cmd="removeBot"${bots ? '' : ' disabled'}>− Remove Bot</button><button class="btn" data-cmd="fillBots"${open ? '' : ' disabled'}>Fill Empty Seats</button><button class="btn" data-cmd="clearBots"${bots ? '' : ' disabled'}>Remove All Bots</button></div>`}
     <div class="sub" style="margin-top:14px">Want a tournament? Close this table and choose <b>Host a Tournament</b> in the lobby.</div>
@@ -4041,6 +4064,7 @@ function settingsModal() {
     const rotation = [...document.querySelectorAll('[data-rot]')].filter(x => x.checked).map(x => x.dataset.rot);
     if ($('#sMode').value !== 'fixed' && rotation.length < 2) return toast('Pick at least two games for the rotation.');
     send({ t: 'settings', s: { mode: $('#sMode').value, game: $('#sGame').value, rotation, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, botLevel: $('#sSkill').value, allowOdds: $('#sOdds').checked, video: $('#sVideo') ? $('#sVideo').checked : false, ...readRebuyFields() } });
+    if ($('#sListed') && $('#sListed').checked !== !!s.listed) setListed($('#sListed').checked);
     closeModal(); toast('Settings saved.');
   };
 }
@@ -4518,18 +4542,21 @@ function afterSignIn(boot) {
   else renderResume();
 }
 async function refreshProfile() {
-  try { await DB.loadProfile(); renderAcctBar(); } catch (e) {}
+  try { await DB.loadProfile(); Looks.set(DB.uid(), { avatar: DB.profile.avatar, color: DB.profile.color }); renderAcctBar(); } catch (e) {}
+  try { DB.daily = await DB.rpc('daily_status'); renderAcctBar(); } catch (e) {}
 }
 function renderAcctBar() {
   const p = DB.profile; if (!p) return;
-  $('#acctBar').innerHTML = `<div><div class="who">${esc(p.username)}${p.is_owner ? ' <span class="tag" style="font-size:.55rem;letter-spacing:.14em;padding:2px 6px;border:1px solid var(--gold-lo);color:var(--gold);border-radius:2px;vertical-align:3px">OWNER</span>' : ''}</div>
+  const d = DB.daily, bonus = d && d.amount > 0 ? (d.claimed ? `<button class="btn ghost" disabled title="Come back tomorrow">Bonus claimed ✓</button>` : `<button class="btn primary" id="btnDaily">Claim Daily ${fmt(d.amount)}</button>`) : '';
+  $('#acctBar').innerHTML = `<div><div class="who">${badgeHTML(p, p.id)}<span data-prof="${p.id}" style="cursor:pointer">${esc(p.username)}</span>${p.is_owner ? ' <span class="tag" style="font-size:.55rem;letter-spacing:.14em;padding:2px 6px;border:1px solid var(--gold-lo);color:var(--gold);border-radius:2px;vertical-align:3px">OWNER</span>' : ''}</div>
     <div class="bal">Balance<b>${fmt(p.balance)}</b>${p.debt > 0 ? `<span class="dbt">Owes the Loan Shark ${fmt(p.debt)}</span>` : ''}</div></div>
-    <div class="acts"><button class="btn ghost" id="btnWallet">History</button>${p.is_owner ? '<button class="btn" id="btnDash">Owner Dashboard</button>' : ''}<button class="btn ghost" id="btnSignOut">Sign Out</button></div>`;
-  $('#btnWallet').onclick = walletModal;
+    <div class="acts">${bonus}<button class="btn" id="btnBoard">Leaderboard</button><button class="btn ghost" id="btnWallet">History</button>${p.is_owner ? '<button class="btn" id="btnDash">Owner Dashboard</button>' : ''}<button class="btn ghost" id="btnSignOut">Sign Out</button></div>`;
+  $('#btnWallet').onclick = walletModal; $('#btnBoard').onclick = leaderboardModal;
+  if ($('#btnDaily')) $('#btnDaily').onclick = claimDaily;
   $('#btnSignOut').onclick = async () => { await DB.signOut(); onSignedOut('Signed out.'); };
   if ($('#btnDash')) $('#btnDash').onclick = openDashboard;
 }
-const TX_LABEL = { signup: 'Welcome bonus', buyin: 'Table buy-in', cashout: 'Table cash-out', loan: 'Loan Shark loan', refund: 'Refund', gift: 'Gift from the owner', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tournament buy-in', tournament_prize: 'Tournament prize', tournament_refund: 'Tournament refund', forgive: 'Loan forgiven' };
+const TX_LABEL = { signup: 'Welcome bonus', buyin: 'Table buy-in', cashout: 'Table cash-out', loan: 'Loan Shark loan', refund: 'Refund', gift: 'Gift from the owner', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tournament buy-in', tournament_prize: 'Tournament prize', tournament_refund: 'Tournament refund', forgive: 'Loan forgiven', daily_bonus: 'Daily bonus' };
 async function walletModal() {
   busy('Loading your history…');
   try {
@@ -4546,9 +4573,10 @@ function heartbeat() {
   const where = App.inTable ? (App.mode === 'solo' ? 'Solo table' : 'Table ' + App.code) : !$('#dashScreen').classList.contains('hidden') ? 'Dashboard' : 'Lobby';
   DB.rpc('heartbeat', { p_where: where }).catch(() => {});
   const T = App.table;
-  if (App.mode === 'host' && T && T.dbTable) DB.rpc('table_ping', { p_table: T.dbTable }).catch(() => {});
+  if (App.mode === 'host' && T && T.kind !== 'td' && (T.dbTable || T.listId)) DB.rpc('table_ping', { p_table: T.dbTable || T.listId, p_players: T.players.filter(p => !p.bot).length, p_game: T.game || T.settings.game }).catch(() => {});
+  if (App.mode === 'host' && T && T.kind === 'td' && T.cfg.dbId && T.status !== 'done') DB.rpc('tournament_ping', { p_tid: T.cfg.dbId }).catch(() => {});
 }
-setInterval(heartbeat, 60000);
+setInterval(heartbeat, 45000);
 
 // ---------- lobby: tournaments ----------
 async function refreshLobby() {
@@ -4557,24 +4585,41 @@ async function refreshLobby() {
   lobbyTimer = setTimeout(refreshLobby, 20000);
   const box = $('#tourneyList');
   try {
-    const rows = await DB.select('tournaments', 'select=*,tournament_entries(user_id),tournament_invites(user_id)&status=in.(registering,open,running)&order=created_at.desc&limit=40');
     const me = DB.uid();
+    const [rows, listed, stuck] = await Promise.all([
+      DB.select('tournaments', 'select=*,tournament_entries(user_id),tournament_invites(user_id)&status=in.(registering,open,running)&order=created_at.desc&limit=40'),
+      DB.select('casino_tables', 'select=id,code,game,players,stakes,account,host_id,last_active,profiles!host_id(username,avatar,color)&listed=eq.true&status=eq.open&order=last_active.desc&limit=30').catch(() => []),
+      seatsHTML(me),
+    ]);
     const mine = rows.filter(t => !t.invite_only || t.host_id === me || t.tournament_entries.some(e => e.user_id === me) || t.tournament_invites.some(i => i.user_id === me));
     App.lobbyTourneys = mine;
-    const stuck = await seatsHTML(me);
-    if (!mine.length) { box.innerHTML = stuck + '<h3>Tournaments</h3><div class="sub" style="margin:0">No tournaments right now. Host one, or wait for an invite.</div>'; return; }
-    box.innerHTML = stuck + '<h3>Tournaments</h3>' + mine.map(t => {
+    // listed tables: only ones whose host checked in during the last 3 minutes
+    const live = listed.filter(t => t.host_id !== me && Date.now() - new Date(t.last_active).getTime() < 180000);
+    for (const t of live) if (t.profiles) Looks.set(t.host_id, { avatar: t.profiles.avatar, color: t.profiles.color });
+    const tables = '<h3>Open Tables</h3>' + (live.length ? live.map(t => {
+      const g = GAMES[t.game], full = t.players >= MAXSEATS;
+      return `<div class="trow"><div><div class="tn">${esc(g ? g.name : t.game)}${t.account ? '<span class="tag live">Account chips</span>' : '<span class="tag">Play money</span>'}</div>
+        <div class="td">${t.profiles ? badgeHTML(t.profiles, t.host_id) + esc(t.profiles.username) + '’s table' : 'Table'} · ${t.players}/${MAXSEATS} seated${t.stakes ? ' · ' + esc(t.stakes) : ''} · Room ${esc(t.code)}</div></div>
+        <div>${full ? '<button class="btn ghost" disabled>Full</button>' : `<button class="btn primary" data-tj="${esc(t.code)}">Join</button>`}</div></div>`;
+    }).join('') : '<div class="sub" style="margin:0 0 4px">No listed tables right now. When you host, choose <b>Listed</b> so friends can find you here.</div>') + '<div style="height:14px"></div>';
+    const tours = '<h3>Tournaments</h3>' + (mine.length ? mine.map(t => {
       const entered = t.tournament_entries.some(e => e.user_id === me), n = t.tournament_entries.length;
-      const live = t.status === 'running', open = t.status === 'open' && t.room_code;
+      const running = t.status === 'running', open = t.status === 'open' && t.room_code;
+      const gone = (running || t.status === 'open') ? Date.now() - new Date(t.last_active || t.created_at).getTime() : 0;
+      const paused = gone > 180000, refundable = entered && gone > 24 * 3600e3;
       const when = t.starts_at ? new Date(t.starts_at).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
       let btn = '';
-      if (entered && (open || live) && t.room_code) btn = `<button class="btn primary" data-tj="${esc(t.room_code)}">${live ? 'Rejoin' : 'Take Your Seat'}</button>`;
+      if (entered && (open || running) && t.room_code) btn = `<button class="btn primary" data-tj="${esc(t.room_code)}">${running ? 'Rejoin' : 'Take Your Seat'}</button>`;
       else if (!entered && (t.status === 'registering' || t.status === 'open')) btn = `<button class="btn" data-tr="${t.id}">Register${t.buy_in ? ' · ' + fmt(t.buy_in) : ''}</button>`;
-      if (entered && !live) btn += ` <button class="btn ghost" data-tu="${t.id}">Unregister</button>`;
-      if (!entered && live && t.room_code) btn = `<button class="btn ghost" data-tj="${esc(t.room_code)}">Watch</button>`;
-      return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${live ? '<span class="tag live">Live</span>' : open ? '<span class="tag live">Seating now</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}</div>
-        <div class="td">${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${t.buy_in ? 'Buy-in ' + fmt(t.buy_in) : 'Free entry'} · Prize pool ${fmt(t.pool)} · ${n}/${t.max_players} entered${when ? ' · ' + when : ''}${entered ? ' · <b style="color:var(--gold-hi)">You are registered</b>' : ''}</div></div><div>${btn}</div></div>`;
-    }).join('');
+      if (entered && !running) btn += ` <button class="btn ghost" data-tu="${t.id}">Unregister</button>`;
+      if (!entered && running && t.room_code) btn = `<button class="btn ghost" data-tj="${esc(t.room_code)}">Watch</button>`;
+      if (refundable) btn = `<button class="btn primary" data-trefund="${t.id}">Get My Buy-in Back</button>`;
+      const pausedNote = !paused ? '' : refundable ? ' · <b style="color:#f0b8c1">The host has been gone over 24 hours. Every entrant can take their buy-in back.</b>'
+        : ` · <b style="color:#f0b8c1">Paused: waiting for the host (${ago(t.last_active)}). Blinds are frozen. If they're gone 24 hours, entrants get their buy-ins back.</b>`;
+      return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${paused ? '<span class="tag">Paused</span>' : running ? '<span class="tag live">Live</span>' : open ? '<span class="tag live">Seating now</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}</div>
+        <div class="td">${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${t.buy_in ? 'Buy-in ' + fmt(t.buy_in) : 'Free entry'} · Prize pool ${fmt(t.pool)} · ${n}/${t.max_players} entered${when ? ' · ' + when : ''}${entered ? ' · <b style="color:var(--gold-hi)">You are registered</b>' : ''}${pausedNote}</div></div><div>${btn}</div></div>`;
+    }).join('') : '<div class="sub" style="margin:0">No tournaments right now. Host one, or wait for an invite.</div>');
+    box.innerHTML = stuck + tables + tours;
   } catch (e) { box.innerHTML = `<h3>Tournaments</h3><div class="sub" style="margin:0">${esc(e.message)}</div>`; }
 }
 // chips still sitting at an account table you left without cashing out (host vanished, browser closed…)
@@ -4594,6 +4639,13 @@ async function seatsHTML(me) {
   } catch (e) { return ''; }
 }
 document.addEventListener('click', async e => {
+  const tr = e.target.closest('[data-trefund]');
+  if (tr) {
+    confirmBox('Take your buy-in back?', 'The host has been gone over 24 hours, so this cancels the tournament and refunds every entrant.', 'Refund Everyone', async () => {
+      try { await DB.rpc('refund_stale_tournament', { p_tid: tr.dataset.trefund }); toast('Cancelled. Every buy-in was refunded.'); refreshProfile(); refreshLobby(); } catch (err) { toast(err.message, 5000); }
+    });
+    return;
+  }
   const r = e.target.closest('[data-srefund]');
   if (r) {
     confirmBox('Take your buy-in back?', 'Your buy-in goes back to your balance and you are taken off that table. Any Loan Shark loan you took there is cancelled too.', 'Refund', async () => {
@@ -4620,7 +4672,7 @@ function saveQ(q) { try { localStorage.setItem(CASHQ_KEY, JSON.stringify(q)); } 
 async function openAccountTable(cfg) {
   const t = App.table, kind = GAMES[cfg.game].kind, st = STAKES[cfg.stakes];
   busy('Opening your table and taking your buy-in…');
-  const id = await DB.rpc('create_table', { p_code: t.code, p_game: cfg.game, p_house: kind !== 'poker', p_min_bet: st.bb, p_loan: !!cfg.loanShark });
+  const id = await DB.rpc('create_table', { p_code: t.code, p_game: cfg.game, p_house: kind !== 'poker', p_min_bet: st.bb, p_loan: !!cfg.loanShark, p_account: true, p_listed: !!cfg.listed, p_stakes: stakesLabel(cfg.stakes) });
   t.dbTable = id;
   await DB.rpc('table_buyin', { p_table: id, p_amount: cfg.startStack, p_loan: false });
   await verifySeat(App.me.id);
@@ -4947,7 +4999,7 @@ async function loadDashboard() {
       DB.rpc('admin_stats'),
       DB.select('profiles', 'select=id,username,balance,debt,last_seen,location,created_at,is_owner&order=balance.desc'),
       DB.select('transactions', 'select=*,profiles!user_id(username)&order=created_at.desc&limit=120'),
-      DB.select('casino_tables', 'select=*,profiles!host_id(username)&status=eq.open&order=last_active.desc&limit=50'),
+      DB.select('casino_tables', 'select=*,profiles!host_id(username)&status=eq.open&account=eq.true&order=last_active.desc&limit=50'),
       DB.select('table_seats', 'select=table_id,user_id,bought_in&status=eq.seated'),
       DB.select('tournaments', 'select=*,tournament_entries(user_id,paid,place,prize),tournament_invites(user_id)&order=created_at.desc&limit=30'),
     ]);
@@ -4961,24 +5013,25 @@ function renderDashboard() {
   const { stats: s, players, txs, tables, seats, tourneys } = Dash.data;
   const nameOfId = id => { const p = players.find(x => x.id === id); return p ? p.username : '—'; };
   const tile = (k, v, cls) => `<div class="tile"><div class="k">${k}</div><div class="v ${cls || ''}">${v}</div></div>`;
-  const tiles = `<div class="tiles">${tile('Live players', fmt(s.live), 'live')}${tile('Accounts', fmt(s.players))}${tile('Open tables', fmt(s.open_tables))}${tile('Chips in accounts', fmt(s.in_accounts))}${tile('Chips at tables', fmt(s.at_tables))}${tile('In tournament pools', fmt(s.in_tournaments))}${tile('The Bank', fmt(s.bank))}${tile('Loan Shark debt', fmt(s.debt))}${tile('Flagged (7 days)', fmt(s.flagged))}</div>`;
+  const tiles = `<div class="tiles">${tile('Live players', fmt(s.live), 'live')}${tile('Accounts', fmt(s.players))}${tile('Open tables', fmt(s.open_tables))}${tile('Chips in accounts', fmt(s.in_accounts))}${tile('Chips at tables', fmt(s.at_tables))}${tile('In tournament pools', fmt(s.in_tournaments))}${tile('The Bank', fmt(s.bank))}${tile('Loan Shark debt', fmt(s.debt))}${tile('Flagged (7 days)', fmt(s.flagged))}<div class="tile"><div class="k">Daily bonus</div><div class="v">${s.daily_bonus ? fmt(s.daily_bonus) : 'Off'} <button class="btn ghost" id="dDaily" style="font-size:.6rem;padding:3px 8px;vertical-align:4px">Change</button></div></div></div>`;
   const prow = p => `<tr><td><span class="dot${isLive(p) ? ' on' : ''}"></span>${esc(p.username)}${p.is_owner ? ' <em style="color:var(--gold);font-style:normal;font-size:.7em">owner</em>' : ''}<div style="font-size:.68rem;color:var(--muted)">${isLive(p) ? esc(p.location || 'Online') : 'Last seen ' + ago(p.last_seen)}</div></td><td class="num">${fmt(p.balance)}</td><td class="num" style="color:${p.debt ? '#f0b8c1' : 'inherit'}">${p.debt ? fmt(p.debt) : '—'}</td><td class="num"><button class="btn" data-dgive="${p.id}">Give / Take</button>${p.debt ? ` <button class="btn ghost" data-dforgive="${p.id}">Forgive</button>` : ''}</td></tr>`;
   const players_ = `<div class="dsec"><div class="panel"><h3>Players <span><button class="btn" id="dMint">Add Chips to the Bank</button> <button class="btn" id="dGiveAll">Gift Everyone</button></span></h3><div class="scrollbox"><table class="dtable"><tr><th>Player</th><th class="num">Balance</th><th class="num">Owes</th><th class="num"></th></tr>${players.map(prow).join('')}</table></div></div></div>`;
   const tsum = id => seats.filter(x => x.table_id === id).reduce((a, x) => a + Number(x.bought_in), 0);
   const tbl = `<div class="dsec"><div class="panel"><h3>Open Tables</h3>${tables.length ? `<table class="dtable"><tr><th>Table</th><th>Host</th><th class="num">Bought in</th><th>Active</th><th class="num"></th></tr>${tables.map(t => `<tr><td>${esc(t.code)} · ${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)}</td><td>${esc(t.profiles ? t.profiles.username : '')}</td><td class="num">${fmt(tsum(t.id))}</td><td>${ago(t.last_active)}</td><td class="num"><button class="btn ghost" data-drefund="${t.id}">Refund &amp; Close</button></td></tr>`).join('')}</table>` : '<div class="sub" style="margin:0">No account-chip tables are open.</div>'}<div class="sub" style="margin:10px 0 0">Use Refund &amp; Close only for a table whose host disappeared: it returns everyone's buy-in.</div></div></div>`;
-  const kinds = { signup: 'Signup', buyin: 'Buy-in', cashout: 'Cash-out', loan: 'Loan', refund: 'Refund', gift: 'Gift', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tourney buy-in', tournament_prize: 'Tourney prize', tournament_refund: 'Tourney refund', mint: 'Bank +', guarantee: 'Guarantee', table_close: 'Table closed', tournament_leftover: 'Pool leftover', forgive: 'Forgiven' };
+  const kinds = { signup: 'Signup', buyin: 'Buy-in', cashout: 'Cash-out', loan: 'Loan', refund: 'Refund', gift: 'Gift', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tourney buy-in', tournament_prize: 'Tourney prize', tournament_refund: 'Tourney refund', daily_bonus: 'Daily bonus', mint: 'Bank +', guarantee: 'Guarantee', table_close: 'Table closed', tournament_leftover: 'Pool leftover', forgive: 'Forgiven' };
   const list = Dash.txFilter === 'flagged' ? txs.filter(t => t.flagged) : txs;
   const tx = `<div class="dsec"><div class="panel"><h3>Transactions <span><button class="btn ghost${Dash.txFilter === 'all' ? ' on' : ''}" data-dtx="all">All</button><button class="btn ghost${Dash.txFilter === 'flagged' ? ' on' : ''}" data-dtx="flagged">Flagged</button></span></h3><div class="scrollbox"><table class="dtable"><tr><th>When</th><th>Player</th><th>What</th><th class="num">Player</th><th class="num">Bank</th></tr>${list.map(t => `<tr class="${t.flagged ? 'flag' : ''}"><td>${ago(t.created_at)}</td><td>${esc(t.profiles ? t.profiles.username : '—')}</td><td>${esc(kinds[t.kind] || t.kind)}<div style="font-size:.68rem;color:var(--muted)">${esc(t.note || '')}</div>${t.flagged ? `<button class="btn ghost" data-dclear="${t.id}">Mark reviewed</button>` : ''}</td><td class="num">${t.amount ? (t.amount > 0 ? '+' : '−') + fmt(Math.abs(t.amount)) : ''}</td><td class="num">${t.bank_delta ? (t.bank_delta > 0 ? '+' : '−') + fmt(Math.abs(t.bank_delta)) : ''}</td></tr>`).join('') || '<tr><td colspan="5">Nothing here.</td></tr>'}</table></div><div class="sub" style="margin:10px 0 0">Flagged: unusually large cash-outs. A flag isn't proof of cheating, just worth a look.</div></div></div>`;
   const st = { registering: 'Registration open', open: 'Room open — seating', running: 'Running', done: 'Finished', cancelled: 'Cancelled' };
   const trow = t => {
     const n = t.tournament_entries.length;
-    const acts = t.status === 'done' || t.status === 'cancelled' ? '' : `${t.status !== 'running' ? `<button class="btn primary" data-dopen="${t.id}">${t.room_code ? 'Reopen Room' : 'Open Room'}</button> ` : ''}<button class="btn" data-dinvite="${t.id}">Invite</button> ${t.status !== 'running' ? `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>` : ''}`;
+    const paused = (t.status === 'running' || t.status === 'open') && Date.now() - new Date(t.last_active || t.created_at).getTime() > 180000;
+    const acts = t.status === 'done' || t.status === 'cancelled' ? '' : `${t.status !== 'running' ? `<button class="btn primary" data-dopen="${t.id}">${t.room_code ? 'Reopen Room' : 'Open Room'}</button> ` : ''}<button class="btn" data-dinvite="${t.id}">Invite</button> ${t.status !== 'running' ? `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>` : paused ? `<button class="btn ghost danger" data-dstale="${t.id}">Refund Everyone</button>` : ''}`;
     const winners = t.status === 'done' ? t.tournament_entries.filter(e => e.place && e.place <= 3).sort((a, b) => a.place - b.place).map(e => `${ordinal(e.place)} ${esc(nameOfId(e.user_id))}${e.prize ? ' (' + fmt(e.prize) + ')' : ''}`).join(', ') : '';
-    return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}</div><div class="td">${st[t.status] || t.status} · ${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${n}/${t.max_players} entered · ${t.tournament_invites.length} invited · Buy-in ${fmt(t.buy_in)} · Pool ${fmt(t.pool)}${t.guarantee ? ` (guarantee ${fmt(t.guarantee)})` : ''}${t.starts_at ? ' · ' + new Date(t.starts_at).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : ''}${winners ? '<br>' + winners : ''}${t.host_id !== DB.uid() ? ' · hosted by ' + esc(nameOfId(t.host_id)) : ''}</div></div><div>${t.host_id === DB.uid() || t.site_wide ? acts : (t.status !== 'done' && t.status !== 'cancelled' ? `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>` : '')}</div></div>`;
+    return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}${paused ? '<span class="tag">Paused · host away ' + ago(t.last_active) + '</span>' : ''}</div><div class="td">${st[t.status] || t.status} · ${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${n}/${t.max_players} entered · ${t.tournament_invites.length} invited · Buy-in ${fmt(t.buy_in)} · Pool ${fmt(t.pool)}${t.guarantee ? ` (guarantee ${fmt(t.guarantee)})` : ''}${t.starts_at ? ' · ' + new Date(t.starts_at).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : ''}${winners ? '<br>' + winners : ''}${t.host_id !== DB.uid() ? ' · hosted by ' + esc(nameOfId(t.host_id)) : ''}</div></div><div>${t.host_id === DB.uid() || t.site_wide ? acts : (t.status !== 'done' && t.status !== 'cancelled' ? (t.status === 'running' ? (paused ? `<button class="btn ghost danger" data-dstale="${t.id}">Refund Everyone</button>` : '') : `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>`) : '')}</div></div>`;
   };
   const tour = `<div class="dsec"><div class="panel"><h3>Tournaments <span><button class="btn primary" id="dNewT">Create Site-wide Tournament</button></span></h3>${tourneys.length ? tourneys.map(trow).join('') : '<div class="sub" style="margin:0">No tournaments yet.</div>'}</div></div>`;
   $('#dash').innerHTML = tiles + `<div class="dgrid"><div>${players_}${tour}</div><div>${tbl}${tx}</div></div>`;
-  $('#dMint').onclick = mintModal; $('#dNewT').onclick = newTourneyModal; $('#dGiveAll').onclick = giveAllModal;
+  $('#dDaily').onclick = dailyModal; $('#dMint').onclick = mintModal; $('#dNewT').onclick = newTourneyModal; $('#dGiveAll').onclick = giveAllModal;
 }
 function giveModal(uid) {
   const p = Dash.data.players.find(x => x.id === uid); if (!p) return;
@@ -5070,6 +5123,139 @@ document.addEventListener('click', async e => {
 document.addEventListener('DOMContentLoaded', () => {});
 $('#dBack').onclick = closeDashboard;
 $('#dRefresh').onclick = loadDashboard;
+
+function dailyModal() {
+  const cur = Dash.data.stats.daily_bonus || 0;
+  openModal(`<h2>Daily Bonus</h2><div class="sub">Every player can claim this once a day (Eastern time). It comes out of the Bank. Set it to 0 to turn it off.</div>
+    <label class="field"><span>Chips per day</span><input id="dbAmt" type="number" min="0" max="100000" step="50" value="${cur}"></label>
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="dbGo">Save</button></div>`);
+  $('#dbGo').onclick = async () => {
+    try { await DB.rpc('set_daily_bonus', { p_amount: Math.max(0, Math.floor(+$('#dbAmt').value) || 0) }); closeModal(); toast('Daily bonus updated.'); loadDashboard(); }
+    catch (e) { toast(e.message, 5000); }
+  };
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-dstale]'); if (!b) return;
+  confirmBox('Refund everyone?', 'This cancels the tournament and gives every entrant their buy-in back. Any guarantee returns to the Bank. Use it when the host is not coming back.', 'Refund Everyone', async () => {
+    try { await DB.rpc('refund_stale_tournament', { p_tid: b.dataset.dstale }); toast('Refunded.'); loadDashboard(); } catch (err) { toast(err.message, 5000); }
+  });
+});
+// =====================================================================
+//  SOCIAL: player looks, profiles, leaderboard, daily bonus, listed tables
+// =====================================================================
+const LOOK_COLORS = { gold: '#d4af37', crimson: '#b3263a', emerald: '#1f8a5b', sapphire: '#2f63b8', amethyst: '#7a4bb0', silver: '#a9b0b8', copper: '#b8733d', ivory: '#e8dfc8' };
+const LOOK_SYMBOLS = ['♠', '♥', '♦', '♣', '★', '♛', '♚', '♞', '☘', '✦', '☀', '☾', '⚡', '♜', '⚓', '✿'];
+const Looks = new Map();
+const isUid = id => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(id || ''));
+function badgeHTML(look, id, big) {
+  const l = look || {}, c = LOOK_COLORS[l.color] || LOOK_COLORS.gold;
+  return `<span class="av${big ? ' big' : ''}" style="--avc:${c}"${id ? ` data-prof="${esc(id)}" title="View profile"` : ''}>${esc(l.avatar || '♠')}</span>`;
+}
+// badge for a seated player; looks are fetched in the background the first time we see someone
+let looksWant = new Set(), looksTimer = null;
+function lookBadge(p) {
+  if (!p || p.bot || !isUid(p.id)) return '';
+  const l = Looks.get(p.id);
+  if (l === undefined) { looksWant.add(p.id); clearTimeout(looksTimer); looksTimer = setTimeout(fetchLooks, 250); return ''; }
+  return l ? badgeHTML(l, p.id) : '';
+}
+async function fetchLooks() {
+  const ids = [...looksWant].filter(id => !Looks.has(id)); looksWant.clear();
+  if (!ids.length || !DB.signedIn()) return;
+  for (const id of ids) Looks.set(id, null);
+  try {
+    const rows = await DB.select('profiles', `select=id,avatar,color&id=in.(${ids.join(',')})`);
+    for (const r of rows) Looks.set(r.id, { avatar: r.avatar, color: r.color });
+    if (App.inTable && App.view) render();
+  } catch (e) { for (const id of ids) Looks.delete(id); }
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-prof]'); if (!t || !DB.signedIn()) return;
+  e.preventDefault(); e.stopPropagation(); profileModal(t.dataset.prof);
+}, true);
+
+// ---------- profiles ----------
+const signedFmt = n => (n > 0 ? '+' : n < 0 ? '−' : '') + fmt(Math.abs(n));
+async function profileModal(id) {
+  busy('Loading player…');
+  let p;
+  try { p = await DB.rpc('player_profile', { p_user: id }); } catch (e) { closeModal(); return toast(e.message, 5000); }
+  if (!p) { closeModal(); return toast('That player could not be found.'); }
+  Looks.set(id, { avatar: p.avatar, color: p.color });
+  const self = id === DB.uid();
+  const stat = (k, v, cls) => `<div class="pstat"><div class="k">${k}</div><div class="v ${cls || ''}">${v}</div></div>`;
+  const tnet = +p.table_net;
+  openModal(`<div class="phead"><span id="pBadge">${badgeHTML(p, null, true)}</span><div><h2 style="margin:0">${esc(p.username)}${p.is_owner ? ' <span class="otag">OWNER</span>' : ''}</h2>
+      <div class="sub" style="margin:4px 0 0"><span class="dot${p.online ? ' on' : ''}"></span>${p.online ? 'Online now' : 'Offline'} · Member since ${new Date(p.joined).toLocaleDateString([], { month: 'long', year: 'numeric' })}</div></div></div>
+    <div class="pstats">${stat('Chips', fmt(p.balance))}${+p.debt ? stat('Owes the Loan Shark', fmt(p.debt), 'neg') : ''}${stat('Tables played', fmt(p.tables))}${stat('Table results', signedFmt(tnet), tnet > 0 ? 'pos' : tnet < 0 ? 'neg' : '')}${stat('Biggest win', +p.biggest > 0 ? fmt(p.biggest) : '—')}${stat('Tournaments', fmt(p.tournaments))}${stat('Tournament wins', fmt(p.wins))}${stat('Cashes', fmt(p.cashes))}${stat('Prize money', fmt(p.prizes))}</div>
+    ${self ? `<div class="sect">Your look</div><div class="sub" style="margin:0 0 8px">Your symbol shows next to your name at the table and on the leaderboard.</div>
+      <div class="symgrid">${LOOK_SYMBOLS.map(x => `<button class="sym${x === p.avatar ? ' on' : ''}" data-sym="${x}">${x}</button>`).join('')}</div>
+      <div class="colgrid">${Object.entries(LOOK_COLORS).map(([k, c]) => `<button class="col${k === p.color ? ' on' : ''}" data-col="${k}" title="${k}" style="background:${c}"></button>`).join('')}</div>` : ''}
+    <div class="mfoot">${self ? '<button class="btn" id="pSave">Save Look</button>' : ''}<button class="btn primary" data-close>Done</button></div>`);
+  if (!self) return;
+  const pick = { avatar: p.avatar, color: p.color };
+  const sync = () => {
+    $('#pBadge').innerHTML = badgeHTML(pick, null, true);
+    document.querySelectorAll('[data-sym]').forEach(b => b.classList.toggle('on', b.dataset.sym === pick.avatar));
+    document.querySelectorAll('[data-col]').forEach(b => b.classList.toggle('on', b.dataset.col === pick.color));
+  };
+  document.querySelectorAll('[data-sym]').forEach(b => b.onclick = () => { pick.avatar = b.dataset.sym; sync(); });
+  document.querySelectorAll('[data-col]').forEach(b => b.onclick = () => { pick.color = b.dataset.col; sync(); });
+  $('#pSave').onclick = async () => {
+    try {
+      await DB.rpc('set_look', { p_avatar: pick.avatar, p_color: pick.color });
+      Looks.set(id, { ...pick }); Object.assign(DB.profile, pick); renderAcctBar(); closeModal(); toast('Look saved.');
+    } catch (e) { toast(e.message, 5000); }
+  };
+}
+
+// ---------- leaderboard ----------
+const LB_TABS = [['richest', 'Richest', 'Chips in the account, minus any Loan Shark debt'], ['weekly', 'Biggest Win This Week', 'Best single table or tournament result in the last 7 days'], ['champions', 'Champions', 'Tournament wins']];
+let lbData = null, lbTab = 'richest';
+async function leaderboardModal() {
+  busy('Loading the leaderboard…');
+  try { lbData = await DB.rpc('leaderboard'); } catch (e) { closeModal(); return toast(e.message, 5000); }
+  for (const k of ['richest', 'weekly', 'champions']) for (const r of lbData[k] || []) Looks.set(r.id, { avatar: r.avatar, color: r.color });
+  drawLeaderboard();
+}
+function drawLeaderboard() {
+  const tab = LB_TABS.find(t => t[0] === lbTab), rows = lbData[lbTab] || [], me = DB.uid();
+  const val = r => lbTab === 'champions' ? `${fmt(r.amount)} win${+r.amount === 1 ? '' : 's'}` : (lbTab === 'weekly' ? '+' : '') + fmt(r.amount);
+  openModal(`<h2>Leaderboard</h2>
+    <div class="lbtabs">${LB_TABS.map(t => `<button class="btn ghost${t[0] === lbTab ? ' on' : ''}" data-lb="${t[0]}">${t[1]}</button>`).join('')}</div>
+    <div class="sub" style="margin:8px 0 10px">${tab[2]}</div>
+    <div class="scrollbox"><table class="dtable lb">${rows.length ? rows.map((r, i) => `<tr class="${r.id === me ? 'me' : ''}" data-prof="${r.id}"><td class="rk">${i < 3 ? ['🥇', '🥈', '🥉'][i] : i + 1}</td><td>${badgeHTML(r)}${esc(r.username)}</td><td class="num">${val(r)}</td></tr>`).join('')
+      : `<tr><td>${lbTab === 'weekly' ? 'No winning sessions in the last 7 days yet.' : lbTab === 'champions' ? 'No tournaments have finished yet.' : 'Nobody yet.'}</td></tr>`}</table></div>
+    <div class="sub" style="margin:10px 0 0">Tap a player to see their profile.</div>
+    <div class="mfoot"><button class="btn primary" data-close>Done</button></div>`);
+  document.querySelectorAll('[data-lb]').forEach(b => b.onclick = () => { lbTab = b.dataset.lb; drawLeaderboard(); });
+}
+
+// ---------- daily bonus ----------
+async function claimDaily() {
+  const b = $('#btnDaily'); if (b) b.disabled = true;
+  try {
+    const r = await DB.rpc('claim_daily');
+    toast(`+${fmt(r.amount)} chips. See you tomorrow.`, 4000);
+  } catch (e) { toast(e.message, 5000); }
+  refreshProfile();
+}
+
+// ---------- listed tables ----------
+function stakesLabel(i) { const s = STAKES[i]; return s ? `${fmt(s.sb)} / ${fmt(s.bb)}` : ''; }
+async function setListed(on) {
+  const T = App.table; if (!T || App.mode !== 'host' || T.kind === 'td') return;
+  T.settings.listed = !!on; T.changed();
+  const humans = T.players.filter(p => !p.bot).length, game = T.game || T.settings.game;
+  try {
+    if (T.dbTable || T.listId) await DB.rpc('table_ping', { p_table: T.dbTable || T.listId, p_players: humans, p_game: game, p_listed: !!on });
+    else if (on) {
+      T.listId = await DB.rpc('create_table', { p_code: T.code, p_game: game, p_house: GAMES[game].kind !== 'poker', p_min_bet: STAKES[T.settings.stakes].bb, p_loan: false, p_account: false, p_listed: true, p_stakes: stakesLabel(T.settings.stakes) });
+      saveNow();
+    }
+    if (on) toast('Your table now shows in the lobby.');
+  } catch (e) { toast('Could not list the table: ' + e.message, 5000); }
+}
 init();
 </script>
 </body>
