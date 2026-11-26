@@ -365,6 +365,35 @@ button.choice:hover{border-color:var(--gold)}
 .pickchip{font-size:.58rem;letter-spacing:.16em;padding:2px 7px;border-radius:2px;background:#1d2a3d;color:#bcd2f2;border:1px solid #34507a}
 .pickchip.banker{background:#3b1219;color:#f0b8c1;border-color:#7d2433}
 .pickchip.tie{background:#16331f;color:#b8e6c4;border-color:#2c6b40}
+/* video chat */
+.vstrip{position:absolute;top:8px;left:12px;right:12px;z-index:6;display:flex;align-items:center;justify-content:center;gap:12px;pointer-events:none}
+.vstrip>*{pointer-events:auto}
+.vtiles{display:flex;gap:8px;overflow-x:auto;max-width:100%;scrollbar-width:thin}
+.vtile{position:relative;flex:none;width:132px;height:99px;border-radius:4px;overflow:hidden;background:#0d0b09;border:1px solid #3d3326;box-shadow:0 6px 16px rgba(0,0,0,.5);transition:box-shadow .15s,border-color .15s}
+.vtile video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.vtile.self video{transform:scaleX(-1)}
+.vtile .vph{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:radial-gradient(#211b13,#0c0a08)}
+.vtile.novid .vph{display:flex}.vtile.novid video{opacity:0}
+.vph span{width:38px;height:38px;border-radius:50%;border:1px solid var(--gold-lo);display:flex;align-items:center;justify-content:center;font-family:var(--serif);color:var(--gold-hi);font-size:1.1rem}
+.vph small{font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.vname{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:.68rem;background:linear-gradient(transparent,rgba(0,0,0,.85));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vname .muted{font-weight:600;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:#f0b8c1;margin-left:3px}
+.vtile.speaking{border-color:var(--gold-hi);box-shadow:0 0 0 2px var(--gold-hi),0 0 18px rgba(236,212,154,.5)}
+.vctl{display:grid;grid-template-columns:auto auto;gap:4px;background:rgba(12,10,8,.9);border:1px solid var(--line);border-radius:4px;padding:6px}
+.vctl .btn{padding:.42em .6em;font-size:.6rem;letter-spacing:.1em}
+.vjoin{background:rgba(12,10,8,.92);border:1px solid var(--line);border-radius:4px;padding:8px 12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.vjoin .vt{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.vjoin .vt span{color:var(--muted);text-transform:none;letter-spacing:.02em;font-size:.78rem}
+.vjoin .vb{display:flex;gap:6px;flex-wrap:wrap}
+.vjoin .btn{padding:.5em .8em;font-size:.64rem}
+.btn.off{color:#f0b8c1}
+.vstrip.collapsed .vtiles{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+.vcount{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);align-self:center;padding:0 4px}
+@media (max-width:760px){
+  .vstrip{flex-direction:column;gap:6px;left:6px;right:6px;top:6px}
+  .vtile{width:76px;height:57px}.vph span{width:24px;height:24px;font-size:.8rem}.vph small{display:none}.vname{font-size:.58rem;padding:2px 4px}
+  .vctl{display:flex;flex-wrap:wrap;justify-content:center}
+}
 @media (max-width:980px){
   .table-area{grid-template-columns:1fr}
   .side{position:absolute;right:0;top:0;bottom:0;width:min(320px,90vw);z-index:19;transform:translateX(102%);transition:transform .25s;box-shadow:-20px 0 50px rgba(0,0,0,.5);background:rgba(11,9,7,.97)}
@@ -423,6 +452,7 @@ button.choice:hover{border-color:var(--gold)}
   <div class="table-area">
     <aside id="guide" class="guide"></aside>
     <main class="felt-zone" id="feltZone">
+      <div id="videoStrip" class="vstrip hidden"><div id="videoTiles" class="vtiles"></div><div id="videoCtl"></div></div>
       <div class="table-wrap" id="tableWrap"><div class="rail"></div><div class="felt"></div><div id="tableLayer"></div></div>
     </main>
     <aside id="side" class="side">
@@ -758,7 +788,7 @@ class Table {
     this.now = opts.now || (() => Date.now());
     this.onChange = opts.onChange || (() => {});
     this.rnd = opts.rnd || Math.random;
-    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true };
+    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true, video: false };
     this.players = []; this.hand = null; this.handNo = 0; this.buttonSeat = -1;
     this.log = []; this.chat = []; this.paused = false; this.nextHandAt = 0;
     this.shoe = null; this.bacShoe = null; this.botSeq = 0; this.lastBets = {}; this.lastPick = {}; this.waitMsg = '';
@@ -778,7 +808,7 @@ class Table {
     for (const k of PERSIST_KEYS) if (d[k] !== undefined) t[k] = d[k];
     t.settings = Object.assign(new Table('x', 'x').settings, d.settings);
     const now = t.now(), gap = Math.max(0, now - (d.savedAt || now));
-    for (const p of t.players) p.connected = p.bot || p.id === t.hostId;
+    for (const p of t.players) { p.connected = p.bot || p.id === t.hostId; p.av = null; if (p.id !== t.hostId) p.peerId = null; }
     const h = t.hand;
     if (h && !h.over) {
       h.deadline = now + Math.max(20, t.settings.timer) * 1000;
@@ -902,9 +932,10 @@ class Table {
     else { this.recordLeave(p); this.players = this.players.filter(q => q.id !== id); this.addLog(`${p.name} leaves the table.`); }
     this.changed();
   }
+  setPeerId(id, peerId) { const p = this.player(id); if (p) p.peerId = typeof peerId === 'string' ? peerId.slice(0, 80) : null; }
   disconnected(id) {
     const p = this.player(id); if (!p || p.bot) return;
-    p.connected = false; this.addLog(`${p.name} lost connection.`); this.changed();
+    p.connected = false; p.av = null; this.addLog(`${p.name} lost connection.`); this.changed();
   }
   tidy() {
     let changed = false;
@@ -955,6 +986,15 @@ class Table {
       case 'sitout': p.sittingOut = !!c.v; if (!c.v) { p.timeouts = 0; this.addLog(`${p.name} is back.`); } this.changed(); break;
       case 'leave': this.removePlayer(pid); break;
       case 'choose': if (this.choice && this.choice.pid === pid) this.chooseGame(pid, c.g, false); break;
+      case 'av': {
+        if (c.on && !this.settings.video) return;
+        const kind = ['full', 'audio', 'watch'].includes(c.kind) ? c.kind : 'watch';
+        const was = !!(p.av && p.av.on);
+        p.av = c.on ? { on: true, kind, cam: !!c.cam && kind === 'full', mic: !!c.mic && kind !== 'watch' } : null;
+        if (!was && c.on) this.addLog(`${p.name} joined video chat.`);
+        if (was && !c.on) this.addLog(`${p.name} left video chat.`);
+        this.changed(); break;
+      }
       case 'settings': if (isHost) this.applySettings(c.s || {}); break;
       case 'addBot': if (isHost) this.addBot(); break;
       case 'removeBot': if (isHost) this.removeBot(); break;
@@ -979,6 +1019,11 @@ class Table {
     if (s.timer != null) st.timer = Math.max(10, Math.min(120, Math.floor(+s.timer) || 30));
     if (s.botLevel && BOT_LEVELS[s.botLevel]) st.botLevel = s.botLevel;
     if (s.allowOdds != null) st.allowOdds = !!s.allowOdds;
+    if (s.video != null && !!s.video !== st.video) {
+      st.video = !!s.video;
+      if (!st.video) for (const p of this.players) p.av = null;
+      note = (note ? note + ' ' : '') + (st.video ? 'The host turned on video chat. Join it from the video bar.' : 'The host turned off video chat.');
+    }
     if (Array.isArray(s.rotation)) {
       const r = s.rotation.filter(g => GAMES[g]);
       if (r.length) { st.rotation = r; if (!r.includes(this.game)) this.orbitLeft = 0; }
@@ -986,7 +1031,7 @@ class Table {
     if (s.mode && ['fixed', 'rotate', 'choice'].includes(s.mode) && s.mode !== st.mode) {
       st.mode = s.mode; this.orbitLeft = 0; this.choice = null;
       if (s.mode !== 'fixed') { this.game = this.settings.game; this.orbitStarted = false; }
-      note = s.mode === 'fixed' ? `Fixed game: ${GAMES[st.game].label}.` : s.mode === 'rotate' ? 'The games now rotate every round of the button.' : "Dealer's Choice: each round, a player picks the game.";
+      note = (note ? note + ' ' : '') + (s.mode === 'fixed' ? `Fixed game: ${GAMES[st.game].label}.` : s.mode === 'rotate' ? 'The games now rotate every round of the button.' : "Dealer's Choice: each round, a player picks the game.");
     }
     if (note) this.addLog(note);
     this.changed();
@@ -1199,7 +1244,7 @@ class Table {
     const now = this.now(), h = this.hand, T = this.tourney;
     const v = {
       code: this.code, hostId: this.hostId, me: pid, settings: { ...this.settings }, stakes: this.stakes(),
-      players: this.players.map(p => ({ id: p.id, name: p.name, chips: p.chips, bot: p.bot, seat: p.seat, connected: p.connected, sittingOut: p.sittingOut, leaving: p.leaving, style: p.bot ? p.persona.style : '', entrant: !!p.entrant, out: !!p.out })),
+      players: this.players.map(p => ({ id: p.id, name: p.name, chips: p.chips, bot: p.bot, seat: p.seat, connected: p.connected, sittingOut: p.sittingOut, leaving: p.leaving, style: p.bot ? p.persona.style : '', entrant: !!p.entrant, out: !!p.out, av: p.av || null, peerId: p.peerId || null })),
       buttonSeat: this.buttonSeat, paused: this.paused, waitMsg: (!h || h.over) ? this.waitMsg : '',
       nextIn: (!h || h.over) && !this.choice ? Math.max(0, this.nextHandAt - now) : null,
       log: this.log.slice(-60), chat: this.chat.slice(-60), timer: this.settings.timer,
@@ -2401,6 +2446,7 @@ function setupTable(cfg, code) {
 }
 function wirePeer(peer) {
   peer.on('connection', c => hostConn(c));
+  peer.on('call', c => onIncomingCall(c));
   peer.on('disconnected', () => { if (!App.leaving && App.peer === peer) setTimeout(() => { try { if (!peer.destroyed) peer.reconnect(); } catch (e) {} }, 1500); });
   peer.on('error', e => { if (e && e.type !== 'peer-unavailable') console.warn('peer error', e.type); });
 }
@@ -2418,7 +2464,7 @@ async function startHost(cfg) {
   }
   if (!peer) { closeModal(); return toast('Could not reserve a room code. Please try again.', 5000); }
   App.peer = peer; App.mode = 'host'; App.code = code; App.leaving = false;
-  setupTable(cfg, code); wirePeer(peer);
+  setupTable(cfg, code); App.table.setPeerId(App.me.id, peer.id); wirePeer(peer);
   closeModal(); enterTable(); saveNow();
   toast(`Your table is open. Room code ${code}`, 4500);
 }
@@ -2445,7 +2491,7 @@ async function resumeTable() {
   }
   if (!peer) { closeModal(); return toast('The room code is still held by the old session. Try again in a minute.', 6000); }
   App.peer = peer; App.mode = 'host'; App.code = m.code;
-  attachTable(Table.restore(json, { onChange: scheduleSync })); wirePeer(peer);
+  attachTable(Table.restore(json, { onChange: scheduleSync })); App.table.setPeerId(App.me.id, peer.id); wirePeer(peer);
   closeModal(); enterTable();
   toast('Table restored. Friends will reconnect on their own.', 4500);
 }
@@ -2459,7 +2505,7 @@ function hostConn(c) {
       if (!r.ok) { c.send({ t: 'error', msg: r.msg }); setTimeout(() => { try { c.close(); } catch (e) {} }, 600); return; }
       const old = App.conns.get(id);
       if (old && old !== c) { try { old.close(); } catch (e) {} }
-      c.pid = id; App.conns.set(id, c); scheduleSync();
+      c.pid = id; App.conns.set(id, c); App.table.setPeerId(id, d.peerId); scheduleSync();
       return;
     }
     if (c.pid && App.conns.get(c.pid) === c) {
@@ -2489,7 +2535,7 @@ function connectOnce(code) {
     peer.on('error', e => fail(e && e.type === 'peer-unavailable' ? 'unavailable' : (e && (e.type || e.message)) || 'error'));
     peer.on('open', () => {
       const conn = peer.connect(PEER_PREFIX + code, { reliable: true, serialization: 'json' });
-      conn.on('open', () => conn.send({ t: 'hello', id: App.me.id, name: App.me.name }));
+      conn.on('open', () => conn.send({ t: 'hello', id: App.me.id, name: App.me.name, peerId: peer.id }));
       conn.on('data', d => {
         if (done || !d) return;
         if (d.t === 'state') { done = true; clearTimeout(timer); res({ peer, conn, first: d }); }
@@ -2501,6 +2547,8 @@ function connectOnce(code) {
 function adopt(r, code) {
   App.peer = r.peer; App.conn = r.conn; App.mode = 'client'; App.code = code; App.lastMsg = performance.now();
   const conn = r.conn;
+  r.peer.on('call', c => onIncomingCall(c));
+  if (Vid.on) { dropCalls(); setTimeout(sendAv, 300); }
   conn.on('data', d => { if (App.conn === conn) onClientData(d); });
   conn.on('close', () => { if (App.conn === conn && !App.leaving && App.mode === 'client') startReconnect(); });
   conn.on('error', () => {});
@@ -2586,9 +2634,10 @@ function showLobby() {
   $('#tableScreen').classList.add('hidden'); $('#lobby').classList.remove('hidden');
   $('#guide').classList.remove('open'); $('#side').classList.remove('open'); $('.table-area').classList.remove('guide-on');
   App.guideOpen = false; banner('');
-  renderResume();
+  renderVideo(); renderResume();
 }
 function cleanup() {
+  leaveVideo(true);
   clearInterval(App.loop); App.loop = null; clearInterval(App.pingLoop); App.pingLoop = null;
   App.reconnecting = false;
   if (App.mode === 'host' && App.table) { const sc = App.table.scores(); for (const c of App.conns.values()) { try { c.send({ t: 'closed', scores: sc }); } catch (e) {} } }
@@ -2621,7 +2670,7 @@ function showSummary(rows, title) {
 // ---- view handling ----------------------------------------------------
 function onView(v) {
   App.view = v; App.viewAt = performance.now();
-  if (App.inTable) render();
+  if (App.inTable) { render(); reconcileVideo(); renderVideo(); }
 }
 function nameOf(v, id) { const p = v.players.find(x => x.id === id); return p ? p.name : 'Player'; }
 function meP(v) { return v.players.find(p => p.id === v.me); }
@@ -2710,7 +2759,9 @@ function miniCard(c) {
 }
 function sizeTable(half) {
   const z = $('#feltZone'), wrap = $('#tableWrap');
-  const W = z.clientWidth, H = z.clientHeight;
+  const vs = $('#videoStrip'), sh = vs && !vs.classList.contains('hidden') ? vs.offsetHeight + 10 : 0;
+  z.style.paddingTop = sh + 'px';
+  const W = z.clientWidth, H = z.clientHeight - sh;
   const aspect = App.portrait ? 0.74 : half ? 2.0 : 2.08;
   let w = App.portrait ? Math.min(W * 0.8, H * 0.8 * aspect) : Math.min(W * 0.84, H * 0.74 * aspect);
   w = Math.max(240, w);
@@ -3297,10 +3348,11 @@ function setupModal(mode) {
     <label class="field"><span>Starting chips</span><select id="sStack">${optionList(STACK_OPTS, last.startStack || 10000)}</select></label></div>
     <div class="row2"><label class="field"><span>House bots</span><select id="sBots">${optionList(botOpts, solo ? (last.soloBots || 3) : (last.bots ?? 0))}</select></label>
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, last.botLevel || 'normal')}</select></label></div>
-    <label class="field"><span>Turn timer</span><select id="sTimer">${optionList(TIMER_OPTS, last.timer || 30)}</select></label>
+    <div class="row2"><label class="field"><span>Turn timer</span><select id="sTimer">${optionList(TIMER_OPTS, last.timer || 30)}</select></label>
+    ${solo ? '' : `<label class="field"><span>Video chat</span><select id="sVideo">${optionList([[0, 'Off'], [1, 'On — players can turn on their camera']], last.video ? 1 : 0)}</select></label>`}</div>
     <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="sGo">Open Table</button></div>`);
   $('#sGo').onclick = () => {
-    const cfg = { game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: +$('#sBots').value, botLevel: $('#sSkill').value };
+    const cfg = { game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: +$('#sBots').value, botLevel: $('#sSkill').value, video: !solo && $('#sVideo').value === '1' };
     store.set('setup', JSON.stringify(Object.assign(last, cfg, solo ? { soloBots: cfg.bots } : { bots: cfg.bots })));
     if (solo) { closeModal(); startSolo(cfg); } else startHost(cfg);
   };
@@ -3326,6 +3378,7 @@ function settingsModal() {
     <div class="row2"><label class="field"><span>Turn timer</span><select id="sTimer">${optionList(TIMER_OPTS, s.timer)}</select></label>
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, s.botLevel)}</select></label></div>
     <label class="chk"><input type="checkbox" id="sOdds"${s.allowOdds ? ' checked' : ''}> Allow the beginner odds helper (each player turns it on for themselves)</label>
+    ${App.mode === 'host' ? `<label class="chk"><input type="checkbox" id="sVideo"${s.video ? ' checked' : ''}> Video chat (each player chooses whether to turn on their camera)</label>` : ''}
     <div class="sect">House bots · ${bots} seated · ${open} open seat${open === 1 ? '' : 's'}</div>
     <div class="botrow"><button class="btn" data-cmd="addBot"${open ? '' : ' disabled'}>+ Add Bot</button><button class="btn" data-cmd="removeBot"${bots ? '' : ' disabled'}>− Remove Bot</button><button class="btn" data-cmd="fillBots"${open ? '' : ' disabled'}>Fill Empty Seats</button><button class="btn" data-cmd="clearBots"${bots ? '' : ' disabled'}>Remove All Bots</button></div>
     <div class="sect">Tournament (Sit &amp; Go)</div>${tour}
@@ -3337,7 +3390,7 @@ function settingsModal() {
   $('#sSave').onclick = () => {
     const rotation = [...document.querySelectorAll('[data-rot]')].filter(x => x.checked).map(x => x.dataset.rot);
     if ($('#sMode').value !== 'fixed' && rotation.length < 2) return toast('Pick at least two games for the rotation.');
-    send({ t: 'settings', s: { mode: $('#sMode').value, game: $('#sGame').value, rotation, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, botLevel: $('#sSkill').value, allowOdds: $('#sOdds').checked } });
+    send({ t: 'settings', s: { mode: $('#sMode').value, game: $('#sGame').value, rotation, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, botLevel: $('#sSkill').value, allowOdds: $('#sOdds').checked, video: $('#sVideo') ? $('#sVideo').checked : false } });
     closeModal(); toast('Settings saved.');
   };
 }
@@ -3475,6 +3528,200 @@ function init() {
   if (m && m.hostId === App.me.id && Date.now() - m.savedAt < 5 * 60e3) resumeTable();
   else renderResume();
 }
+
+// =====================================================================
+//  VIDEO CHAT (optional, turned on by the host)
+//  Every player who joins sends their camera/mic directly to every other
+//  player (a "mesh"), using the same peer-to-peer connection as the game.
+// =====================================================================
+const VID_RANK = { full: 2, audio: 1, watch: 0 };
+const Vid = {
+  local: null, kind: null, on: false, calls: new Map(), streams: new Map(), tiles: new Map(),
+  collapsed: store.get('vidCollapsed', '0') === '1', actx: null, meters: new Map(), needTap: false, busy: false, ctlSig: '',
+};
+
+function videoAllowed(v) { return !!(v && v.settings.video && (App.mode === 'host' || App.mode === 'client')); }
+function myPeerId() { return App.peer && App.peer.id; }
+
+async function joinVideo(kind) {
+  if (Vid.busy) return;
+  if (!window.isSecureContext) return toast('Video needs a secure link (https). It works on your Vercel site.', 6000);
+  let stream = null;
+  if (kind !== 'watch') {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return toast('This browser cannot use a camera or mic. Try Watch Only.', 6000);
+    Vid.busy = true;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
+        video: kind === 'full' ? { width: { ideal: 320 }, height: { ideal: 240 }, frameRate: { ideal: 15, max: 20 }, facingMode: 'user' } : false,
+      });
+    } catch (e) {
+      Vid.busy = false;
+      toast(e && e.name === 'NotAllowedError' ? 'Camera or mic permission was blocked. Allow it in your browser settings, or join as Watch Only.'
+        : e && e.name === 'NotFoundError' ? (kind === 'full' ? 'No camera found. Try Mic Only.' : 'No microphone found. Try Watch Only.') : 'Could not start your camera or mic.', 7000);
+      return;
+    }
+    Vid.busy = false;
+  }
+  Vid.local = stream; Vid.kind = kind; Vid.on = true;
+  try { Vid.actx = Vid.actx || new (window.AudioContext || window.webkitAudioContext)(); Vid.actx.resume(); } catch (e) {}
+  sendAv(); reconcileVideo(); renderVideo();
+}
+function sendAv() {
+  if (!Vid.on) return send({ t: 'av', on: false });
+  const a = Vid.local && Vid.local.getAudioTracks()[0], v = Vid.local && Vid.local.getVideoTracks()[0];
+  send({ t: 'av', on: true, kind: Vid.kind, cam: !!(v && v.enabled), mic: !!(a && a.enabled) });
+}
+function dropCalls() {
+  for (const c of Vid.calls.values()) { try { c.close(); } catch (e) {} }
+  Vid.calls.clear(); Vid.streams.clear();
+}
+function leaveVideo(silent) {
+  dropCalls();
+  if (Vid.local) for (const t of Vid.local.getTracks()) t.stop();
+  Vid.local = null; Vid.kind = null; Vid.on = false; Vid.needTap = false;
+  if (!silent) send({ t: 'av', on: false });
+  renderVideo();
+}
+function toggleTrack(kind) {
+  const t = Vid.local && (kind === 'mic' ? Vid.local.getAudioTracks()[0] : Vid.local.getVideoTracks()[0]);
+  if (!t) return;
+  t.enabled = !t.enabled; sendAv(); renderVideo();
+}
+async function switchVideo(kind) { leaveVideo(true); await joinVideo(kind); }
+
+// Decide who calls whom: the side sending more media places the call (ties: lower id),
+// so every needed audio/video line is in the offer. Two watchers never connect.
+function reconcileVideo() {
+  const v = App.view, peer = App.peer;
+  if (!Vid.on) return;
+  if (!v || !videoAllowed(v)) { leaveVideo(true); if (v && App.inTable) toast('The host turned off video chat.'); return; }
+  if (!peer || peer.destroyed) return;
+  const mine = myPeerId(), myRank = VID_RANK[Vid.kind] || 0, want = new Set(), now = Date.now();
+  for (const q of v.players) {
+    if (q.id === v.me || q.bot || !q.av || !q.av.on || !q.peerId) continue;
+    const theirRank = VID_RANK[q.av.kind] || 0;
+    if (myRank === 0 && theirRank === 0) continue;
+    want.add(q.peerId);
+    const iCall = myRank > theirRank || (myRank === theirRank && mine < q.peerId);
+    const existing = Vid.calls.get(q.peerId);
+    if (existing && !Vid.streams.has(q.peerId) && now - existing._at > 20000 && iCall) { try { existing.close(); } catch (e) {} Vid.calls.delete(q.peerId); }
+    if (iCall && !Vid.calls.has(q.peerId)) {
+      try { const call = peer.call(q.peerId, Vid.local, { metadata: { from: App.me.id } }); if (call) wireCall(call); } catch (e) {}
+    }
+  }
+  for (const [pid, c] of Vid.calls) if (!want.has(pid)) { try { c.close(); } catch (e) {} Vid.calls.delete(pid); Vid.streams.delete(pid); }
+}
+function onIncomingCall(call) {
+  if (!Vid.on) { try { call.close(); } catch (e) {} return; }
+  const old = Vid.calls.get(call.peer);
+  if (old && old !== call) { try { old.close(); } catch (e) {} }
+  try { call.answer(Vid.local || undefined); } catch (e) {}
+  wireCall(call);
+}
+function wireCall(call) {
+  call._at = Date.now();
+  Vid.calls.set(call.peer, call);
+  call.on('stream', s => { if (Vid.calls.get(call.peer) !== call) return; Vid.streams.set(call.peer, s); capBitrates(); renderVideo(); });
+  const drop = () => { if (Vid.calls.get(call.peer) === call) { Vid.calls.delete(call.peer); Vid.streams.delete(call.peer); renderVideo(); } };
+  call.on('close', drop); call.on('error', drop);
+}
+// keep total upload modest: ~900 kbps shared across everyone you send to
+function capBitrates() {
+  const n = Math.max(1, Vid.calls.size), each = Math.max(120000, Math.round(900000 / n));
+  for (const c of Vid.calls.values()) {
+    const pc = c.peerConnection; if (!pc || !pc.getSenders) continue;
+    for (const s of pc.getSenders()) {
+      if (!s.track || s.track.kind !== 'video' || !s.getParameters) continue;
+      try { const p = s.getParameters(); if (!p.encodings || !p.encodings.length) p.encodings = [{}]; p.encodings[0].maxBitrate = each; s.setParameters(p).catch(() => {}); } catch (e) {}
+    }
+  }
+}
+
+// ---- the video bar --------------------------------------------------------
+function vidInitial(n) { return esc(String(n || '?').trim().charAt(0).toUpperCase()); }
+function renderVideo() {
+  const v = App.view, bar = $('#videoStrip');
+  const show = App.inTable && videoAllowed(v);
+  bar.classList.toggle('hidden', !show);
+  if (!show) { for (const t of Vid.tiles.values()) t.remove(); Vid.tiles.clear(); return; }
+  const others = v.players.filter(q => q.id !== v.me && !q.bot && q.av && q.av.on).sort((a, b) => (a.seat ?? 99) - (b.seat ?? 99));
+  bar.classList.toggle('collapsed', Vid.collapsed && Vid.on);
+  // controls
+  let ctl;
+  const a = Vid.local && Vid.local.getAudioTracks()[0], cam = Vid.local && Vid.local.getVideoTracks()[0];
+  if (!Vid.on) {
+    const names = others.map(q => esc(q.name)).join(', ');
+    ctl = `<div class="vjoin"><div class="vt">Video chat${others.length ? ` · <span>${names} ${others.length === 1 ? 'is' : 'are'} on</span>` : ''}</div><div class="vb"><button class="btn primary" data-vid="full">Camera &amp; Mic</button><button class="btn" data-vid="audio">Mic Only</button><button class="btn ghost" data-vid="watch">Watch Only</button></div></div>`;
+  } else {
+    ctl = `<div class="vctl">${Vid.collapsed ? `<span class="vcount">Video · ${others.length + 1} on</span><button class="btn ghost" data-vid="expand">Show</button>` : ''}${a ? `<button class="btn ghost${a.enabled ? '' : ' off'}" data-vid="mic">${a.enabled ? 'Mute' : 'Unmute'}</button>` : ''}${cam ? `<button class="btn ghost${cam.enabled ? '' : ' off'}" data-vid="cam">${cam.enabled ? 'Camera Off' : 'Camera On'}</button>` : ''}${Vid.kind !== 'full' ? '<button class="btn ghost" data-vid="full">Turn On Camera</button>' : ''}${Vid.collapsed ? '' : '<button class="btn ghost" data-vid="collapse">Hide</button>'}<button class="btn ghost danger" data-vid="leave">Leave Video</button>${Vid.needTap ? '<button class="btn primary" data-vid="tap">Tap to Hear the Table</button>' : ''}</div>`;
+  }
+  const ctlBox = $('#videoCtl');
+  if (Vid.ctlSig !== ctl) { Vid.ctlSig = ctl; ctlBox.innerHTML = ctl; }
+  // tiles (kept alive between renders so video never flickers)
+  const want = [];
+  if (Vid.on) {
+    want.push({ key: 'me', name: App.me.name + ' (You)', stream: Vid.local, cam: !!(cam && cam.enabled), mic: !!(a && a.enabled), self: true, kind: Vid.kind });
+    for (const q of others) want.push({ key: q.id, name: q.name, stream: Vid.streams.get(q.peerId) || null, cam: !!q.av.cam, mic: !!q.av.mic, kind: q.av.kind, peerId: q.peerId });
+  }
+  const box = $('#videoTiles'), keep = new Set(want.map(w => w.key));
+  for (const [k, el] of Vid.tiles) if (!keep.has(k)) { el.remove(); Vid.tiles.delete(k); Vid.meters.delete(k); }
+  for (const w of want) {
+    let el = Vid.tiles.get(w.key);
+    if (!el) {
+      el = document.createElement('div'); el.className = 'vtile';
+      el.innerHTML = '<video autoplay playsinline></video><div class="vph"></div><div class="vname"></div>';
+      Vid.tiles.set(w.key, el);
+    }
+    box.appendChild(el); // keeps seat order
+    const vid = el.firstChild;
+    if (w.self) { vid.muted = true; el.classList.add('self'); }
+    if (vid.srcObject !== w.stream) {
+      vid.srcObject = w.stream;
+      if (w.stream) { const pr = vid.play(); if (pr && pr.catch) pr.catch(() => { if (!w.self) { Vid.needTap = true; Vid.ctlSig = ''; setTimeout(renderVideo, 0); } }); }
+      Vid.meters.delete(w.key);
+    }
+    const hasVideo = !!(w.stream && w.stream.getVideoTracks().length && w.cam);
+    el.classList.toggle('novid', !hasVideo);
+    el.classList.toggle('pending', !w.self && !w.stream && !(w.kind === 'watch' && Vid.kind === 'watch'));
+    el.querySelector('.vph').innerHTML = `<span>${vidInitial(w.name)}</span><small>${w.kind === 'watch' ? 'Watching' : !w.self && !w.stream ? 'Connecting…' : w.kind === 'audio' ? 'Mic only' : 'Camera off'}</small>`;
+    el.querySelector('.vname').innerHTML = `${esc(w.name)}${w.kind !== 'watch' && !w.mic ? ' <b class="muted">muted</b>' : ''}`;
+  }
+  sizeTableForVideo();
+}
+function sizeTableForVideo() { if (App.inTable && App.view) { const h = App.view.hand; sizeTable(h ? GAMES[h.type].kind !== 'poker' : GAMES[App.view.game].kind !== 'poker'); } }
+
+// speaking indicator
+setInterval(() => {
+  if (!Vid.on || !Vid.actx) return;
+  for (const [k, el] of Vid.tiles) {
+    const stream = el.firstChild.srcObject;
+    if (!stream || !stream.getAudioTracks().length) { el.classList.remove('speaking'); continue; }
+    let m = Vid.meters.get(k);
+    if (!m) {
+      try { const src = Vid.actx.createMediaStreamSource(stream), an = Vid.actx.createAnalyser(); an.fftSize = 256; src.connect(an); m = { an, buf: new Uint8Array(an.fftSize) }; Vid.meters.set(k, m); }
+      catch (e) { continue; }
+    }
+    m.an.getByteTimeDomainData(m.buf);
+    let sum = 0; for (const x of m.buf) { const d = x - 128; sum += d * d; }
+    const level = Math.sqrt(sum / m.buf.length);
+    const track = stream.getAudioTracks()[0];
+    el.classList.toggle('speaking', level > 6 && track.enabled);
+  }
+}, 200);
+// keep calls in line with who is in the room
+setInterval(() => { if (Vid.on && App.inTable) reconcileVideo(); }, 2000);
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vid]'); if (!t) return;
+  const k = t.dataset.vid;
+  if (k === 'full' || k === 'audio' || k === 'watch') { if (Vid.on) switchVideo(k); else joinVideo(k); }
+  else if (k === 'mic' || k === 'cam') toggleTrack(k);
+  else if (k === 'leave') leaveVideo(false);
+  else if (k === 'collapse' || k === 'expand') { Vid.collapsed = k === 'collapse'; store.set('vidCollapsed', Vid.collapsed ? '1' : '0'); renderVideo(); }
+  else if (k === 'tap') { Vid.needTap = false; for (const el of Vid.tiles.values()) { const vd = el.firstChild; if (vd.srcObject) vd.play().catch(() => {}); } renderVideo(); }
+});
+
 init();
 </script>
 </body>
