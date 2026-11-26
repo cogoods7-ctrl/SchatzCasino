@@ -4847,7 +4847,7 @@ async function tdStartClick() {
   const td = App.table; if (!td || td.kind !== 'td') return;
   if (td.cfg.dbId) {
     try {
-      const rows = await DB.select('tournament_entries', `select=user_id,profiles(username)&tournament_id=eq.${td.cfg.dbId}`);
+      const rows = await DB.select('tournament_entries', `select=user_id,profiles!user_id(username)&tournament_id=eq.${td.cfg.dbId}`);
       for (const r of rows) if (!td.entrant(r.user_id)) { td.join(r.user_id, r.profiles ? r.profiles.username : 'Player'); const e = td.entrant(r.user_id); if (e && r.user_id !== App.me.id) e.connected = false; }
       const t = (await DB.select('tournaments', `select=pool&id=eq.${td.cfg.dbId}`))[0]; if (t) td.pool = Number(t.pool);
     } catch (e) { return toast('Could not reach the database: ' + e.message); }
@@ -4946,8 +4946,8 @@ async function loadDashboard() {
     const [stats, players, txs, tables, seats, tourneys] = await Promise.all([
       DB.rpc('admin_stats'),
       DB.select('profiles', 'select=id,username,balance,debt,last_seen,location,created_at,is_owner&order=balance.desc'),
-      DB.select('transactions', 'select=*,profiles(username)&order=created_at.desc&limit=120'),
-      DB.select('casino_tables', 'select=*,profiles(username)&status=eq.open&order=last_active.desc&limit=50'),
+      DB.select('transactions', 'select=*,profiles!user_id(username)&order=created_at.desc&limit=120'),
+      DB.select('casino_tables', 'select=*,profiles!host_id(username)&status=eq.open&order=last_active.desc&limit=50'),
       DB.select('table_seats', 'select=table_id,user_id,bought_in&status=eq.seated'),
       DB.select('tournaments', 'select=*,tournament_entries(user_id,paid,place,prize),tournament_invites(user_id)&order=created_at.desc&limit=30'),
     ]);
