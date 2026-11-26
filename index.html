@@ -524,28 +524,113 @@ body.port .ab{gap:6px}
 body.port .ab-info .l1{font-size:.9rem}
 body.port .ab-btns .btn.big{font-size:.68rem;padding:.7em .85em}
 body.port .raise{flex-wrap:wrap;justify-content:center}
+/* ---------- accounts, lobby lists, dashboard ---------- */
+#authScreen,#lobby,#dashScreen{overflow:auto}
+#authScreen{display:flex;align-items:center;justify-content:center;padding:24px}
+#authScreen.hidden,#lobby.hidden,#dashScreen.hidden{display:none}
+.atabs{display:flex;margin:-6px 0 20px;border-bottom:1px solid var(--line)}
+.atabs button{flex:1;background:none;border:none;padding:10px;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+.atabs button.on{color:var(--gold-hi);border-bottom-color:var(--gold)}
+.acct{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:-8px 0 14px;padding:12px 16px;border:1px solid var(--line);border-radius:4px;background:rgba(16,13,10,.85);text-align:left}
+.acct .who{font-family:var(--serif);color:var(--gold-hi);font-size:1.1rem}
+.acct .bal{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.acct .bal b{font-family:var(--serif);font-size:1.15rem;color:#fff2c9;letter-spacing:.02em;font-weight:400;margin-left:4px}
+.acct .bal .dbt{color:#f0b8c1;margin-left:10px}
+.acct .acts{display:flex;gap:4px;flex-wrap:wrap}
+.tlist{margin-top:14px}
+.tlist h3{font-family:var(--serif);font-weight:400;color:var(--gold-hi);margin:0 0 10px;font-size:1.1rem;letter-spacing:.06em}
+.trow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid rgba(201,164,92,.12);flex-wrap:wrap}
+.trow .tn{font-size:.92rem;color:var(--ivory)}
+.trow .td{font-size:.72rem;color:var(--muted);margin-top:2px}
+.trow .tag{font-size:.55rem;letter-spacing:.14em;padding:2px 6px;border-radius:2px;background:#2a2318;color:var(--gold);border:1px solid #4b3d27;margin-left:6px;vertical-align:2px}
+.trow .tag.live{background:#3b1219;color:#f0b8c1;border-color:#7d2433}
+.reqbar{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:45;display:flex;flex-direction:column;gap:6px}
+.reqbar .rq{display:flex;align-items:center;gap:10px;background:#16120d;border:1px solid var(--gold);border-radius:4px;padding:8px 12px;box-shadow:0 10px 30px rgba(0,0,0,.6);font-size:.82rem}
+body.land .reqbar{bottom:12px;left:40%}
+.debtline{font-size:.5rem;letter-spacing:.1em;color:#f0b8c1;text-transform:uppercase;margin-top:1px}
+.tdlobby{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.tdlobby .panel{width:min(760px,100%);max-height:100%;overflow:auto}
+.tdgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tdgrid h4{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;font-weight:600}
+.tdlist{font-size:.84rem;color:#d8cdb6;line-height:1.7;max-height:260px;overflow:auto}
+.tdlist em{font-style:normal;color:var(--muted);font-size:.7rem;margin-left:6px}
+.bracket .tb{border:1px solid rgba(201,164,92,.18);border-radius:3px;padding:8px 10px;margin-bottom:10px}
+.bracket .tb h5{margin:0 0 6px;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.bracket .pr{display:flex;justify-content:space-between;font-size:.8rem;padding:2px 0;color:#d8cdb6}
+.bracket .pr.me{color:var(--gold-hi)}
+.dash{max-width:1200px;margin:0 auto;padding:18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+.tile{border:1px solid var(--line);border-radius:4px;padding:12px 14px;background:rgba(16,13,10,.9)}
+.tile .k{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:var(--serif);font-size:1.5rem;color:var(--gold-hi);margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .v.live:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#3fbf6a;margin-right:8px;vertical-align:4px}
+.dsec{margin-bottom:18px}
+.dsec .panel{padding:16px 18px}
+.dsec h3{font-family:var(--serif);font-weight:400;color:var(--gold-hi);margin:0 0 10px;font-size:1.15rem;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.dgrid{display:grid;grid-template-columns:3fr 2fr;gap:18px}
+.dtable{width:100%;border-collapse:collapse;font-size:.8rem}
+.dtable th{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:6px 6px;border-bottom:1px solid rgba(201,164,92,.2)}
+.dtable td{padding:7px 6px;border-bottom:1px solid rgba(201,164,92,.08);color:#d8cdb6;font-variant-numeric:tabular-nums;vertical-align:middle}
+.dtable td.num,.dtable th.num{text-align:right}
+.dtable tr.flag td{background:rgba(179,19,43,.12)}
+.dtable .btn{padding:.35em .6em;font-size:.58rem}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#555;margin-right:6px}
+.dot.on{background:#3fbf6a}
+.scrollbox{max-height:420px;overflow:auto}
+.pick-list{max-height:180px;overflow:auto;border:1px solid #2d261c;border-radius:3px;padding:6px 10px;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:.82rem;margin-bottom:16px}
+.pick-list label{display:flex;gap:6px;align-items:center;color:#d8cdb6}
+@media (max-width:900px){.dgrid,.tdgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<section id="lobby" class="screen">
+<section id="authScreen" class="screen">
   <div class="lobby-inner">
     <div class="crest"><div class="crest-top">CARD ROOM</div>
     <h1 class="wordmark">THE SCHATZ</h1>
     <div class="crest-sub">Private Tables &middot; Est. 2026</div></div>
     <div class="rule"><i>&spades; &hearts; &diams; &clubs;</i></div>
     <div class="panel">
+      <div class="atabs"><button data-auth="in" class="on">Sign In</button><button data-auth="up">Create Account</button></div>
+      <form id="authForm" autocomplete="on">
+        <label class="field hidden" id="fUser"><span>Username (shown at the table)</span><input id="aUser" maxlength="16" autocomplete="nickname" placeholder="2–16 letters or numbers"></label>
+        <label class="field"><span>Email</span><input id="aEmail" type="email" autocomplete="email" required></label>
+        <label class="field"><span>Password</span><input id="aPass" type="password" autocomplete="current-password" minlength="6" required></label>
+        <button class="btn primary big" style="width:100%" id="aGo" type="submit">Sign In</button>
+        <div class="sub" id="aNote" style="margin-top:12px;text-align:center">New players start with 5,000 chips.</div>
+      </form>
+    </div>
+    <p class="fine">Play chips only. No real money is wagered, won, or paid out, and chips can never be bought or cashed out.</p>
+  </div>
+</section>
+
+<section id="lobby" class="screen hidden">
+  <div class="lobby-inner">
+    <div class="crest"><div class="crest-top">CARD ROOM</div>
+    <h1 class="wordmark">THE SCHATZ</h1>
+    <div class="crest-sub">Private Tables &middot; Est. 2026</div></div>
+    <div class="rule"><i>&spades; &hearts; &diams; &clubs;</i></div>
+    <div class="acct" id="acctBar"></div>
+    <div class="panel">
       <div id="resumeBox" class="resume hidden"></div>
-      <label class="field"><span>Your name at the table</span><input id="nameInput" maxlength="16" placeholder="Enter your name" autocomplete="nickname"></label>
+      <input id="nameInput" type="hidden">
       <button class="choice" id="btnHost"><span class="choice-t">Host a Private Table</span><span class="choice-d">Open a table and share the room code with friends</span></button>
       <div class="choice">
         <span class="choice-t">Join a Table</span>
         <span class="choice-d">Enter the five-character room code from your host</span>
         <div class="join-row"><input id="codeInput" maxlength="5" placeholder="CODE" autocomplete="off" spellcheck="false"><button class="btn primary" id="btnJoin">Join</button></div>
       </div>
-      <button class="choice" id="btnSolo"><span class="choice-t">Play Solo</span><span class="choice-d">Take a seat against house players. Works offline</span></button>
+      <button class="choice" id="btnTourney"><span class="choice-t">Host a Tournament</span><span class="choice-d">Casino-style: multiple tables, rising blinds, a prize structure</span></button>
+      <button class="choice" id="btnSolo"><span class="choice-t">Play Solo</span><span class="choice-d">Practice against house players. Never touches your balance</span></button>
     </div>
-    <p class="fine">Play chips only. No real money is wagered, won, or paid out.</p>
+    <div class="panel tlist" id="tourneyList"></div>
+    <p class="fine">Play chips only. No real money is wagered, won, or paid out, and chips can never be bought or cashed out.</p>
   </div>
+</section>
+
+<section id="dashScreen" class="screen hidden">
+  <header class="topbar"><div class="tb-left"><span class="mini-mark">THE SCHATZ</span><span class="tb-game">Owner Dashboard</span></div>
+  <div class="tb-right"><button class="btn ghost" id="dRefresh">Refresh</button><button class="btn ghost" id="dBack">Back to Lobby</button></div></header>
+  <div class="dash" id="dash"></div>
 </section>
 
 <section id="tableScreen" class="screen hidden">
@@ -588,6 +673,7 @@ body.port .raise{flex-wrap:wrap;justify-content:center}
 <div id="modal" class="modal hidden"><div class="modal-card panel" id="modalCard"></div></div>
 <div id="toast" class="toast"></div>
 <div id="netBanner" class="netbanner hidden"></div>
+<div id="reqBar" class="reqbar hidden"></div>
 <script>
 // =====================================================================
 //  CARDS & HAND EVALUATION
@@ -849,6 +935,80 @@ function describe3(s) {
 function bacVal(c) { const r = RV[c[0]]; return r === 14 ? 1 : r >= 10 ? 0 : r; }
 function bacTotal(cards) { return cards.reduce((a, c) => a + bacVal(c), 0) % 10; }
 // =====================================================================
+//  DATABASE (Supabase) — accounts, balances, tournaments.
+//  Plain fetch calls; no extra library. The publishable key is meant
+//  to be public: Row Level Security in setup.sql protects the data.
+// =====================================================================
+const SB_URL = 'https://bphlnfkscyhhbivdcbdn.supabase.co';
+const SB_KEY = 'sb_publishable_LfbN8vIBZcOaVG9KTUvkPw_iHWi-Qir';
+
+const DB = {
+  session: null, profile: null, refreshing: null,
+  load() { try { this.session = JSON.parse(localStorage.getItem('schatz.auth') || 'null'); } catch (e) { this.session = null; } },
+  save() { try { if (this.session) localStorage.setItem('schatz.auth', JSON.stringify(this.session)); else localStorage.removeItem('schatz.auth'); } catch (e) {} },
+  uid() { return this.session && this.session.user ? this.session.user.id : null; },
+  signedIn() { return !!(this.session && this.session.access_token); },
+  setSession(d) {
+    this.session = { access_token: d.access_token, refresh_token: d.refresh_token, expires_at: d.expires_at || Math.floor(Date.now() / 1000) + (d.expires_in || 3600), user: d.user };
+    this.save();
+  },
+  async req(path, { method = 'GET', body, auth = true, headers = {} } = {}) {
+    if (auth) await this.ensureFresh();
+    const h = Object.assign({ apikey: SB_KEY, 'Content-Type': 'application/json' }, headers);
+    if (auth && this.session) h.Authorization = 'Bearer ' + this.session.access_token;
+    let r;
+    try { r = await fetch(SB_URL + path, { method, headers: h, body: body !== undefined ? JSON.stringify(body) : undefined }); }
+    catch (e) { const err = new Error('Could not reach the casino database. Check your connection.'); err.network = true; throw err; }
+    const txt = await r.text(); let data = null;
+    try { data = txt ? JSON.parse(txt) : null; } catch (e) { data = txt; }
+    if (!r.ok) {
+      let msg = (data && (data.message || data.msg || data.error_description || data.error)) || ('Request failed (' + r.status + ')');
+      if (/JWT expired|invalid JWT/i.test(msg) && auth && this.session) { this.session.expires_at = 0; }
+      const err = new Error(msg); err.status = r.status; throw err;
+    }
+    return data;
+  },
+  async ensureFresh() {
+    if (!this.session) return;
+    if (this.session.expires_at * 1000 - Date.now() > 90000) return;
+    if (!this.refreshing) this.refreshing = this.refresh().finally(() => { this.refreshing = null; });
+    await this.refreshing;
+  },
+  async refresh() {
+    try {
+      const d = await this.req('/auth/v1/token?grant_type=refresh_token', { method: 'POST', auth: false, body: { refresh_token: this.session.refresh_token } });
+      this.setSession(d);
+    } catch (e) {
+      if (!e.network) { this.session = null; this.save(); if (typeof onSignedOut === 'function') onSignedOut('Your session expired. Please sign in again.'); }
+      throw e;
+    }
+  },
+  async signIn(email, password) {
+    const d = await this.req('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email, password } });
+    this.setSession(d); return d;
+  },
+  async signUp(email, password, username) {
+    const ok = await this.req('/rest/v1/rpc/username_available', { method: 'POST', auth: false, body: { p_name: username } });
+    if (!ok) throw new Error('That username is taken. Try another.');
+    const d = await this.req('/auth/v1/signup', { method: 'POST', auth: false, body: { email, password, data: { username } } });
+    if (d && d.access_token) { this.setSession(d); return { signedIn: true }; }
+    try { await this.signIn(email, password); return { signedIn: true }; }
+    catch (e) { return { signedIn: false, confirm: true }; }
+  },
+  async signOut() {
+    try { if (this.session) await this.req('/auth/v1/logout', { method: 'POST' }); } catch (e) {}
+    this.session = null; this.profile = null; this.save();
+  },
+  rpc(name, args) { return this.req('/rest/v1/rpc/' + name, { method: 'POST', body: args || {} }); },
+  select(table, query) { return this.req('/rest/v1/' + table + '?' + query); },
+  async loadProfile() {
+    const r = await this.select('profiles', 'select=*&id=eq.' + this.uid());
+    this.profile = r && r[0] ? r[0] : null;
+    return this.profile;
+  },
+};
+DB.load();
+// =====================================================================
 //  GAME ENGINE  (runs only in the host's browser — the "house")
 // =====================================================================
 const MAXSEATS = 7;
@@ -901,7 +1061,7 @@ const BOT_LEVELS = {
 };
 const fmt = n => Math.round(n).toLocaleString('en-US');
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)]);
-const PERSIST_KEYS = ['code','hostId','settings','players','hand','handNo','buttonSeat','log','chat','paused','nextHandAt','shoe','bacShoe','botSeq','lastBets','lastPick','stats','game','orbitLeft','choice','chooserSeat','orbitStarted','tourney','tourneyPending'];
+const PERSIST_KEYS = ['code','hostId','settings','players','hand','handNo','buttonSeat','log','chat','paused','nextHandAt','shoe','bacShoe','botSeq','lastBets','lastPick','stats','game','orbitLeft','choice','chooserSeat','orbitStarted','tourney','tourneyPending','dbTable','leftover'];
 
 class Table {
   constructor(code, hostId, opts = {}) {
@@ -909,12 +1069,13 @@ class Table {
     this.now = opts.now || (() => Date.now());
     this.onChange = opts.onChange || (() => {});
     this.rnd = opts.rnd || Math.random;
-    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true, video: false };
+    this.settings = { game: 'holdem', stakes: 2, startStack: 10000, timer: 30, mode: 'fixed', rotation: ['holdem', 'omaha', 'draw', 'stud7', 'razz'], botLevel: 'normal', allowOdds: true, video: false, account: false, rebuyLimit: 2, rebuyHalf: false, rebuyApproval: false, loanShark: false };
     this.players = []; this.hand = null; this.handNo = 0; this.buttonSeat = -1;
     this.log = []; this.chat = []; this.paused = false; this.nextHandAt = 0;
     this.shoe = null; this.bacShoe = null; this.botSeq = 0; this.lastBets = {}; this.lastPick = {}; this.waitMsg = '';
     this.stats = {}; this.game = 'holdem'; this.orbitLeft = 0; this.choice = null; this.chooserSeat = -1;
     this.tourney = null; this.tourneyPending = null; this.graceUntil = 0;
+    this.dbTable = null; this.leftover = {}; this.td = null; this.onCashout = opts.onCashout || null;
   }
 
   // ---------------- save / restore (survives a host refresh) ----------------
@@ -954,8 +1115,9 @@ class Table {
     return null;
   }
   inHand(id) { return !!(this.hand && !this.hand.over && this.hand.seats[id]); }
-  tActive() { return !!(this.tourney && !this.tourney.done); }
+  tActive() { return this.td ? this.td.status === 'running' : !!(this.tourney && !this.tourney.done); }
   stakes() {
+    if (this.td) return this.td.stakes();
     const b = STAKES[this.settings.stakes];
     const T = this.tourney; if (!T || T.done) return b;
     const base = STAKES[T.baseStakes], m = BLIND_LEVELS[Math.min(T.level, BLIND_LEVELS.length - 1)];
@@ -982,7 +1144,7 @@ class Table {
     return n;
   }
   stat(p) {
-    const s = this.stats[p.id] || (this.stats[p.id] = { name: p.name, bot: p.bot, bought: 0, played: 0, won: 0, biggest: 0, left: false, chips: 0 });
+    const s = this.stats[p.id] || (this.stats[p.id] = { name: p.name, bot: p.bot, bought: 0, played: 0, won: 0, biggest: 0, left: false, chips: 0, rebuys: 0, debt: 0 });
     s.name = p.name; return s;
   }
   cashChips(p) { return p.entrant && this.tourney ? (p.cashChips || 0) : p.chips; }
@@ -990,11 +1152,11 @@ class Table {
     const rows = [], seen = new Set();
     for (const p of this.players) {
       const st = this.stat(p); seen.add(p.id);
-      rows.push({ id: p.id, name: p.name, bot: p.bot, here: true, net: this.cashChips(p) - st.bought, played: st.played, won: st.won, biggest: st.biggest });
+      rows.push({ id: p.id, name: p.name, bot: p.bot, here: true, net: this.cashChips(p) - st.bought - (p.debt || 0), played: st.played, won: st.won, biggest: st.biggest, rebuys: p.rebuys || 0, debt: p.debt || 0 });
     }
     for (const id in this.stats) {
       if (seen.has(id)) continue; const st = this.stats[id]; if (st.bot) continue;
-      rows.push({ id, name: st.name, bot: false, here: false, net: st.chips - st.bought, played: st.played, won: st.won, biggest: st.biggest });
+      rows.push({ id, name: st.name, bot: false, here: false, net: st.chips - st.bought - (st.debt || 0), played: st.played, won: st.won, biggest: st.biggest, rebuys: st.rebuys || 0, debt: st.debt || 0 });
     }
     return rows.sort((a, b) => b.net - a.net);
   }
@@ -1019,19 +1181,21 @@ class Table {
         busy.leaving = true; seat = null;
       }
     }
+    const back = !isBot && !this.settings.account ? this.leftover[id] : null;
     const p = {
-      id, name: this.uniqueName(name, id), chips: this.settings.startStack, bot: isBot,
+      id, name: this.uniqueName(name, id), chips: this.settings.account && !isBot ? 0 : back ? back.chips : this.settings.startStack, bot: isBot,
       persona: isBot ? PERSONAS[Math.floor(this.rnd() * PERSONAS.length)] : null,
       connected: true, seat, sittingOut: false, leaving: false, timeouts: 0,
+      rebuys: back ? back.rebuys : 0, debt: back ? back.debt : 0, repaid: 0, known: 0, knownLoans: 0,
     };
     this.players.push(p);
-    this.stat(p).bought += p.chips;
+    if (back) delete this.leftover[id]; else this.stat(p).bought += p.chips;
     this.addLog(seat == null ? `${p.name} joins and will be seated after this hand.` : `${p.name} takes seat ${seat + 1}.`);
     this.changed();
     return { ok: true };
   }
   addBot() {
-    if (this.freeSeat() == null) return false;
+    if (this.settings.account || this.freeSeat() == null) return false;
     const used = new Set(this.players.map(p => p.name));
     const pool = BOT_NAMES.filter(n => !used.has(n));
     const name = pool.length ? pool[Math.floor(this.rnd() * pool.length)] : 'Bot ' + (this.botSeq + 1);
@@ -1044,8 +1208,60 @@ class Table {
     this.removePlayer(b.id);
   }
   recordLeave(p) {
-    const st = this.stat(p); st.left = true; st.chips = this.cashChips(p);
+    const st = this.stat(p); st.left = true; st.chips = this.cashChips(p); st.debt = p.debt || 0; st.rebuys = p.rebuys || 0;
     if (p.entrant && this.tActive() && !p.out) this.eliminate(p, true);
+    if (!p.bot && !p.entrant) {
+      if (this.settings.account) { if (this.onCashout) this.onCashout(p); }
+      else this.leftover[p.id] = { chips: p.chips, rebuys: p.rebuys || 0, debt: p.debt || 0 };
+    }
+  }
+  freeSeatCount() { const used = new Set(this.players.filter(p => p.seat != null).map(p => p.seat)); return MAXSEATS - used.size; }
+  rebuyAmount() { return this.settings.rebuyHalf ? Math.floor(this.settings.startStack / 2) : this.settings.startStack; }
+  rebuyCheck(p) {
+    const lim = this.settings.rebuyLimit;
+    const ok = !p.bot && !(p.entrant && (this.tourney || this.td)) && !this.inHand(p.id) && (lim < 0 || (p.rebuys || 0) < lim)
+      && p.chips < this.settings.startStack / 4 && !(this.settings.account && !(p.known > 0));
+    return { ok, amount: this.rebuyAmount() };
+  }
+  doRebuy(p) {
+    const amt = this.rebuyAmount(), st = this.stat(p);
+    p.chips += amt; p.rebuys = (p.rebuys || 0) + 1; st.rebuys = p.rebuys; p.rebuyReq = false; p.rebuyOk = false;
+    if (this.settings.loanShark) {
+      const owed = Math.ceil(amt * 1.2); p.debt = (p.debt || 0) + owed;
+      this.addLog(`${p.name} borrows ${fmt(amt)} from the Loan Shark and now owes ${fmt(p.debt)}.`);
+    } else { st.bought += amt; this.addLog(`${p.name} rebuys for ${fmt(amt)}${this.settings.rebuyLimit >= 0 ? ` (${p.rebuys} of ${this.settings.rebuyLimit})` : ''}.`); }
+    this.changed();
+  }
+  // account tables: the host credits chips once the database confirms the buy-in
+  creditBuyin(id, total, loans, dbDebt) {
+    const p = this.player(id); if (!p) return;
+    const d = total - (p.known || 0); if (d <= 0) return;
+    const ld = Math.max(0, loans - (p.knownLoans || 0));
+    const isRebuy = (p.known || 0) > 0;
+    p.known = total; p.knownLoans = loans; p.chips += d;
+    const st = this.stat(p); st.bought += d - ld;
+    if (dbDebt != null) p.debt = Math.max(0, dbDebt - (p.repaid || 0));
+    if (isRebuy) { p.rebuys = (p.rebuys || 0) + 1; st.rebuys = p.rebuys; p.rebuyOk = false; p.rebuyReq = false; }
+    this.addLog(ld > 0 ? `${p.name} borrows ${fmt(d)} from the Loan Shark and owes ${fmt(p.debt)}.` : isRebuy ? `${p.name} rebuys for ${fmt(d)}.` : `${p.name} buys in for ${fmt(d)}.`);
+    this.changed();
+  }
+  collectDebts(h) {
+    if (this.tActive()) return;
+    const take = (id, gain) => {
+      const p = this.player(id); if (!p || p.bot || !(p.debt > 0) || !(gain > 0)) return;
+      const amt = Math.min(p.debt, Math.floor(gain * 0.25), p.chips); if (amt <= 0) return;
+      p.chips -= amt; p.debt -= amt; p.repaid = (p.repaid || 0) + amt;
+      this.addLog(`The Loan Shark takes ${fmt(amt)} from ${p.name}${p.debt ? ` (still owes ${fmt(p.debt)})` : ' — debt paid off'}.`);
+    };
+    if (h.kind === 'poker') for (const id of h.ring) { const s = h.seats[id]; take(id, s.won - s.total); }
+    else for (const id of h.order) { const s = h.seats[id]; take(id, (s.ret || 0) - (s.wager || 0)); }
+  }
+  abortHand() {
+    const h = this.hand; if (!h || h.over) return;
+    if (h.kind === 'poker') { for (const id of h.ring) { const p = this.player(id); if (p) p.chips += h.seats[id].total; } }
+    else for (const id of h.order) { const s = h.seats[id], p = this.player(id); if (p && s.wager) p.chips += Math.max(0, s.wager - (s.ret || 0)); }
+    h.over = true; h.toAct = null; h.pendingAt = 0; h.simul = false; h.stage = 'Hand Cancelled';
+    this.addLog('The hand was cancelled and every bet was returned.');
   }
   removePlayer(id) {
     const p = this.player(id); if (!p) return;
@@ -1064,7 +1280,7 @@ class Table {
     this.players = this.players.filter(p => !p.leaving);
     const st = this.stakes(), g = this.activeGame(), kind = GAMES[g].kind;
     for (const p of this.players) {
-      if (!p.bot || (p.entrant && this.tourney)) continue;
+      if (!p.bot || (p.entrant && (this.tourney || this.td))) continue;
       const need = kind === 'poker' ? 1 : st.bb * TABLE_RULES[g].need;
       if (p.chips < need) {
         p.chips = this.settings.startStack; this.stat(p).bought += p.chips;
@@ -1097,13 +1313,20 @@ class Table {
         if (this.chat.length > 120) this.chat.splice(0, this.chat.length - 120);
         this.changed(); break;
       }
-      case 'rebuy':
-        if (p.entrant && this.tourney) return;
-        if (!this.inHand(pid) && p.chips < this.settings.startStack) {
-          const add = this.settings.startStack - p.chips;
-          p.chips = this.settings.startStack; this.stat(p).bought += add;
-          this.addLog(`${p.name} rebuys to ${fmt(p.chips)}.`); this.changed();
-        } break;
+      case 'rebuy': {
+        if (!this.rebuyCheck(p).ok) return;
+        const needOk = this.settings.rebuyApproval && pid !== this.hostId;
+        if (this.settings.account) { if (needOk && !p.rebuyOk && !p.rebuyReq) { p.rebuyReq = true; this.addLog(`${p.name} asks the host to rebuy.`); this.changed(); } return; }
+        if (needOk) { if (!p.rebuyReq) { p.rebuyReq = true; this.addLog(`${p.name} asks the host to rebuy.`); this.changed(); } return; }
+        this.doRebuy(p); break;
+      }
+      case 'approveRebuy': if (isHost) {
+        const q = this.player(c.id); if (!q || !q.rebuyReq) return;
+        q.rebuyReq = false;
+        if (c.ok) { if (this.settings.account) { q.rebuyOk = true; this.addLog(`The host approved ${q.name}'s rebuy.`); } else if (this.rebuyCheck(q).ok) this.doRebuy(q); }
+        else this.addLog(`The host turned down ${q.name}'s rebuy.`);
+        this.changed();
+      } break;
       case 'sitout': p.sittingOut = !!c.v; if (!c.v) { p.timeouts = 0; this.addLog(`${p.name} is back.`); } this.changed(); break;
       case 'leave': this.removePlayer(pid); break;
       case 'choose': if (this.choice && this.choice.pid === pid) this.chooseGame(pid, c.g, false); break;
@@ -1139,6 +1362,11 @@ class Table {
     if (s.startStack != null) st.startStack = Math.max(500, Math.min(10000000, Math.floor(+s.startStack) || 10000));
     if (s.timer != null) st.timer = Math.max(10, Math.min(120, Math.floor(+s.timer) || 30));
     if (s.botLevel && BOT_LEVELS[s.botLevel]) st.botLevel = s.botLevel;
+    if (s.account != null && this.handNo === 0 && !this.players.some(p => p.bot)) st.account = !!s.account;
+    if (s.rebuyLimit != null) st.rebuyLimit = Math.max(-1, Math.min(9, Math.floor(+s.rebuyLimit)));
+    if (s.rebuyHalf != null) st.rebuyHalf = !!s.rebuyHalf;
+    if (s.rebuyApproval != null) st.rebuyApproval = !!s.rebuyApproval;
+    if (s.loanShark != null) st.loanShark = !!s.loanShark;
     if (s.allowOdds != null) st.allowOdds = !!s.allowOdds;
     if (s.video != null && !!s.video !== st.video) {
       st.video = !!s.video;
@@ -1210,6 +1438,7 @@ class Table {
     this.changed();
   }
   eliminate(p, left) {
+    if (this.td) return this.td.eliminate(this, p, left);
     const T = this.tourney; if (!T || T.done || p.out) return;
     const alive = this.players.filter(q => q.entrant && !q.out).length;
     p.out = true; T.places.unshift({ id: p.id, name: p.name, place: alive });
@@ -1309,6 +1538,7 @@ class Table {
   credit(id, amt) { const h = this.hand; this.player(id).chips += amt; h.seats[id].ret += amt; }
   endHand(delay) {
     const h = this.hand; h.over = true; h.toAct = null; h.pendingAt = 0; h.simul = false;
+    this.collectDebts(h);
     this.recordHandStats(h);
     this.checkEliminations(h);
     this.nextHandAt = this.now() + delay;
@@ -1365,14 +1595,14 @@ class Table {
     const now = this.now(), h = this.hand, T = this.tourney;
     const v = {
       code: this.code, hostId: this.hostId, me: pid, settings: { ...this.settings }, stakes: this.stakes(),
-      players: this.players.map(p => ({ id: p.id, name: p.name, chips: p.chips, bot: p.bot, seat: p.seat, connected: p.connected, sittingOut: p.sittingOut, leaving: p.leaving, style: p.bot ? p.persona.style : '', entrant: !!p.entrant, out: !!p.out, av: p.av || null, peerId: p.peerId || null })),
+      players: this.players.map(p => ({ id: p.id, name: p.name, chips: p.chips, bot: p.bot, seat: p.seat, connected: p.connected, sittingOut: p.sittingOut, leaving: p.leaving, style: p.bot ? p.persona.style : '', entrant: !!p.entrant, out: !!p.out, av: p.av || null, peerId: p.peerId || null, rebuys: p.rebuys || 0, debt: p.debt || 0, rebuyReq: !!p.rebuyReq, rebuyOk: !!p.rebuyOk })),
       buttonSeat: this.buttonSeat, paused: this.paused, waitMsg: (!h || h.over) ? this.waitMsg : '',
       nextIn: (!h || h.over) && !this.choice ? Math.max(0, this.nextHandAt - now) : null,
       log: this.log.slice(-60), chat: this.chat.slice(-60), timer: this.settings.timer,
       lastBet: this.lastBets[pid] || 0, lastPick: this.lastPick[pid] || 'banker',
       game: this.activeGame(), orbitLeft: this.settings.mode === 'fixed' ? null : this.orbitLeft,
       choice: this.choice ? { pid: this.choice.pid, options: this.choice.options, timeLeft: Math.max(0, this.choice.deadline - now) } : null,
-      scores: this.scores(), tourneyPending: !!this.tourneyPending,
+      scores: this.scores(), tourneyPending: !!this.tourneyPending, dbTable: this.dbTable,
       tourney: T ? { level: T.level + 1, nextLevelIn: T.done ? null : Math.max(0, T.levelEnds - now), places: T.places, done: T.done, count: T.count, alive: this.players.filter(p => p.entrant && !p.out).length, stack: T.stack, levelMins: T.levelMins } : null,
       hand: null,
     };
@@ -2198,6 +2428,255 @@ Object.assign(Table.prototype, {
   },
 });
 // =====================================================================
+//  TOURNAMENT DIRECTOR — casino-style multi-table tournaments.
+//  One host browser runs every table. Tables break and balance as
+//  players are knocked out, down to a final table.
+// =====================================================================
+const PRIZE_SPLITS = {
+  auto: null, top1: [100], top2: [65, 35], top3: [50, 30, 20], top4: [45, 27, 17, 11], top5: [40, 25, 16, 11, 8], top6: [36, 23, 15, 11, 8, 7],
+};
+function autoSplit(n) { return n <= 4 ? [100] : n <= 7 ? [65, 35] : n <= 12 ? [50, 30, 20] : n <= 20 ? [45, 27, 17, 11] : n <= 35 ? [40, 25, 16, 11, 8] : [36, 23, 15, 11, 8, 7]; }
+const TD_KEYS = ['code','hostId','cfg','status','entrants','level','levelEnds','places','log','chat','pool','botSeq','startedAt','paidOut','watching','moved','handsDone'];
+
+class Director {
+  constructor(code, hostId, opts = {}) {
+    this.kind = 'td'; this.code = code; this.hostId = hostId;
+    this.now = opts.now || (() => Date.now());
+    this.onChange = opts.onChange || (() => {});
+    this.onFinish = opts.onFinish || null;
+    this.rnd = opts.rnd || Math.random;
+    this.cfg = { name: 'Tournament', game: 'holdem', stack: 5000, levelMins: 8, stakes: 1, maxPlayers: 21, split: 'auto', prizes: null, buyIn: 0, dbId: null, siteWide: false, botLevel: 'normal', timer: 30, video: false };
+    this.status = 'lobby'; this.entrants = []; this.tables = []; this.level = 0; this.levelEnds = 0;
+    this.places = []; this.log = []; this.chat = []; this.pool = 0; this.botSeq = 0; this.startedAt = 0;
+    this.paidOut = false; this.watching = {}; this.moved = {}; this.handsDone = 0; this.graceUntil = 0;
+  }
+  get players() { return this.entrants; }
+  changed() { this.onChange(); }
+  addLog(m) { this.log.push({ t: this.now(), m }); if (this.log.length > 200) this.log.splice(0, this.log.length - 200); }
+  entrant(id) { return this.entrants.find(e => e.id === id); }
+  player(id) { return this.entrant(id); }
+  tableOf(id) { return this.tables.find(t => t.players.some(p => p.id === id)); }
+  alive() { return this.entrants.filter(e => !e.out); }
+  stakes() {
+    const base = STAKES[this.cfg.stakes] || STAKES[1], m = BLIND_LEVELS[Math.min(this.level, BLIND_LEVELS.length - 1)];
+    const r = x => x >= 100 ? Math.round(x / 25) * 25 : Math.max(1, Math.round(x / 5) * 5);
+    return { sb: r(base.sb * m), bb: r(base.bb * m) };
+  }
+  configure(c) { Object.assign(this.cfg, c); if (!this.cfg.dbId) this.pool = 0; }
+  prizeList() {
+    const n = Math.max(this.entrants.length, 2);
+    const pct = this.cfg.prizes && this.cfg.prizes.length ? this.cfg.prizes : (PRIZE_SPLITS[this.cfg.split] || autoSplit(n));
+    return pct.slice(0, n).map((p, i) => ({ place: i + 1, pct: p, amount: Math.floor(this.pool * p / 100) }));
+  }
+
+  // ---- seating in the lobby ----
+  join(id, name, isBot = false) {
+    name = String(name || 'Player').replace(/[<>]/g, '').trim().slice(0, 16) || 'Player';
+    const e = this.entrant(id);
+    if (e) {
+      e.connected = true;
+      const t = this.tableOf(id); if (t) { const p = t.player(id); if (p) { p.connected = true; p.leaving = false; } }
+      this.addLog(`${e.name} is back.`); this.changed(); return { ok: true };
+    }
+    if (this.status !== 'lobby') return { ok: true, spectator: true };
+    if (this.entrants.length >= this.cfg.maxPlayers) return { ok: false, msg: 'This tournament is full.' };
+    let nm = name, i = 2; while (this.entrants.some(x => x.name.toLowerCase() === nm.toLowerCase())) nm = name + ' ' + (i++);
+    this.entrants.push({ id, name: nm, bot: isBot, persona: isBot ? PERSONAS[Math.floor(this.rnd() * PERSONAS.length)] : null, connected: true, out: false, place: null });
+    this.addLog(`${nm} registers.`); this.changed();
+    return { ok: true };
+  }
+  addBot() {
+    if (this.cfg.dbId || this.status !== 'lobby' || this.entrants.length >= this.cfg.maxPlayers) return false;
+    const used = new Set(this.entrants.map(e => e.name));
+    const pool = BOT_NAMES.filter(n => !used.has(n));
+    const name = pool.length ? pool[Math.floor(this.rnd() * pool.length)] : 'Bot ' + (this.botSeq + 1);
+    return this.join('bot-' + (++this.botSeq), name, true).ok;
+  }
+  removePlayer(id) {
+    if (this.status === 'lobby') { const e = this.entrant(id); if (e) { this.entrants = this.entrants.filter(x => x !== e); this.addLog(`${e.name} leaves.`); this.changed(); } return; }
+    const t = this.tableOf(id); if (t) { const p = t.player(id); if (p) { p.connected = false; p.sittingOut = true; } }
+    const e = this.entrant(id); if (e) e.connected = false;
+    this.changed();
+  }
+  disconnected(id) {
+    const e = this.entrant(id); if (e) e.connected = false;
+    const t = this.tableOf(id); if (t) t.disconnected(id); else this.changed();
+  }
+  setPeerId(id, peerId) {
+    const e = this.entrant(id); if (e) e.peerId = typeof peerId === 'string' ? peerId.slice(0, 80) : null;
+    const t = this.tableOf(id); if (t) t.setPeerId(id, peerId);
+  }
+  scores() { return []; }
+  command(pid, c) {
+    if (!c) return;
+    const isHost = pid === this.hostId;
+    if (c.t === 'chat') {
+      const who = this.entrant(pid), m = String(c.m || '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, 240);
+      if (!m) return;
+      this.chat.push({ n: who ? who.name : (isHost ? 'Host' : 'Guest'), m, t: this.now(), id: pid });
+      if (this.chat.length > 150) this.chat.splice(0, this.chat.length - 150);
+      return this.changed();
+    }
+    if (c.t === 'watch') { this.watching[pid] = Math.max(0, Math.floor(+c.i) || 0); return this.changed(); }
+    if (c.t === 'leave') return this.removePlayer(pid);
+    if (isHost && this.status === 'lobby') {
+      if (c.t === 'addBot') this.addBot();
+      else if (c.t === 'fillBots') { while (this.addBot()); }
+      else if (c.t === 'removeBot') { const b = [...this.entrants].reverse().find(e => e.bot); if (b) this.removePlayer(b.id); }
+      else if (c.t === 'kick') this.removePlayer(c.id);
+      else if (c.t === 'startTd') this.start();
+      this.changed(); return;
+    }
+    if (isHost && c.t === 'pause') { for (const t of this.tables) t.paused = !!c.v; this.addLog(c.v ? 'The host paused the tournament.' : 'The host resumed the tournament.'); return this.changed(); }
+    const t = this.tableOf(pid);
+    if (t && ['act', 'sitout', 'av'].includes(c.t)) t.command(pid, c);
+  }
+
+  // ---- running ----
+  start() {
+    if (this.status !== 'lobby' || this.entrants.length < 2) return false;
+    const now = this.now(), ent = shuffle(this.entrants.slice(), this.rnd);
+    const nT = Math.ceil(ent.length / MAXSEATS);
+    this.tables = [];
+    for (let i = 0; i < nT; i++) {
+      const t = new Table(this.code + '-' + (i + 1), this.hostId, { now: this.now, onChange: this.onChange, rnd: this.rnd });
+      t.td = this; t.tableNo = i + 1; t.log = [];
+      Object.assign(t.settings, { game: this.cfg.game, timer: this.cfg.timer, botLevel: this.cfg.botLevel, startStack: this.cfg.stack, video: !!this.cfg.video, rebuyLimit: 0 });
+      t.nextHandAt = now + 3500;
+      this.tables.push(t);
+    }
+    ent.forEach((e, i) => {
+      const t = this.tables[i % nT], seat = Math.floor(i / nT);
+      t.players.push({ id: e.id, name: e.name, chips: this.cfg.stack, bot: e.bot, persona: e.persona, connected: e.connected, seat, sittingOut: false, leaving: false, timeouts: 0, entrant: true, out: false, peerId: e.peerId || null, rebuys: 0, debt: 0, repaid: 0 });
+      t.stat(t.players[t.players.length - 1]);
+    });
+    for (const t of this.tables) t.addLog(`Table ${t.tableNo} of ${nT} · ${this.cfg.name} begins. Good luck!`);
+    this.status = 'running'; this.level = 0; this.levelEnds = now + this.cfg.levelMins * 60000; this.startedAt = now;
+    const s = this.stakes();
+    this.addLog(`${this.cfg.name} begins: ${ent.length} players at ${nT} table${nT > 1 ? 's' : ''}, ${fmt(this.cfg.stack)} chips each, blinds ${fmt(s.sb)}/${fmt(s.bb)}.`);
+    this.changed();
+    return true;
+  }
+  tick() {
+    const now = this.now();
+    if (this.status === 'running' && now >= this.levelEnds) {
+      this.level = Math.min(this.level + 1, BLIND_LEVELS.length - 1); this.levelEnds = now + this.cfg.levelMins * 60000;
+      const s = this.stakes(), msg = `Level ${this.level + 1}: blinds ${fmt(s.sb)}/${fmt(s.bb)} from the next hand.`;
+      this.addLog(msg); for (const t of this.tables) t.addLog(msg);
+      this.changed();
+    }
+    for (const t of this.tables) { t.graceUntil = Math.max(t.graceUntil, this.graceUntil); try { t.tick(); } catch (e) { console.error(e); } }
+    if (this.status === 'running') this.rebalance();
+  }
+  eliminate(table, p, left) {
+    const e = this.entrant(p.id); if (!e || e.out || this.status !== 'running') return;
+    const place = this.alive().length;
+    e.out = true; e.place = place; p.out = true; p.leaving = true;
+    this.places.unshift({ id: e.id, name: e.name, place });
+    const msg = `${e.name} ${left ? 'leaves' : 'is knocked out'} in ${ordinal(place)} place.`;
+    this.addLog(msg); table.addLog(msg);
+    this.watching[e.id] = this.tables.indexOf(table);
+    const rest = this.alive();
+    if (rest.length === 1) this.finish(rest[0]);
+  }
+  finish(w) {
+    w.place = 1; this.places.unshift({ id: w.id, name: w.name, place: 1 });
+    this.status = 'done';
+    for (const t of this.tables) { t.paused = true; t.addLog(`${w.name} wins ${this.cfg.name}!`); }
+    this.addLog(`${w.name} wins ${this.cfg.name}!`);
+    this.changed();
+    if (this.onFinish) this.onFinish(this);
+  }
+  results() {
+    const prizes = this.prizeList();
+    return this.places.slice().sort((a, b) => a.place - b.place).map(p => ({ id: p.id, name: p.name, place: p.place, prize: (prizes[p.place - 1] || {}).amount || 0 }));
+  }
+  live(t) { return t.players.filter(p => p.entrant && !p.out && !p.leaving); }
+  idle(t) { return !t.hand || t.hand.over; }
+  movePlayer(from, to, p) {
+    from.players = from.players.filter(q => q !== p);
+    p.seat = to.freeSeat(); p.timeouts = 0;
+    to.players.push(p); to.stat(p);
+    from.addLog(`${p.name} moves to Table ${to.tableNo}.`); to.addLog(`${p.name} joins from Table ${from.tableNo}.`);
+    this.moved[p.id] = { to: to.tableNo, at: this.now() };
+  }
+  rebalance() {
+    if (this.tables.length < 2) return;
+    const total = this.tables.reduce((a, t) => a + this.live(t).length, 0);
+    if (total <= (this.tables.length - 1) * MAXSEATS) {
+      const cand = this.tables.filter(t => this.idle(t)).sort((a, b) => this.live(a).length - this.live(b).length)[0];
+      if (!cand) return;
+      for (const p of this.live(cand)) {
+        const dest = this.tables.filter(t => t !== cand && t.freeSeatCount() > 0).sort((a, b) => this.live(a).length - this.live(b).length)[0];
+        if (!dest) return;
+        this.movePlayer(cand, dest, p);
+      }
+      if (!this.live(cand).length) {
+        for (const p of cand.players) { const e = this.entrant(p.id); if (e && e.out) this.watching[e.id] = 0; }
+        this.tables = this.tables.filter(t => t !== cand);
+        this.addLog(`Table ${cand.tableNo} breaks.`);
+        if (this.tables.length === 1) { this.addLog('Final table!'); this.tables[0].addLog('Final table!'); }
+      }
+      return this.changed();
+    }
+    const sorted = this.tables.slice().sort((a, b) => this.live(b).length - this.live(a).length);
+    const big = sorted[0], small = sorted[sorted.length - 1];
+    if (this.live(big).length - this.live(small).length >= 2 && this.idle(big) && small.freeSeatCount() > 0) {
+      const movers = this.live(big); const p = movers[Math.floor(this.rnd() * movers.length)];
+      this.movePlayer(big, small, p); this.changed();
+    }
+  }
+
+  // ---- what each person sees ----
+  summary(pid) {
+    const s = this.stakes(), alive = this.alive(), now = this.now();
+    const chipsOf = id => { const t = this.tableOf(id); const p = t && t.player(id); return p ? p.chips : 0; };
+    const totalChips = this.status === 'lobby' ? 0 : alive.reduce((a, e) => a + chipsOf(e.id), 0);
+    return {
+      name: this.cfg.name, status: this.status, game: this.cfg.game, level: this.level + 1, sb: s.sb, bb: s.bb,
+      nextLevelIn: this.status === 'running' ? Math.max(0, this.levelEnds - now) : null, levelMins: this.cfg.levelMins,
+      stack: this.cfg.stack, count: this.entrants.length, alive: alive.length, avg: alive.length ? Math.round(totalChips / alive.length) : 0,
+      maxPlayers: this.cfg.maxPlayers, buyIn: this.cfg.buyIn, pool: this.pool, account: !!this.cfg.dbId, siteWide: !!this.cfg.siteWide,
+      prizes: this.prizeList(), places: this.places,
+      entrants: this.entrants.map(e => ({ id: e.id, name: e.name, bot: e.bot, connected: e.connected, out: e.out, place: e.place, chips: this.status === 'lobby' ? this.cfg.stack : chipsOf(e.id) })),
+      tables: this.tables.map(t => ({ no: t.tableNo, players: t.players.filter(p => p.entrant && !p.out).sort((a, b) => a.seat - b.seat).map(p => ({ id: p.id, name: p.name, chips: p.chips, bot: p.bot })) })),
+      moved: this.moved[pid] || null, isEntrant: !!this.entrant(pid),
+    };
+  }
+  viewFor(pid) {
+    const sum = this.summary(pid);
+    if (this.status === 'lobby' || !this.tables.length) {
+      return JSON.parse(JSON.stringify({ lobby: true, code: this.code, hostId: this.hostId, me: pid, td: sum, chat: this.chat.slice(-60), log: this.log.slice(-60), players: [], settings: { video: false, game: this.cfg.game }, scores: [] }));
+    }
+    let t = this.tableOf(pid); const spectator = !t;
+    if (!t) t = this.tables[Math.min(this.watching[pid] || 0, this.tables.length - 1)];
+    const v = t.viewFor(pid);
+    v.code = this.code; v.td = sum; v.spectator = spectator; v.tableNo = t.tableNo; v.tableIdx = this.tables.indexOf(t);
+    v.chat = this.chat.slice(-60);
+    return v;
+  }
+
+  // ---- save / restore ----
+  serialize() {
+    const o = { kind: 'td', v: 1, savedAt: this.now() };
+    for (const k of TD_KEYS) o[k] = this[k];
+    o.tables = this.tables.map(t => ({ no: t.tableNo, json: t.serialize() }));
+    return JSON.stringify(o);
+  }
+  static restore(json, opts = {}) {
+    const d = JSON.parse(json);
+    const td = new Director(d.code, d.hostId, opts);
+    for (const k of TD_KEYS) if (d[k] !== undefined) td[k] = d[k];
+    const now = td.now(), gap = Math.max(0, now - (d.savedAt || now));
+    if (td.status === 'running') td.levelEnds += gap;
+    for (const e of td.entrants) e.connected = !!e.bot || e.id === td.hostId;
+    td.tables = (d.tables || []).map(x => { const t = Table.restore(x.json, opts); t.td = td; t.tableNo = x.no; return t; });
+    td.graceUntil = now + 25000;
+    td.addLog('The host is back. The tournament resumes.');
+    return td;
+  }
+}
+// =====================================================================
 //  BOTS + EQUITY  (also powers the beginner odds helper)
 // =====================================================================
 const FINAL_CARDS = { holdem: 2, omaha: 4, omaha8: 4, pineapple: 3, draw: 5, stud7: 7, stud8: 7, razz: 7, stud5: 5 };
@@ -2537,7 +3016,7 @@ function saveNow() {
   const t = App.table; if (!t || App.mode === 'client' || App.leaving) return;
   try {
     localStorage.setItem('schatz.table', t.serialize());
-    store.set('tableMeta', JSON.stringify({ code: t.code, mode: App.mode, savedAt: Date.now(), hostId: t.hostId, name: App.me.name, game: t.activeGame(), humans: t.players.filter(p => !p.bot).length, bots: t.players.filter(p => p.bot).length }));
+    store.set('tableMeta', JSON.stringify({ code: t.code, mode: App.mode, kind: t.kind || 'table', savedAt: Date.now(), hostId: t.hostId, name: App.me.name, game: t.kind === 'td' ? t.cfg.game : t.activeGame(), title: t.kind === 'td' ? t.cfg.name : '', humans: t.players.filter(p => !p.bot).length, bots: t.players.filter(p => p.bot).length }));
   } catch (e) {}
 }
 function clearSave() { store.del('table'); store.del('tableMeta'); }
@@ -2558,6 +3037,7 @@ function attachTable(t) {
 }
 function setupTable(cfg, code) {
   const t = new Table(code, App.me.id, { onChange: scheduleSync });
+  t.onCashout = p => queueCashout(t, p);
   t.applySettings(cfg);
   t.log = []; t.join(App.me.id, App.me.name);
   for (let i = 0; i < cfg.bots; i++) t.addBot();
@@ -2586,6 +3066,10 @@ async function startHost(cfg) {
   if (!peer) { closeModal(); return toast('Could not reserve a room code. Please try again.', 5000); }
   App.peer = peer; App.mode = 'host'; App.code = code; App.leaving = false;
   setupTable(cfg, code); App.table.setPeerId(App.me.id, peer.id); wirePeer(peer);
+  if (cfg.account) {
+    try { await openAccountTable(cfg); }
+    catch (e) { clearInterval(App.loop); App.table = null; App.mode = null; try { peer.destroy(); } catch (x) {} App.peer = null; closeModal(); return toast(e.message, 6000); }
+  }
   closeModal(); enterTable(); saveNow();
   toast(`Your table is open. Room code ${code}`, 4500);
 }
@@ -2597,11 +3081,15 @@ function startSolo(cfg) {
 async function resumeTable() {
   const m = savedMeta(), json = store.get('table', null);
   if (!m || !json) { $('#resumeBox').classList.add('hidden'); return toast('That table is no longer saved.'); }
-  setMyId(m.hostId); if (m.name) App.me.name = m.name;
+  if (DB.uid() && m.hostId !== DB.uid()) { renderResume(); return toast('That saved table belongs to another account.'); }
   App.leaving = false;
+  const restoreT = () => {
+    if (m.kind === 'td') return Director.restore(json, { onChange: scheduleSync, onFinish: onTdFinish });
+    const t = Table.restore(json, { onChange: scheduleSync }); t.onCashout = p => queueCashout(t, p); return t;
+  };
   if (m.mode === 'solo') {
     App.mode = 'solo'; App.code = 'SOLO';
-    attachTable(Table.restore(json, { onChange: scheduleSync })); enterTable(); return;
+    attachTable(restoreT()); enterTable(); return;
   }
   busy(`Reopening table ${m.code}…`);
   try { await loadPeer(); } catch (e) { closeModal(); return toast(e.message, 6000); }
@@ -2612,7 +3100,7 @@ async function resumeTable() {
   }
   if (!peer) { closeModal(); return toast('The room code is still held by the old session. Try again in a minute.', 6000); }
   App.peer = peer; App.mode = 'host'; App.code = m.code;
-  attachTable(Table.restore(json, { onChange: scheduleSync })); App.table.setPeerId(App.me.id, peer.id); wirePeer(peer);
+  attachTable(restoreT()); App.table.setPeerId(App.me.id, peer.id); wirePeer(peer); processCashQ();
   closeModal(); enterTable();
   toast('Table restored. Friends will reconnect on their own.', 4500);
 }
@@ -2621,16 +3109,15 @@ function hostConn(c) {
     if (!d || typeof d !== 'object' || !App.table) return;
     if (d.t === 'hello') {
       const id = String(d.id || '').slice(0, 40);
-      if (!id || id === App.me.id || id.startsWith('bot-')) { c.send({ t: 'error', msg: 'Could not join this table.' }); return; }
-      const r = App.table.join(id, d.name);
-      if (!r.ok) { c.send({ t: 'error', msg: r.msg }); setTimeout(() => { try { c.close(); } catch (e) {} }, 600); return; }
-      const old = App.conns.get(id);
-      if (old && old !== c) { try { old.close(); } catch (e) {} }
-      c.pid = id; App.conns.set(id, c); App.table.setPeerId(id, d.peerId); scheduleSync();
+      if (!id || id === App.me.id || id.startsWith('bot-')) { c.send({ t: 'error', msg: 'Could not join this table.', fatal: true }); return; }
+      c.claim = { id, name: String(d.name || ''), peerId: d.peerId, nonce: rid(24) };
+      c.send({ t: 'challenge', nonce: c.claim.nonce });
       return;
     }
+    if (d.t === 'proof' && c.claim) { admit(c); return; }
+    if (d.t === 'verify' && c.pid) { verifySeat(c.pid); return; }
     if (c.pid && App.conns.get(c.pid) === c) {
-      if (['kick', 'settings', 'startTourney', 'endTourney'].includes(d.t)) return; // host-only commands never come from guests
+      if (['kick', 'settings', 'startTourney', 'endTourney', 'startTd', 'approveRebuy'].includes(d.t)) return; // host-only commands never come from guests
       App.table.command(c.pid, d);
     }
   });
@@ -2647,20 +3134,31 @@ function sync() {
 }
 
 // ---- joining + automatic reconnect --------------------------------------
-function connectOnce(code) {
+function connectOnce(code, interactive) {
   return new Promise((res, rej) => {
     const peer = new Peer({ config: { iceServers: ICE_SERVERS }, debug: 0 });
-    let done = false;
+    let done = false, timer = null;
     const fail = (msg, fatal) => { if (done) return; done = true; clearTimeout(timer); try { peer.destroy(); } catch (e) {} rej({ msg, fatal }); };
-    const timer = setTimeout(() => fail('timeout'), 15000);
+    const arm = ms => { clearTimeout(timer); timer = setTimeout(() => fail('timeout'), ms); };
+    arm(15000);
     peer.on('error', e => fail(e && e.type === 'peer-unavailable' ? 'unavailable' : (e && (e.type || e.message)) || 'error'));
     peer.on('open', () => {
       const conn = peer.connect(PEER_PREFIX + code, { reliable: true, serialization: 'json' });
       conn.on('open', () => conn.send({ t: 'hello', id: App.me.id, name: App.me.name, peerId: peer.id }));
-      conn.on('data', d => {
+      conn.on('data', async d => {
         if (done || !d) return;
         if (d.t === 'state') { done = true; clearTimeout(timer); res({ peer, conn, first: d }); }
         else if (d.t === 'error') fail(d.msg || 'Could not join.', true);
+        else if (d.t === 'challenge') {
+          try { await DB.rpc('set_join_nonce', { p_nonce: d.nonce }); conn.send({ t: 'proof' }); }
+          catch (e) { fail(e.message || 'Could not verify your account.', true); }
+        } else if (d.t === 'need') {
+          clearTimeout(timer);
+          if (!interactive) return fail('The table needs a new buy-in. Join again from the lobby.', true);
+          const go = await needPrompt(d);
+          if (!go) return fail('cancelled', true);
+          arm(15000); conn.send({ t: 'proof' });
+        }
       });
     });
   });
@@ -2687,10 +3185,11 @@ async function startJoin(code) {
   try { await loadPeer(); } catch (e) { closeModal(); return toast(e.message, 6000); }
   App.leaving = false;
   try {
-    const r = await connectOnce(code);
+    const r = await connectOnce(code, true);
     adopt(r, code); closeModal(); enterTable(); render();
   } catch (e) {
     closeModal();
+    if (e.msg === 'cancelled') return;
     toast(e.fatal ? e.msg : e.msg === 'unavailable' ? `No open table found with code ${code}.` : `Could not connect to table ${code}. Double-check the code. If it is right, a strict network may be blocking the connection — try switching between Wi-Fi and cell data.`, 7000);
   }
 }
@@ -2756,6 +3255,7 @@ function showLobby() {
   $('#guide').classList.remove('open'); $('#side').classList.remove('open'); $('.table-area').classList.remove('guide-on');
   App.guideOpen = false; banner(''); updateRotateHint();
   renderVideo(); renderResume();
+  if (DB.signedIn() && DB.profile) { $('#authScreen').classList.add('hidden'); refreshLobby(); refreshProfile(); }
 }
 function cleanup() {
   leaveVideo(true);
@@ -2767,21 +3267,24 @@ function cleanup() {
   App.conns.clear(); App.conn = null; App.table = null; App.view = null; App.mode = null;
 }
 function leaveTable() {
-  const go = () => {
+  const T = App.table, tdLive = T && T.kind === 'td' && T.status !== 'done';
+  const go = async () => {
     App.leaving = true;
     const scores = App.table ? App.table.scores() : (App.view ? App.view.scores : null);
     if (App.mode === 'client') send({ t: 'leave' });
-    if (App.mode === 'host' || App.mode === 'solo') clearSave();
-    setTimeout(() => { cleanup(); showLobby(); if (scores && scores.length) showSummary(scores, 'Your session'); }, 150);
+    if (App.mode === 'host' && T && T.settings && T.settings.account) { busy('Cashing everyone out…'); await closeAccountTable(); closeModal(); }
+    if ((App.mode === 'host' || App.mode === 'solo') && !tdLive) clearSave();
+    setTimeout(() => { cleanup(); showLobby(); refreshLobby(); if (scores && scores.length) showSummary(scores, 'Your session'); }, 150);
   };
-  if (App.mode === 'host') confirmBox('Close the Table?', 'You are the host. Leaving closes the table for everyone seated and shows the final scores.', 'Close Table', go);
+  if (App.mode === 'host' && tdLive) confirmBox('Leave the Tournament?', 'You are running this tournament. Leaving pauses it for everyone until you reopen it from the lobby.', 'Leave', go);
+  else if (App.mode === 'host') confirmBox('Close the Table?', 'You are the host. Leaving closes the table for everyone seated and shows the final scores.', 'Close Table', go);
   else confirmBox('Leave the Table?', App.mode === 'solo' ? 'Your solo session will end.' : 'You can rejoin with the same room code.', 'Leave', go);
 }
 window.addEventListener('beforeunload', e => { if (App.mode === 'host' && App.conns.size) { e.preventDefault(); e.returnValue = ''; } });
 
 function scoresTable(rows, meId) {
   if (!rows || !rows.length) return '<div class="empty">No hands played yet.</div>';
-  return `<table class="scores"><tr><th>Player</th><th>Net</th><th>Hands</th><th>Won</th><th>Best</th></tr>${rows.map(r => `<tr class="${r.id === meId ? 'me' : ''}"><td>${esc(r.name)}${r.bot ? '<em>bot</em>' : ''}${r.here ? '' : '<em>left</em>'}</td><td class="${r.net > 0 ? 'pos' : r.net < 0 ? 'neg' : ''}">${r.net > 0 ? '+' : r.net < 0 ? '−' : ''}${fmt(Math.abs(r.net))}</td><td>${r.played}</td><td>${r.won}</td><td>${r.biggest ? fmt(r.biggest) : '—'}</td></tr>`).join('')}</table>`;
+  return `<table class="scores"><tr><th>Player</th><th>Net</th><th>Hands</th><th>Won</th><th>Rebuys</th><th>Best</th></tr>${rows.map(r => `<tr class="${r.id === meId ? 'me' : ''}"><td>${esc(r.name)}${r.bot ? '<em>bot</em>' : ''}${r.here ? '' : '<em>left</em>'}${r.debt ? `<em style="color:#f0b8c1">owes ${fmt(r.debt)}</em>` : ''}</td><td class="${r.net > 0 ? 'pos' : r.net < 0 ? 'neg' : ''}">${r.net > 0 ? '+' : r.net < 0 ? '−' : ''}${fmt(Math.abs(r.net))}</td><td>${r.played}</td><td>${r.won}</td><td>${r.rebuys || 0}</td><td>${r.biggest ? fmt(r.biggest) : '—'}</td></tr>`).join('')}</table>`;
 }
 function showSummary(rows, title) {
   const top = rows.find(r => r.played > 0);
@@ -2798,6 +3301,9 @@ function meP(v) { return v.players.find(p => p.id === v.me); }
 function kindOf(type) { return GAMES[type].kind; }
 function render() {
   const v = App.view; if (!v) return;
+  renderReqBar(v);
+  if (v.lobby) return renderTdLobby(v);
+  hideTdLobby();
   const h = v.hand;
   const type = h ? h.type : v.game;
   const kind = kindOf(type);
@@ -2805,15 +3311,17 @@ function render() {
   const stakeTxt = kind === 'poker'
     ? (isStud(type) ? `${fmt(st.bb)}/${fmt(st.bb * 2)} Limit` : `Blinds ${fmt(st.sb)}/${fmt(st.bb)}`)
     : `${kind === 'letitride' ? 'Unit' : kind === 'blackjack' || kind === 'baccarat' ? 'Bets' : 'Ante'} ${fmt(st.bb)}–${fmt(st.bb * TABLE_RULES[type].max)}`;
-  let gameTxt = `${GAMES[type].label} · ${stakeTxt}`;
+  let gameTxt = v.td ? `${v.td.name} · Table ${v.tableNo} · ${GAMES[type].name} · Blinds ${fmt(v.td.sb)}/${fmt(v.td.bb)}` : `${GAMES[type].label} · ${stakeTxt}`;
   if (h && v.game !== h.type && !v.choice) gameTxt += ` · Next: ${GAMES[v.game].name}`;
   if (v.settings.mode !== 'fixed') gameTxt += v.settings.mode === 'choice' ? " · Dealer's Choice" : ' · Rotation';
   $('#tbGame').textContent = gameTxt;
   const tb = $('#tbTour');
-  if (v.tourney) { tb.classList.remove('hidden'); tb.innerHTML = v.tourney.done ? 'Tournament over' : `Tournament · Lvl ${v.tourney.level} · ${v.tourney.alive}/${v.tourney.count} left · <span data-lvl>${mmss(v.tourney.nextLevelIn)}</span>`; }
+  if (v.td) { tb.classList.remove('hidden'); tb.innerHTML = v.td.status === 'done' ? 'Tournament over' : `Lvl ${v.td.level} · ${v.td.alive}/${v.td.count} left · <span data-lvl>${mmss(v.td.nextLevelIn)}</span>`; }
+  else if (v.tourney) { tb.classList.remove('hidden'); tb.innerHTML = v.tourney.done ? 'Tournament over' : `Tournament · Lvl ${v.tourney.level} · ${v.tourney.alive}/${v.tourney.count} left · <span data-lvl>${mmss(v.tourney.nextLevelIn)}</span>`; }
   else tb.classList.add('hidden');
   $('#roomCode').innerHTML = App.mode === 'solo' ? '<small>Table</small>SOLO' : `<small>Room</small>${esc(v.code)}`;
   $('#btnSettings').classList.toggle('hidden', !isHost);
+  if (v.td) tdExtras(v);
   $('#btnGuide').textContent = (kind === 'blackjack' || kind === 'baccarat') ? 'Rules & Payouts' : 'Hand Rankings';
   const oddsOk = kind === 'poker' && v.settings.allowOdds;
   $('#btnOdds').classList.toggle('hidden', !oddsOk);
@@ -2930,7 +3438,8 @@ function renderTable(v, type, kind) {
   for (let s = 0; s < MAXSEATS; s++) {
     const pos = seatPos(s, mySeat, half), p = bySeat[s];
     if (!p) {
-      out += `<div class="open-seat${isHost ? ' add' : ''}" style="left:${pos.x}%;top:${pos.y}%"${isHost ? ' data-cmd="addBot" title="Seat a house player here"' : ''}>${isHost ? '+ Add Bot' : 'Open Seat'}</div>`;
+      const canBot = isHost && !v.settings.account && !v.td;
+      out += `<div class="open-seat${canBot ? ' add' : ''}" style="left:${pos.x}%;top:${pos.y}%"${canBot ? ' data-cmd="addBot" title="Seat a house player here"' : ''}>${canBot ? '+ Add Bot' : 'Open Seat'}</div>`;
       continue;
     }
     if (half) { const cp = lerp(pos, C, BETLERP()); out += `<div class="circle" style="left:${cp.x}%;top:${cp.y}%"></div>`; }
@@ -2942,7 +3451,7 @@ function renderTable(v, type, kind) {
 function plateHTML(v, p, status, timer) {
   const isMe = p.id === v.me;
   const tag = p.bot ? `<span class="tag">${esc((p.style || 'House').toUpperCase())}</span>` : (p.id === v.hostId && App.mode !== 'solo' ? '<span class="tag host">HOST</span>' : '');
-  return `<div class="plate">${tag}<span class="nm">${esc(p.name)}${isMe ? ' (You)' : ''}</span><div class="ch">${fmt(p.chips)}</div><div class="st">${status || '&nbsp;'}</div>${timer ? '<div class="tbar" data-timer="1"><i></i></div>' : ''}</div>`;
+  return `<div class="plate">${tag}<span class="nm">${esc(p.name)}${isMe ? ' (You)' : ''}</span><div class="ch">${fmt(p.chips)}</div><div class="st">${status || '&nbsp;'}</div>${p.debt > 0 ? `<div class="debtline">Owes ${fmt(p.debt)}</div>` : ''}${timer ? '<div class="tbar" data-timer="1"><i></i></div>' : ''}</div>`;
 }
 function seatClasses(v, p, pos, extra) {
   const cls = ['seat']; if (p.id === v.me) cls.push('me');
@@ -3099,10 +3608,9 @@ function utilHTML(v) {
     if (me.sittingOut) b += `<button class="btn primary" data-cmd="sitout" data-v="0">I'm Back</button>`;
     else b += `<label class="tog"><input type="checkbox" data-cmd="sitout"> Sit out</label>`;
   }
-  const inTourney = v.tourney && me && me.entrant;
-  if (me && !inHand && !inTourney && me.chips < v.settings.startStack / 4) b += `<button class="btn" data-cmd="rebuy">Rebuy ${fmt(v.settings.startStack)}</button>`;
+  b += rebuyButtonHTML(v, me, inHand);
   if (isHost) {
-    if (!h || h.over) b += `<button class="btn" data-cmd="dealNow">Deal Now</button>`;
+    if ((!h || h.over) && !v.td) b += `<button class="btn" data-cmd="dealNow">Deal Now</button>`;
     b += `<button class="btn ghost" data-cmd="pause" data-v="${v.paused ? 0 : 1}">${v.paused ? 'Resume Table' : 'Pause'}</button>`;
   }
   return b;
@@ -3122,6 +3630,7 @@ function renderActionBar(v, type, kind) {
     if (v.choice.pid === v.me) html = info("Dealer's Choice", 'Pick the game for the next round', true) + `<div class="ab-btns gamepick">${v.choice.options.map(g => `<button class="btn big" data-choose="${g}">${esc(GAMES[g].name)}</button>`).join('')}</div>`;
     else html = info(`${esc(nameOf(v, v.choice.pid))} is choosing`, "Dealer's Choice") + `<div class="ab-btns">${utilHTML(v)}</div>`;
   }
+  else if (v.spectator) html = spectatorBar(v);
   else if (!me || me.seat == null) html = info('Waiting for a seat', 'You will be seated after this hand') + utilHTML(v);
   else if (h && h.kind === 'poker') html = pokerBar(v, h, s, me);
   else if (h && h.kind === 'blackjack') html = bjBar(v, h, s, me);
@@ -3320,6 +3829,12 @@ function renderSide(v) {
   if (visible) { App.lastChatT = lastChat; App.unread = 0; } else if (newCount) App.unread = newCount;
   $('#btnPanel').innerHTML = 'Chat' + (App.unread ? `<span class="badge-dot">${App.unread}</span>` : '');
   $('#chatForm').classList.toggle('hidden', App.tab === 'scores');
+  document.querySelector('.tabs button[data-tab="scores"]').textContent = v.td ? 'Bracket' : 'Scores';
+  if (App.tab === 'scores' && v.td) {
+    const sig = 'td:' + JSON.stringify({ ...v.td, nextLevelIn: 0 });
+    if (sig === App.feedSig) return; App.feedSig = sig;
+    feed.innerHTML = bracketHTML(v); return;
+  }
   if (App.tab === 'scores') {
     const sig = 'scores:' + JSON.stringify(v.scores) + JSON.stringify(v.tourney && { ...v.tourney, nextLevelIn: 0 });
     if (sig === App.feedSig) return; App.feedSig = sig;
@@ -3453,7 +3968,8 @@ setInterval(() => {
     for (const t of document.querySelectorAll('[data-timer]')) { t.firstChild.style.width = (frac * 100).toFixed(1) + '%'; t.classList.toggle('low', left < 6000); }
   }
   if (v.nextIn != null) for (const n of document.querySelectorAll('[data-next]')) n.textContent = Math.max(0, Math.ceil((v.nextIn - el) / 1000));
-  if (v.tourney && v.tourney.nextLevelIn != null) for (const n of document.querySelectorAll('[data-lvl]')) n.textContent = mmss(v.tourney.nextLevelIn - el);
+  const lvl = v.td ? v.td.nextLevelIn : v.tourney ? v.tourney.nextLevelIn : null;
+  if (lvl != null) for (const n of document.querySelectorAll('[data-lvl]')) n.textContent = mmss(lvl - el);
 }, 100);
 
 // ---- modals: setup & settings ------------------------------------------
@@ -3473,16 +3989,22 @@ function setupModal(mode) {
     <label class="field"><span>Game</span><select id="sGame">${gameSelect(last.game || 'holdem')}</select></label>
     <div class="row2"><label class="field"><span>Stakes (blinds · table minimum)</span><select id="sStakes">${optionList(STAKE_OPTS, last.stakes ?? 2)}</select></label>
     <label class="field"><span>Starting chips</span><select id="sStack">${optionList(STACK_OPTS, last.startStack || 10000)}</select></label></div>
+    ${solo ? '' : `<label class="field"><span>Chips</span><select id="sAcct">${optionList([[0, 'Play money — balances are not affected'], [1, 'Account chips — buy in from real balances']], last.account ? 1 : 0)}</select></label>`}
+    ${rebuyFields(last)}
     <div class="row2"><label class="field"><span>House bots</span><select id="sBots">${optionList(botOpts, solo ? (last.soloBots || 3) : (last.bots ?? 0))}</select></label>
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, last.botLevel || 'normal')}</select></label></div>
     <div class="row2"><label class="field"><span>Turn timer</span><select id="sTimer">${optionList(TIMER_OPTS, last.timer || 30)}</select></label>
     ${solo ? '' : `<label class="field"><span>Video chat</span><select id="sVideo">${optionList([[0, 'Off'], [1, 'On — players can turn on their camera']], last.video ? 1 : 0)}</select></label>`}</div>
     <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="sGo">Open Table</button></div>`);
   $('#sGo').onclick = () => {
-    const cfg = { game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: +$('#sBots').value, botLevel: $('#sSkill').value, video: !solo && $('#sVideo').value === '1' };
+    const account = !solo && $('#sAcct').value === '1';
+    const cfg = Object.assign({ game: $('#sGame').value, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, bots: account ? 0 : +$('#sBots').value, botLevel: $('#sSkill').value, video: !solo && $('#sVideo').value === '1', account }, readRebuyFields());
+    if (account && DB.profile && DB.profile.balance < cfg.startStack) return toast(`Your balance (${fmt(DB.profile.balance)}) is less than the ${fmt(cfg.startStack)} buy-in.`, 5000);
     store.set('setup', JSON.stringify(Object.assign(last, cfg, solo ? { soloBots: cfg.bots } : { bots: cfg.bots })));
     if (solo) { closeModal(); startSolo(cfg); } else startHost(cfg);
   };
+  const syncAcct = () => { const a = $('#sAcct') && $('#sAcct').value === '1'; $('#sBots').disabled = a; if (a) $('#sBots').value = '0'; $('#sBots').closest('label').querySelector('span').textContent = a ? 'House bots (off for account chips)' : 'House bots'; };
+  if ($('#sAcct')) { $('#sAcct').onchange = syncAcct; syncAcct(); }
 }
 function settingsModal() {
   const v = App.view; if (!v || v.me !== v.hostId) return;
@@ -3504,11 +4026,12 @@ function settingsModal() {
     <label class="field"><span>Starting chips / rebuy</span><select id="sStack">${optionList(STACK_OPTS.some(o => o[0] === s.startStack) ? STACK_OPTS : STACK_OPTS.concat([[s.startStack, fmt(s.startStack)]]), s.startStack)}</select></label></div>
     <div class="row2"><label class="field"><span>Turn timer</span><select id="sTimer">${optionList(TIMER_OPTS, s.timer)}</select></label>
     <label class="field"><span>Bot skill</span><select id="sSkill">${optionList(SKILL_OPTS, s.botLevel)}</select></label></div>
+    <div class="sect">Rebuys</div>${rebuyFields(s)}
     <label class="chk"><input type="checkbox" id="sOdds"${s.allowOdds ? ' checked' : ''}> Allow the beginner odds helper (each player turns it on for themselves)</label>
     ${App.mode === 'host' ? `<label class="chk"><input type="checkbox" id="sVideo"${s.video ? ' checked' : ''}> Video chat (each player chooses whether to turn on their camera)</label>` : ''}
-    <div class="sect">House bots · ${bots} seated · ${open} open seat${open === 1 ? '' : 's'}</div>
-    <div class="botrow"><button class="btn" data-cmd="addBot"${open ? '' : ' disabled'}>+ Add Bot</button><button class="btn" data-cmd="removeBot"${bots ? '' : ' disabled'}>− Remove Bot</button><button class="btn" data-cmd="fillBots"${open ? '' : ' disabled'}>Fill Empty Seats</button><button class="btn" data-cmd="clearBots"${bots ? '' : ' disabled'}>Remove All Bots</button></div>
-    <div class="sect">Tournament (Sit &amp; Go)</div>${tour}
+    ${s.account ? '<div class="sect">Account chips</div><div class="sub">This table plays for real account balances, so house bots are off. Players are cashed out when they leave or when you close the table.</div>' : `<div class="sect">House bots · ${bots} seated · ${open} open seat${open === 1 ? '' : 's'}</div>
+    <div class="botrow"><button class="btn" data-cmd="addBot"${open ? '' : ' disabled'}>+ Add Bot</button><button class="btn" data-cmd="removeBot"${bots ? '' : ' disabled'}>− Remove Bot</button><button class="btn" data-cmd="fillBots"${open ? '' : ' disabled'}>Fill Empty Seats</button><button class="btn" data-cmd="clearBots"${bots ? '' : ' disabled'}>Remove All Bots</button></div>`}
+    <div class="sub" style="margin-top:14px">Want a tournament? Close this table and choose <b>Host a Tournament</b> in the lobby.</div>
     <div class="sect">At the table</div><div class="plist">${plist}</div>
     <div class="mfoot"><button class="btn ghost" data-close>Close</button><button class="btn primary" id="sSave">Save Changes</button></div>`);
   const syncMode = () => { const m = $('#sMode').value; $('#fGame').classList.toggle('hidden', m !== 'fixed'); $('#fRot').classList.toggle('hidden', m === 'fixed'); };
@@ -3517,16 +4040,15 @@ function settingsModal() {
   $('#sSave').onclick = () => {
     const rotation = [...document.querySelectorAll('[data-rot]')].filter(x => x.checked).map(x => x.dataset.rot);
     if ($('#sMode').value !== 'fixed' && rotation.length < 2) return toast('Pick at least two games for the rotation.');
-    send({ t: 'settings', s: { mode: $('#sMode').value, game: $('#sGame').value, rotation, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, botLevel: $('#sSkill').value, allowOdds: $('#sOdds').checked, video: $('#sVideo') ? $('#sVideo').checked : false } });
+    send({ t: 'settings', s: { mode: $('#sMode').value, game: $('#sGame').value, rotation, stakes: +$('#sStakes').value, startStack: +$('#sStack').value, timer: +$('#sTimer').value, botLevel: $('#sSkill').value, allowOdds: $('#sOdds').checked, video: $('#sVideo') ? $('#sVideo').checked : false, ...readRebuyFields() } });
     closeModal(); toast('Settings saved.');
   };
 }
 
 // ---- input handling ---------------------------------------------------
 function requireName() {
-  const n = $('#nameInput').value.replace(/[<>]/g, '').trim().slice(0, 16);
-  if (!n) { toast('Enter your name first.'); $('#nameInput').focus(); return null; }
-  store.set('name', n); App.me.name = n; return n;
+  if (!DB.profile) { toast('Sign in first.'); return null; }
+  App.me.id = DB.uid(); App.me.name = DB.profile.username; return App.me.name;
 }
 function maxBetFor(v) {
   const h = v.hand, me = meP(v);
@@ -3535,8 +4057,10 @@ function maxBetFor(v) {
   return Math.min(h.max, Math.floor(me.chips / (R.need + (App.side && R.side ? 1 : 0))));
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-act],[data-cmd],[data-pick],[data-add],[data-pre],[data-pre-act],[data-close],[data-kick],[data-guide-close],[data-choose]');
+  const t = e.target.closest('[data-act],[data-cmd],[data-pick],[data-add],[data-pre],[data-pre-act],[data-close],[data-kick],[data-guide-close],[data-choose],[data-appr],[data-watch]');
   if (!t) return;
+  if (t.dataset.appr) { send({ t: 'approveRebuy', id: t.dataset.appr, ok: t.dataset.ok === '1' }); return; }
+  if (t.dataset.watch != null) { send({ t: 'watch', i: +t.dataset.watch }); return; }
   const v = App.view, h = v && v.hand;
   if (t.hasAttribute('data-close')) { closeModal(); return; }
   if (t.hasAttribute('data-guide-close')) { $('#btnGuide').click(); return; }
@@ -3551,6 +4075,7 @@ document.addEventListener('click', e => {
     const c = t.dataset.cmd;
     if (c === 'sitout') { send({ t: 'sitout', v: t.type === 'checkbox' ? t.checked : t.dataset.v === '1' }); return; }
     if (c === 'pause') { send({ t: 'pause', v: t.dataset.v === '1' }); return; }
+    if (c === 'rebuy') { doRebuyClick(v); return; }
     send({ t: c });
     if (c === 'endTourney') { closeModal(); return; }
     if (modalOpen() && ['addBot', 'removeBot', 'fillBots', 'clearBots'].includes(c)) setTimeout(settingsModal, 150);
@@ -3687,7 +4212,7 @@ function init() {
     if (App.guideOpen && App.view) { App.guideSig = ''; const h = App.view.hand; renderGuide(h ? h.type : App.view.game, h); }
   };
   $('#btnOdds').onclick = () => { App.odds = !App.odds; store.set('odds', App.odds ? '1' : '0'); App.oddsKey = ''; App.abSig = ''; render(); };
-  $('#btnSettings').onclick = settingsModal;
+  $('#btnSettings').onclick = () => (App.view && (App.view.td || App.view.lobby)) ? tdHostModal() : settingsModal();
   $('#btnPanel').onclick = () => { $('#side').classList.toggle('open'); App.feedSig = ''; if (App.view) renderSide(App.view); };
   $('#btnSound').onclick = () => { App.sound = !App.sound; store.set('sound', App.sound ? '1' : '0'); $('#btnSound').textContent = App.sound ? 'Sound On' : 'Sound Off'; if (App.sound) chime(); };
   $('#btnLeave').onclick = leaveTable;
@@ -3703,10 +4228,7 @@ function init() {
   $('#modal').addEventListener('click', e => { if (e.target.id === 'modal' && !$('#modalCard').querySelector('.spinner')) closeModal(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (modalOpen() && !$('#modalCard').querySelector('.spinner')) closeModal(); else if (App.guideOpen) $('#btnGuide').click(); } });
   onResize();
-  // a host or solo player who just refreshed goes straight back to their table
-  const m = savedMeta();
-  if (m && m.hostId === App.me.id && Date.now() - m.savedAt < 5 * 60e3) resumeTable();
-  else renderResume();
+  bootAccount();
 }
 
 // =====================================================================
@@ -3936,7 +4458,618 @@ document.addEventListener('click', e => {
   else if (k === 'collapse' || k === 'expand') { Vid.collapsed = k === 'collapse'; store.set('vidCollapsed', Vid.collapsed ? '1' : '0'); renderVideo(); }
   else if (k === 'tap') { Vid.needTap = false; for (const el of Vid.tiles.values()) { const vd = el.firstChild; if (vd.srcObject) vd.play().catch(() => {}); } renderVideo(); }
 });
+// =====================================================================
+//  ACCOUNTS: sign-in, balances, account-chip tables, rebuys,
+//  tournaments (lobby, bracket, payouts)
+// =====================================================================
+let lobbyTimer = null;
 
+// ---------- sign in ----------
+function showAuth() {
+  $('#authScreen').classList.remove('hidden'); $('#lobby').classList.add('hidden'); $('#dashScreen').classList.add('hidden');
+  $('#tableScreen').classList.add('hidden');
+}
+function setAuthTab(up) {
+  for (const b of document.querySelectorAll('[data-auth]')) b.classList.toggle('on', (b.dataset.auth === 'up') === up);
+  $('#fUser').classList.toggle('hidden', !up);
+  $('#aGo').textContent = up ? 'Create Account' : 'Sign In';
+  $('#aPass').autocomplete = up ? 'new-password' : 'current-password';
+  $('#aNote').textContent = up ? 'New players start with 5,000 chips.' : 'Welcome back.';
+  App.authUp = up;
+}
+function onSignedOut(msg) {
+  if (App.inTable) { App.leaving = true; cleanup(); }
+  DB.profile = null; showAuth(); if (msg) toast(msg, 5000);
+}
+async function bootAccount() {
+  for (const b of document.querySelectorAll('[data-auth]')) b.onclick = () => setAuthTab(b.dataset.auth === 'up');
+  $('#authForm').onsubmit = async e => {
+    e.preventDefault();
+    const email = $('#aEmail').value.trim(), pass = $('#aPass').value, user = $('#aUser').value.trim();
+    if (App.authUp && !/^[A-Za-z0-9 _.-]{2,16}$/.test(user)) return toast('Usernames are 2–16 letters, numbers, spaces, dots, dashes or underscores.', 5000);
+    if (pass.length < 6) return toast('Passwords need at least 6 characters.');
+    $('#aGo').disabled = true;
+    try {
+      if (App.authUp) {
+        const r = await DB.signUp(email, pass, user);
+        if (!r.signedIn) { $('#aNote').textContent = 'Check your email to confirm your account, then sign in here.'; setAuthTab(false); return; }
+      } else await DB.signIn(email, pass);
+      await DB.loadProfile();
+      if (!DB.profile) throw new Error('Your account was created, but the casino database is not set up yet. Run setup.sql in Supabase.');
+      afterSignIn(false);
+    } catch (err) {
+      toast(/invalid login/i.test(err.message) ? 'Wrong email or password.' : /already registered/i.test(err.message) ? 'That email already has an account. Sign in instead.' : err.message, 6000);
+    } finally { $('#aGo').disabled = false; }
+  };
+  setAuthTab(false);
+  if (!DB.signedIn()) return showAuth();
+  try { await DB.ensureFresh(); await DB.loadProfile(); }
+  catch (e) { if (e.network) toast(e.message, 6000); }
+  if (!DB.profile) return showAuth();
+  afterSignIn(true);
+}
+function afterSignIn(boot) {
+  App.me.id = DB.uid(); App.me.name = DB.profile.username;
+  $('#authScreen').classList.add('hidden');
+  if (!App.inTable) $('#lobby').classList.remove('hidden');
+  renderAcctBar(); refreshLobby(); processCashQ(); heartbeat();
+  const m = savedMeta();
+  if (boot && m && m.hostId === App.me.id && Date.now() - m.savedAt < 5 * 60e3) resumeTable();
+  else renderResume();
+}
+async function refreshProfile() {
+  try { await DB.loadProfile(); renderAcctBar(); } catch (e) {}
+}
+function renderAcctBar() {
+  const p = DB.profile; if (!p) return;
+  $('#acctBar').innerHTML = `<div><div class="who">${esc(p.username)}${p.is_owner ? ' <span class="tag" style="font-size:.55rem;letter-spacing:.14em;padding:2px 6px;border:1px solid var(--gold-lo);color:var(--gold);border-radius:2px;vertical-align:3px">OWNER</span>' : ''}</div>
+    <div class="bal">Balance<b>${fmt(p.balance)}</b>${p.debt > 0 ? `<span class="dbt">Owes the Loan Shark ${fmt(p.debt)}</span>` : ''}</div></div>
+    <div class="acts"><button class="btn ghost" id="btnWallet">History</button>${p.is_owner ? '<button class="btn" id="btnDash">Owner Dashboard</button>' : ''}<button class="btn ghost" id="btnSignOut">Sign Out</button></div>`;
+  $('#btnWallet').onclick = walletModal;
+  $('#btnSignOut').onclick = async () => { await DB.signOut(); onSignedOut('Signed out.'); };
+  if ($('#btnDash')) $('#btnDash').onclick = openDashboard;
+}
+const TX_LABEL = { signup: 'Welcome bonus', buyin: 'Table buy-in', cashout: 'Table cash-out', loan: 'Loan Shark loan', refund: 'Refund', gift: 'Gift from the owner', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tournament buy-in', tournament_prize: 'Tournament prize', tournament_refund: 'Tournament refund', forgive: 'Loan forgiven' };
+async function walletModal() {
+  busy('Loading your history…');
+  try {
+    await refreshProfile();
+    const rows = await DB.select('transactions', `select=*&user_id=eq.${DB.uid()}&order=created_at.desc&limit=40`);
+    const p = DB.profile;
+    openModal(`<h2>Your Chips</h2><div class="sub">Balance <b style="color:var(--gold-hi)">${fmt(p.balance)}</b>${p.debt ? ` · Loan Shark debt <b style="color:#f0b8c1">${fmt(p.debt)}</b>` : ''}</div>
+      <div class="scrollbox"><table class="dtable"><tr><th>When</th><th>What</th><th class="num">Chips</th></tr>${rows.map(r => `<tr><td>${new Date(r.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</td><td>${esc(TX_LABEL[r.kind] || r.kind)}<div style="font-size:.7rem;color:var(--muted)">${esc(r.note || '')}</div></td><td class="num" style="color:${r.amount > 0 ? '#e7cf8f' : r.amount < 0 ? '#e6a3ad' : 'inherit'}">${r.amount > 0 ? '+' : r.amount < 0 ? '−' : ''}${fmt(Math.abs(r.amount))}${r.debt_delta ? `<div style="font-size:.68rem;color:#f0b8c1">debt ${r.debt_delta > 0 ? '+' : '−'}${fmt(Math.abs(r.debt_delta))}</div>` : ''}</td></tr>`).join('') || '<tr><td colspan="3">Nothing yet.</td></tr>'}</table></div>
+      <div class="mfoot"><button class="btn primary" data-close>Done</button></div>`);
+  } catch (e) { closeModal(); toast(e.message); }
+}
+function heartbeat() {
+  if (!DB.signedIn()) return;
+  const where = App.inTable ? (App.mode === 'solo' ? 'Solo table' : 'Table ' + App.code) : !$('#dashScreen').classList.contains('hidden') ? 'Dashboard' : 'Lobby';
+  DB.rpc('heartbeat', { p_where: where }).catch(() => {});
+  const T = App.table;
+  if (App.mode === 'host' && T && T.dbTable) DB.rpc('table_ping', { p_table: T.dbTable }).catch(() => {});
+}
+setInterval(heartbeat, 60000);
+
+// ---------- lobby: tournaments ----------
+async function refreshLobby() {
+  clearTimeout(lobbyTimer);
+  if (!DB.signedIn() || App.inTable) return;
+  lobbyTimer = setTimeout(refreshLobby, 20000);
+  const box = $('#tourneyList');
+  try {
+    const rows = await DB.select('tournaments', 'select=*,tournament_entries(user_id),tournament_invites(user_id)&status=in.(registering,open,running)&order=created_at.desc&limit=40');
+    const me = DB.uid();
+    const mine = rows.filter(t => !t.invite_only || t.host_id === me || t.tournament_entries.some(e => e.user_id === me) || t.tournament_invites.some(i => i.user_id === me));
+    App.lobbyTourneys = mine;
+    const stuck = await seatsHTML(me);
+    if (!mine.length) { box.innerHTML = stuck + '<h3>Tournaments</h3><div class="sub" style="margin:0">No tournaments right now. Host one, or wait for an invite.</div>'; return; }
+    box.innerHTML = stuck + '<h3>Tournaments</h3>' + mine.map(t => {
+      const entered = t.tournament_entries.some(e => e.user_id === me), n = t.tournament_entries.length;
+      const live = t.status === 'running', open = t.status === 'open' && t.room_code;
+      const when = t.starts_at ? new Date(t.starts_at).toLocaleString([], { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+      let btn = '';
+      if (entered && (open || live) && t.room_code) btn = `<button class="btn primary" data-tj="${esc(t.room_code)}">${live ? 'Rejoin' : 'Take Your Seat'}</button>`;
+      else if (!entered && (t.status === 'registering' || t.status === 'open')) btn = `<button class="btn" data-tr="${t.id}">Register${t.buy_in ? ' · ' + fmt(t.buy_in) : ''}</button>`;
+      if (entered && !live) btn += ` <button class="btn ghost" data-tu="${t.id}">Unregister</button>`;
+      if (!entered && live && t.room_code) btn = `<button class="btn ghost" data-tj="${esc(t.room_code)}">Watch</button>`;
+      return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${live ? '<span class="tag live">Live</span>' : open ? '<span class="tag live">Seating now</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}</div>
+        <div class="td">${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${t.buy_in ? 'Buy-in ' + fmt(t.buy_in) : 'Free entry'} · Prize pool ${fmt(t.pool)} · ${n}/${t.max_players} entered${when ? ' · ' + when : ''}${entered ? ' · <b style="color:var(--gold-hi)">You are registered</b>' : ''}</div></div><div>${btn}</div></div>`;
+    }).join('');
+  } catch (e) { box.innerHTML = `<h3>Tournaments</h3><div class="sub" style="margin:0">${esc(e.message)}</div>`; }
+}
+// chips still sitting at an account table you left without cashing out (host vanished, browser closed…)
+async function seatsHTML(me) {
+  try {
+    const seats = await DB.select('table_seats', `select=table_id,bought_in&user_id=eq.${me}&status=eq.seated`);
+    if (!seats.length) return '';
+    const tabs = await DB.select('casino_tables', `select=id,code,status,last_active,host_id&id=in.(${seats.map(x => x.table_id).join(',')})`);
+    const rows = seats.map(st => {
+      const t = tabs.find(x => x.id === st.table_id); if (!t || t.status !== 'open') return '';
+      const stale = Date.now() - new Date(t.last_active).getTime() > 2 * 3600e3;
+      if (t.host_id === me && !stale) return ''; // your own table: the Reopen Table button handles it
+      const btn = stale ? `<button class="btn primary" data-srefund="${t.id}">Get My Buy-in Back</button>` : `<button class="btn" data-tj="${esc(t.code)}">Rejoin</button>`;
+      return `<div class="trow"><div><div class="tn">Table ${esc(t.code)}</div><div class="td">${fmt(st.bought_in)} of your chips are still at this table. ${stale ? 'The host has been gone over 2 hours, so you can take your buy-in back.' : 'Rejoin to keep playing or to leave and cash out. If the host is gone for 2 hours, you can take your buy-in back here.'}</div></div><div>${btn}</div></div>`;
+    }).join('');
+    return rows ? '<h3>Your Open Tables</h3>' + rows + '<div style="height:14px"></div>' : '';
+  } catch (e) { return ''; }
+}
+document.addEventListener('click', async e => {
+  const r = e.target.closest('[data-srefund]');
+  if (r) {
+    confirmBox('Take your buy-in back?', 'Your buy-in goes back to your balance and you are taken off that table. Any Loan Shark loan you took there is cancelled too.', 'Refund', async () => {
+      try { await DB.rpc('refund_stale_table', { p_table: r.dataset.srefund }); toast('Your buy-in is back in your balance.'); refreshProfile(); refreshLobby(); } catch (err) { toast(err.message, 5000); }
+    });
+    return;
+  }
+  const t = e.target.closest('[data-tr],[data-tu],[data-tj]'); if (!t) return;
+  if (t.dataset.tj) { if (requireName()) startJoin(t.dataset.tj); return; }
+  const id = t.dataset.tr || t.dataset.tu, row = (App.lobbyTourneys || []).find(x => x.id === id);
+  if (t.dataset.tr) {
+    confirmBox('Register for ' + (row ? row.name : 'this tournament') + '?', row && row.buy_in ? `The ${fmt(row.buy_in)} buy-in comes out of your balance and goes into the prize pool. You can unregister for a refund until it starts.` : 'Free entry.', 'Register', async () => {
+      try { await DB.rpc('register_tournament', { p_tid: id }); toast('You are registered.'); refreshProfile(); refreshLobby(); } catch (err) { toast(err.message, 5000); }
+    });
+  } else {
+    try { await DB.rpc('unregister_tournament', { p_tid: id }); toast('Unregistered. Your buy-in was refunded.'); refreshProfile(); refreshLobby(); } catch (err) { toast(err.message, 5000); }
+  }
+});
+
+// ---------- account-chip tables ----------
+const CASHQ_KEY = 'schatz.cashQ';
+function loadQ() { try { return JSON.parse(localStorage.getItem(CASHQ_KEY) || '[]'); } catch (e) { return []; } }
+function saveQ(q) { try { localStorage.setItem(CASHQ_KEY, JSON.stringify(q)); } catch (e) {} }
+async function openAccountTable(cfg) {
+  const t = App.table, kind = GAMES[cfg.game].kind, st = STAKES[cfg.stakes];
+  busy('Opening your table and taking your buy-in…');
+  const id = await DB.rpc('create_table', { p_code: t.code, p_game: cfg.game, p_house: kind !== 'poker', p_min_bet: st.bb, p_loan: !!cfg.loanShark });
+  t.dbTable = id;
+  await DB.rpc('table_buyin', { p_table: id, p_amount: cfg.startStack, p_loan: false });
+  await verifySeat(App.me.id);
+  refreshProfile();
+}
+async function seatOf(tid, uid) {
+  const r = await DB.select('table_seats', `select=bought_in,loans,status&table_id=eq.${tid}&user_id=eq.${uid}`);
+  return r && r[0] ? r[0] : null;
+}
+async function verifySeat(id) {
+  const T = App.table; if (!T || T.kind === 'td' || !T.settings.account || !T.dbTable) return;
+  try {
+    const s = await seatOf(T.dbTable, id); if (!s || s.status !== 'seated') return;
+    const pr = await DB.select('profiles', `select=debt&id=eq.${id}`);
+    T.creditBuyin(id, Number(s.bought_in), Number(s.loans), pr[0] ? Number(pr[0].debt) : null);
+  } catch (e) { console.warn('verify failed', e); }
+}
+function queueCashout(t, p) {
+  if (!t || !t.dbTable || p.bot) return;
+  const q = loadQ();
+  q.push({ type: 'cashout', table: t.dbTable, user: p.id, chips: Math.max(0, Math.floor(p.chips)), repaid: Math.floor(p.repaid || 0), name: p.name });
+  saveQ(q); p.repaid = 0;
+  processCashQ();
+}
+let cashBusy = null;
+function processCashQ() {
+  if (cashBusy || !DB.signedIn()) return cashBusy || Promise.resolve();
+  cashBusy = (async () => {
+    let q = loadQ();
+    for (const item of q.slice()) {
+      try {
+        if (item.type === 'payout') await DB.rpc('tournament_payout', { p_tid: item.tid, p_results: item.results });
+        else await DB.rpc('table_cashout', { p_table: item.table, p_user: item.user, p_chips: item.chips, p_repaid: item.repaid });
+        q = loadQ().filter(x => !(x.user === item.user && x.table === item.table && x.chips === item.chips && x.type === item.type && x.tid === item.tid)); saveQ(q);
+      } catch (e) {
+        if (e.network) break;
+        console.warn('settlement failed', item, e.message);
+        if (!/Already settled/i.test(e.message)) toast(`Could not settle ${item.name || 'a payout'}: ${e.message}`, 6000);
+        q = loadQ().filter(x => x !== item && !(x.user === item.user && x.table === item.table && x.chips === item.chips && x.type === item.type)); saveQ(q);
+      }
+    }
+  })().finally(() => { cashBusy = null; refreshProfile(); });
+  return cashBusy;
+}
+setInterval(() => { if (loadQ().length) processCashQ(); }, 15000);
+async function closeAccountTable() {
+  const T = App.table; if (!T || !T.dbTable) return;
+  T.abortHand();
+  for (const p of T.players.filter(x => !x.bot)) queueCashout(T, p);
+  await processCashQ();
+  if (loadQ().some(x => x.table === T.dbTable)) { toast('Some cash-outs will finish next time you open The Schatz.', 6000); return; }
+  try { await DB.rpc('close_table', { p_table: T.dbTable }); } catch (e) { console.warn(e); }
+  refreshProfile();
+}
+// host: verify who's joining (and that they bought in) before seating them
+async function admit(c) {
+  const T = App.table, cl = c.claim; if (!T || !cl) return;
+  try {
+    const r = await DB.select('profiles', `select=join_nonce,username,debt&id=eq.${cl.id}`);
+    const pr = r && r[0];
+    if (!pr || pr.join_nonce !== cl.nonce) { c.send({ t: 'error', msg: 'Could not verify your account. Try joining again.' }); return; }
+    cl.name = pr.username;
+  } catch (e) { c.send({ t: 'error', msg: 'The host could not reach the casino database. Try again in a moment.' }); return; }
+  try {
+    if (T.kind === 'td') {
+      if (T.cfg.dbId && T.status === 'lobby' && !T.entrant(cl.id)) {
+        const e = await DB.select('tournament_entries', `select=user_id&tournament_id=eq.${T.cfg.dbId}&user_id=eq.${cl.id}`);
+        if (!e.length) { c.send({ t: 'need', what: 'fee', tid: T.cfg.dbId, fee: T.cfg.buyIn, name: T.cfg.name }); return; }
+      }
+    } else if (T.settings.account && !T.player(cl.id)) {
+      const seat = await seatOf(T.dbTable, cl.id);
+      if (!seat || seat.status !== 'seated' || !(seat.bought_in > 0)) {
+        c.send({ t: 'need', what: 'buyin', table: T.dbTable, amount: T.settings.startStack, game: T.activeGame(), code: T.code }); return;
+      }
+    }
+  } catch (e) { c.send({ t: 'error', msg: 'The host could not reach the casino database. Try again in a moment.' }); return; }
+  const r = T.join(cl.id, cl.name);
+  if (!r.ok) { c.send({ t: 'error', msg: r.msg, fatal: true }); setTimeout(() => { try { c.close(); } catch (e) {} }, 600); return; }
+  const old = App.conns.get(cl.id);
+  if (old && old !== c) { try { old.close(); } catch (e) {} }
+  c.pid = cl.id; App.conns.set(cl.id, c); T.setPeerId(cl.id, cl.peerId);
+  if (T.kind !== 'td' && T.settings.account) await verifySeat(cl.id);
+  scheduleSync();
+}
+// guest: the host needs a buy-in or tournament entry first
+function needPrompt(d) {
+  return new Promise(resolve => {
+    const bal = DB.profile ? DB.profile.balance : 0;
+    const isFee = d.what === 'fee', amt = isFee ? d.fee : d.amount;
+    openModal(`<h2>${isFee ? esc(d.name) : 'Account Chips Table'}</h2>
+      <div class="sub">${isFee ? (amt ? `Entering costs <b style="color:var(--gold-hi)">${fmt(amt)}</b> from your balance. It goes into the prize pool, and you can unregister for a refund until the tournament starts.` : 'Free entry.') : `This table plays for real account balances. Buying in moves <b style="color:var(--gold-hi)">${fmt(amt)}</b> from your balance to the table. Whatever you have left is paid back when you leave.`}<br><br>Your balance: <b style="color:var(--gold-hi)">${fmt(bal)}</b></div>
+      <div class="mfoot"><button class="btn ghost" id="npNo">Cancel</button><button class="btn primary" id="npYes"${bal < amt ? ' disabled' : ''}>${isFee ? (amt ? 'Pay & Register' : 'Register') : 'Buy In ' + fmt(amt)}</button></div>`);
+    $('#npNo').onclick = () => { closeModal(); resolve(false); };
+    $('#npYes').onclick = async () => {
+      $('#npYes').disabled = true;
+      try {
+        if (isFee) await DB.rpc('register_tournament', { p_tid: d.tid });
+        else await DB.rpc('table_buyin', { p_table: d.table, p_amount: amt, p_loan: false });
+        busy('Taking your seat…'); refreshProfile(); resolve(true);
+      } catch (e) { toast(e.message, 5000); closeModal(); resolve(false); }
+    };
+  });
+}
+
+// ---------- rebuys ----------
+function rebuyAmountFor(v) { return v.settings.rebuyHalf ? Math.floor(v.settings.startStack / 2) : v.settings.startStack; }
+function rebuyButtonHTML(v, me, inHand) {
+  if (!me || inHand || v.td || (v.tourney && me.entrant) || me.seat == null) return '';
+  const s = v.settings, lim = s.rebuyLimit;
+  if (me.chips >= s.startStack / 4) return '';
+  if (lim >= 0 && me.rebuys >= lim) return `<span class="tog">${lim === 0 ? 'No rebuys at this table' : 'No rebuys left'}</span>`;
+  const amt = rebuyAmountFor(v), owed = Math.ceil(amt * 1.2);
+  if (me.rebuyReq) return '<button class="btn" disabled>Waiting for the host…</button>';
+  const ask = s.rebuyApproval && v.me !== v.hostId && !me.rebuyOk;
+  const borrow = s.loanShark && !(s.account && DB.profile && DB.profile.balance >= amt); // account players pay from their balance when they can
+  const label = ask ? `Ask to Rebuy ${fmt(amt)}` : borrow ? `Borrow ${fmt(amt)} · Owe ${fmt(owed)}` : `Rebuy ${fmt(amt)}`;
+  return `<button class="btn${me.rebuyOk ? ' primary' : ''}" data-cmd="rebuy">${me.rebuyOk ? 'Approved · ' : ''}${label}</button>${lim >= 0 ? `<span class="tog">${lim - me.rebuys} left</span>` : ''}`;
+}
+async function doRebuyClick(v) {
+  const me = meP(v), s = v.settings;
+  if (!s.account || App.mode === 'solo') { send({ t: 'rebuy' }); if (s.rebuyApproval && v.me !== v.hostId) toast('Asked the host to approve your rebuy.'); return; }
+  if (s.rebuyApproval && v.me !== v.hostId && !me.rebuyOk) { send({ t: 'rebuy' }); toast('Asked the host to approve your rebuy.'); return; }
+  const amt = rebuyAmountFor(v);
+  const bal = DB.profile ? DB.profile.balance : 0, loan = !!s.loanShark && bal < amt;
+  if (!s.loanShark && bal < amt) return toast(`Your balance (${fmt(bal)}) is too low to rebuy for ${fmt(amt)}.`, 5000);
+  try {
+    await DB.rpc('table_buyin', { p_table: v.dbTable, p_amount: amt, p_loan: loan });
+    refreshProfile();
+    if (App.mode === 'client') send({ t: 'verify' }); else verifySeat(App.me.id);
+  } catch (e) { toast(e.message, 5000); }
+}
+function renderReqBar(v) {
+  const bar = $('#reqBar');
+  const reqs = v.me === v.hostId && v.players ? v.players.filter(p => p.rebuyReq) : [];
+  if (!reqs.length || !App.inTable) { bar.classList.add('hidden'); bar.innerHTML = ''; return; }
+  const amt = rebuyAmountFor(v);
+  const html = reqs.map(p => `<div class="rq"><span><b style="color:var(--gold-hi)">${esc(p.name)}</b> wants to ${v.settings.loanShark ? 'borrow' : 'rebuy'} ${fmt(amt)}${p.rebuys ? ` (rebuy #${p.rebuys + 1})` : ''}</span><button class="btn primary" data-appr="${esc(p.id)}" data-ok="1">Approve</button><button class="btn ghost" data-appr="${esc(p.id)}" data-ok="0">Deny</button></div>`).join('');
+  if (bar.innerHTML !== html) bar.innerHTML = html;
+  bar.classList.remove('hidden');
+}
+function rebuyFields(o) {
+  return `<div class="row2"><label class="field"><span>Rebuy limit</span><select id="rLim">${optionList([[0, 'No rebuys'], [1, '1 rebuy'], [2, '2 rebuys'], [3, '3 rebuys'], [-1, 'Unlimited']], o.rebuyLimit ?? 2)}</select></label>
+    <label class="field"><span>Rebuy size</span><select id="rHalf">${optionList([[0, 'Full buy-in'], [1, 'Half the buy-in']], o.rebuyHalf ? 1 : 0)}</select></label></div>
+    <label class="chk"><input type="checkbox" id="rAppr"${o.rebuyApproval ? ' checked' : ''}> The host must approve every rebuy</label>
+    <label class="chk"><input type="checkbox" id="rLoan"${o.loanShark ? ' checked' : ''}> Loan Shark: rebuys are loans with 20% interest, repaid from a quarter of every win</label>`;
+}
+function readRebuyFields() {
+  return { rebuyLimit: +$('#rLim').value, rebuyHalf: $('#rHalf').value === '1', rebuyApproval: $('#rAppr').checked, loanShark: $('#rLoan').checked };
+}
+
+// ---------- tournaments ----------
+const SPLIT_OPTS = [['auto', 'Automatic (by field size)'], ['top1', 'Winner takes all'], ['top2', 'Top 2 · 65/35'], ['top3', 'Top 3 · 50/30/20'], ['top4', 'Top 4 · 45/27/17/11'], ['top5', 'Top 5'], ['top6', 'Top 6']];
+const MAXP_OPTS = [7, 14, 21, 28, 35, 49, 70].map(n => [n, `${n} players · up to ${Math.ceil(n / 7)} tables`]);
+const FEE_OPTS = [[0, 'Free — play chips only'], [500, '500 from balances'], [1000, '1,000 from balances'], [2500, '2,500 from balances'], [5000, '5,000 from balances'], [10000, '10,000 from balances'], [25000, '25,000 from balances']];
+function tourneyFields(o) {
+  return `<label class="field"><span>Tournament name</span><input id="tName" maxlength="40" value="${esc(o.name || 'Friday Night Poker')}"></label>
+    <div class="row2"><label class="field"><span>Game</span><select id="tGame">${optionList(POKER_GAMES.map(k => [k, GAMES[k].label]), o.game || 'holdem')}</select></label>
+    <label class="field"><span>Max players</span><select id="tMax">${optionList(MAXP_OPTS, o.maxPlayers || 21)}</select></label></div>
+    <div class="row2"><label class="field"><span>Starting chips</span><select id="tStack">${optionList([1500, 3000, 5000, 10000, 20000].map(x => [x, fmt(x)]), o.stack || 5000)}</select></label>
+    <label class="field"><span>Starting blinds</span><select id="tStakes">${optionList(STAKES.map((s, i) => [i, `${fmt(s.sb)} / ${fmt(s.bb)}`]), o.stakes ?? 1)}</select></label></div>
+    <div class="row2"><label class="field"><span>Blinds go up every</span><select id="tLvl">${optionList(LEVEL_OPTS, o.levelMins || 8)}</select></label>
+    <label class="field"><span>Prize split</span><select id="tSplit">${optionList(SPLIT_OPTS, o.split || 'auto')}</select></label></div>`;
+}
+function readTourneyFields() {
+  return { name: $('#tName').value.trim() || 'Tournament', game: $('#tGame').value, maxPlayers: +$('#tMax').value, stack: +$('#tStack').value, stakes: +$('#tStakes').value, levelMins: +$('#tLvl').value, split: $('#tSplit').value };
+}
+function tourneySetupModal() {
+  const last = JSON.parse(store.get('tsetup', '{}') || '{}');
+  openModal(`<h2>Host a Tournament</h2><div class="sub">Casino-style: everyone starts with the same stack, blinds rise on a clock, tables break and balance as players bust, and the top finishers are paid.</div>
+    ${tourneyFields(last)}
+    <div class="row2"><label class="field"><span>Buy-in</span><select id="tFee">${optionList(FEE_OPTS, last.buyIn || 0)}</select></label>
+    <label class="field"><span>Turn timer</span><select id="tTimer">${optionList(TIMER_OPTS, last.timer || 30)}</select></label></div>
+    <div class="row2"><label class="field"><span>Bot skill (free tournaments can add bots)</span><select id="tSkill">${optionList(SKILL_OPTS, last.botLevel || 'normal')}</select></label>
+    <label class="field"><span>Video chat</span><select id="tVideo">${optionList([[0, 'Off'], [1, 'On — players can turn on their camera']], last.video ? 1 : 0)}</select></label></div>
+    <div class="sub">With a buy-in, every entry fee goes into the prize pool and winners are paid to their balances automatically. You pay the buy-in too.</div>
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="tGo">Open Tournament Room</button></div>`);
+  $('#tGo').onclick = () => {
+    const cfg = Object.assign(readTourneyFields(), { buyIn: +$('#tFee').value, timer: +$('#tTimer').value, botLevel: $('#tSkill').value, video: $('#tVideo').value === '1' });
+    if (cfg.buyIn && DB.profile && DB.profile.balance < cfg.buyIn) return toast(`Your balance is too low for a ${fmt(cfg.buyIn)} buy-in.`);
+    store.set('tsetup', JSON.stringify(cfg));
+    startTourneyHost(cfg, { hostPlays: true });
+  };
+}
+async function startTourneyHost(cfg, opts = {}) {
+  if (!requireName()) return;
+  busy('Opening the tournament room…');
+  try { await loadPeer(); } catch (e) { closeModal(); return toast(e.message, 6000); }
+  let peer = null, code = null;
+  for (let i = 0; i < 5 && !peer; i++) {
+    code = genCode();
+    try { peer = await openPeer(PEER_PREFIX + code); }
+    catch (e) { if (e && e.type === 'unavailable-id') continue; closeModal(); return toast(hostErrorText(e), 6500); }
+  }
+  if (!peer) { closeModal(); return toast('Could not reserve a room code. Please try again.'); }
+  let dbId = cfg.dbId || null, pool = 0;
+  try {
+    if (!dbId && cfg.buyIn > 0) {
+      dbId = await DB.rpc('create_tournament', { p_name: cfg.name, p_game: cfg.game, p_site: false, p_invite_only: false, p_buy_in: cfg.buyIn, p_guarantee: 0, p_stack: cfg.stack, p_level_mins: cfg.levelMins, p_start_stakes: cfg.stakes, p_max: cfg.maxPlayers, p_prizes: cfg.split && PRIZE_SPLITS[cfg.split] ? PRIZE_SPLITS[cfg.split] : [], p_starts: null });
+      await DB.rpc('register_tournament', { p_tid: dbId });
+    }
+    if (dbId) {
+      await DB.rpc('set_tournament_room', { p_tid: dbId, p_code: code, p_status: 'open' });
+      const row = (await DB.select('tournaments', `select=pool&id=eq.${dbId}`))[0]; pool = row ? Number(row.pool) : 0;
+    }
+  } catch (e) { try { peer.destroy(); } catch (x) {} closeModal(); return toast(e.message, 6000); }
+  App.peer = peer; App.mode = 'host'; App.code = code; App.leaving = false;
+  const td = new Director(code, App.me.id, { onChange: scheduleSync, onFinish: onTdFinish });
+  td.configure(Object.assign({}, cfg, { dbId })); td.pool = pool;
+  if (opts.hostPlays !== false) td.join(App.me.id, App.me.name);
+  td.addLog(`${cfg.name} is open. Share room code ${code}.`);
+  attachTable(td); td.setPeerId(App.me.id, peer.id); wirePeer(peer);
+  closeModal(); enterTable(); saveNow(); refreshProfile();
+  toast(`Tournament room open. Room code ${code}`, 5000);
+}
+async function openSiteTourney(row) {
+  const me = DB.uid();
+  const entries = await DB.select('tournament_entries', `select=user_id&tournament_id=eq.${row.id}`);
+  closeDashboard();
+  startTourneyHost({ name: row.name, game: row.game, stack: Number(row.stack), levelMins: row.level_mins, stakes: row.start_stakes, maxPlayers: row.max_players,
+    prizes: Array.isArray(row.prizes) ? row.prizes : [], split: 'auto', buyIn: Number(row.buy_in), dbId: row.id, siteWide: row.site_wide, timer: 30, botLevel: 'normal', video: false },
+    { hostPlays: entries.some(e => e.user_id === me) });
+}
+async function tdStartClick() {
+  const td = App.table; if (!td || td.kind !== 'td') return;
+  if (td.cfg.dbId) {
+    try {
+      const rows = await DB.select('tournament_entries', `select=user_id,profiles(username)&tournament_id=eq.${td.cfg.dbId}`);
+      for (const r of rows) if (!td.entrant(r.user_id)) { td.join(r.user_id, r.profiles ? r.profiles.username : 'Player'); const e = td.entrant(r.user_id); if (e && r.user_id !== App.me.id) e.connected = false; }
+      const t = (await DB.select('tournaments', `select=pool&id=eq.${td.cfg.dbId}`))[0]; if (t) td.pool = Number(t.pool);
+    } catch (e) { return toast('Could not reach the database: ' + e.message); }
+  }
+  send({ t: 'startTd' });
+  if (td.status === 'running') { if (td.cfg.dbId) DB.rpc('set_tournament_room', { p_tid: td.cfg.dbId, p_code: td.code, p_status: 'running' }).catch(() => {}); }
+  else toast('You need at least 2 players to start.');
+}
+function onTdFinish(td) {
+  if (!td.cfg.dbId || td.paidOut) return;
+  td.paidOut = true;
+  const results = td.results().filter(r => !String(r.id).startsWith('bot-')).map(r => ({ user_id: r.id, place: r.place, prize: r.prize }));
+  const q = loadQ(); q.push({ type: 'payout', tid: td.cfg.dbId, results, name: td.cfg.name }); saveQ(q);
+  processCashQ().then(() => { if (!loadQ().some(x => x.tid === td.cfg.dbId)) toast('Prizes have been paid to the winners’ balances.', 5000); });
+  saveNow();
+}
+function hideTdLobby() { const el = $('#tdLobby'); if (el) el.remove(); $('#tableWrap').style.visibility = ''; }
+function renderTdLobby(v) {
+  const T = v.td, isHost = v.me === v.hostId;
+  let el = $('#tdLobby');
+  if (!el) { el = document.createElement('div'); el.id = 'tdLobby'; el.className = 'tdlobby'; $('#feltZone').appendChild(el); }
+  $('#tableWrap').style.visibility = 'hidden'; $('#videoStrip').classList.add('hidden');
+  const s = STAKES[0];
+  const ents = T.entrants.map(e => `<div>${esc(e.name)}${e.bot ? '<em>bot</em>' : ''}${e.id === v.hostId ? '<em>host</em>' : ''}${!e.bot && !e.connected ? '<em>not here yet</em>' : ''}</div>`).join('') || '<div style="color:var(--muted)">Nobody yet.</div>';
+  const prizes = T.prizes.map(p => `<div>${ordinal(p.place)} · ${p.pct}%${T.account ? ` · <b style="color:var(--gold-hi)">${fmt(p.amount)}</b>` : ''}</div>`).join('');
+  const html = `<div class="panel"><h2 style="font-family:var(--serif);font-weight:400;color:var(--gold-hi);margin:0 0 4px;letter-spacing:.06em">${esc(T.name)}</h2>
+    <div class="sub">${T.siteWide ? 'Site-wide tournament · ' : ''}Room code <b style="color:var(--gold-hi);letter-spacing:.2em">${esc(v.code)}</b> · ${T.count} of ${T.maxPlayers} players${T.account ? ` · Prize pool <b style="color:var(--gold-hi)">${fmt(T.pool)}</b>` : ''}</div>
+    <div class="tdgrid"><div><h4>Players</h4><div class="tdlist">${ents}</div></div>
+    <div><h4>Structure</h4><div class="tdlist"><div>${esc(GAMES[T.game].label)}</div><div>${fmt(T.stack)} starting chips</div><div>Blinds start at ${fmt(T.sb)}/${fmt(T.bb)} and go up every ${T.levelMins} minutes</div><div>${T.buyIn ? 'Buy-in ' + fmt(T.buyIn) + ' from balances' : 'Free entry — play chips only'}</div><div>Up to 7 players per table. Tables break and balance as players bust.</div></div>
+    <h4 style="margin-top:14px">Prizes</h4><div class="tdlist">${prizes}</div></div></div>
+    <div class="mfoot">${isHost ? `${!T.account ? '<button class="btn" data-cmd="addBot">+ Add Bot</button><button class="btn" data-cmd="fillBots">Fill With Bots</button><button class="btn ghost" data-cmd="removeBot">− Bot</button>' : ''}<button class="btn primary" id="tdStart"${T.count < 2 && !T.account ? ' disabled' : ''}>Start Tournament</button>` : '<div class="sub" style="margin:0">Waiting for the host to start the tournament…</div>'}</div></div>`;
+  if (el.dataset.sig !== html) { el.innerHTML = html; el.dataset.sig = html; if ($('#tdStart')) $('#tdStart').onclick = tdStartClick; }
+  $('#tbGame').textContent = `${T.name} · Registration`;
+  $('#roomCode').innerHTML = `<small>Room</small>${esc(v.code)}`;
+  $('#tbTour').classList.add('hidden'); $('#btnOdds').classList.add('hidden');
+  $('#btnSettings').classList.toggle('hidden', !isHost);
+  $('#actionBar').innerHTML = `<div class="ab">${info(isHost ? 'Your tournament room is open' : 'You are registered', isHost ? 'Share the room code, then start when everyone is here' : 'The host will start soon')}</div>`;
+  App.abSig = '';
+  renderSide(v);
+}
+function tdExtras(v) {
+  const T = v.td;
+  if (T.moved && App.movedAt !== T.moved.at) { App.movedAt = T.moved.at; if (Date.now() - 0 > 0) toast(`You've been moved to Table ${T.moved.to}.`, 4000); }
+  const key = v.code + ':' + T.count;
+  if (T.status === 'done' && App.tdShown !== key && !modalOpen()) {
+    App.tdShown = key;
+    const rows = T.places.slice().sort((a, b) => a.place - b.place);
+    openModal(`<h2>${esc(T.name)} · Results</h2><div class="sub">${esc(rows[0] ? rows[0].name : '')} wins!${T.account ? ` Prizes are paid straight to balances.` : ''}</div>
+      <div class="scrollbox"><table class="dtable"><tr><th>Place</th><th>Player</th><th class="num">${T.account ? 'Prize' : ''}</th></tr>${rows.map(r => { const pz = T.prizes[r.place - 1]; return `<tr${r.id === v.me ? ' style="color:var(--gold-hi)"' : ''}><td>${ordinal(r.place)}</td><td>${esc(r.name)}</td><td class="num">${T.account && pz ? fmt(pz.amount) : ''}</td></tr>`; }).join('')}</table></div>
+      <div class="mfoot">${v.me === v.hostId ? '<button class="btn" id="tdClose">Close Tournament</button>' : ''}<button class="btn primary" data-close>Done</button></div>`);
+    if ($('#tdClose')) $('#tdClose').onclick = () => { closeModal(); leaveTable(); };
+  }
+}
+function bracketHTML(v) {
+  const T = v.td;
+  const head = `<div class="tourbox"><div class="tt">${esc(T.name)}</div><div class="td">${T.status === 'done' ? 'Finished' : `Level ${T.level} · Blinds ${fmt(T.sb)}/${fmt(T.bb)} · next level in <span data-lvl>${mmss(T.nextLevelIn)}</span>`}<br>${T.alive} of ${T.count} players left · Average stack ${fmt(T.avg)}${T.account ? ` · Prize pool ${fmt(T.pool)}` : ''}</div></div>`;
+  const tables = T.tables.map(t => `<div class="tb"><h5>Table ${t.no}${t.no === v.tableNo ? ' · watching' : ''}</h5>${t.players.slice().sort((a, b) => b.chips - a.chips).map(p => `<div class="pr${p.id === v.me ? ' me' : ''}"><span>${esc(p.name)}${p.bot ? ' <em style="color:var(--muted);font-style:normal;font-size:.7em">bot</em>' : ''}</span><span>${fmt(p.chips)}</span></div>`).join('')}</div>`).join('');
+  const prizes = `<div class="tb"><h5>Payouts</h5>${T.prizes.map(p => `<div class="pr"><span>${ordinal(p.place)}</span><span>${T.account ? fmt(p.amount) : p.pct + '%'}</span></div>`).join('')}</div>`;
+  const out = T.places.length ? `<div class="tb"><h5>Finished</h5>${T.places.slice().sort((a, b) => a.place - b.place).map(p => `<div class="pr${p.id === v.me ? ' me' : ''}"><span>${ordinal(p.place)} · ${esc(p.name)}</span><span>${T.account && T.prizes[p.place - 1] ? fmt(T.prizes[p.place - 1].amount) : ''}</span></div>`).join('')}</div>` : '';
+  return `<div class="bracket">${head}${tables}${prizes}${out}</div>`;
+}
+function spectatorBar(v) {
+  const T = v.td, mine = T.places.find(p => p.id === v.me);
+  const btns = T.tables.map((t, i) => `<button class="btn${i === v.tableIdx ? ' primary' : ''}" data-watch="${i}">Table ${t.no}</button>`).join('');
+  return info(mine ? `You finished ${ordinal(mine.place)}` : 'Watching the tournament', `Watching Table ${v.tableNo} · ${T.alive} players left`) + `<div class="ab-btns">${btns}</div>`;
+}
+function tdHostModal() {
+  const v = App.view; if (!v || v.me !== v.hostId) return;
+  const T = v.td;
+  openModal(`<h2>Tournament Controls</h2><div class="sub">${esc(T.name)} · ${T.status === 'lobby' ? 'Registration open' : T.status === 'running' ? `Level ${T.level}, ${T.alive} players left` : 'Finished'}</div>
+    <div class="sheet-btns">${T.status === 'running' ? `<button class="btn" data-cmd="pause" data-v="1">Pause All Tables<span>Finishes the current hands</span></button><button class="btn" data-cmd="pause" data-v="0">Resume All Tables<span></span></button>` : ''}
+    <button class="btn danger" id="tdEnd">Close the Tournament Room<span>${T.status === 'running' ? 'Pauses it until you reopen' : ''}</span></button></div>
+    <div class="mfoot"><button class="btn primary" data-close>Done</button></div>`);
+  $('#tdEnd').onclick = () => { closeModal(); leaveTable(); };
+}
+// =====================================================================
+//  OWNER DASHBOARD
+// =====================================================================
+const Dash = { data: null, timer: null, txFilter: 'all' };
+function openDashboard() {
+  if (!DB.profile || !DB.profile.is_owner) return;
+  $('#lobby').classList.add('hidden'); $('#dashScreen').classList.remove('hidden');
+  $('#dash').innerHTML = '<div class="spinner"></div>';
+  loadDashboard(); heartbeat();
+}
+function closeDashboard() {
+  clearTimeout(Dash.timer);
+  $('#dashScreen').classList.add('hidden');
+  if (!App.inTable) { $('#lobby').classList.remove('hidden'); refreshProfile(); refreshLobby(); }
+}
+async function loadDashboard() {
+  clearTimeout(Dash.timer);
+  if ($('#dashScreen').classList.contains('hidden')) return;
+  Dash.timer = setTimeout(loadDashboard, 30000);
+  try {
+    const [stats, players, txs, tables, seats, tourneys] = await Promise.all([
+      DB.rpc('admin_stats'),
+      DB.select('profiles', 'select=id,username,balance,debt,last_seen,location,created_at,is_owner&order=balance.desc'),
+      DB.select('transactions', 'select=*,profiles(username)&order=created_at.desc&limit=120'),
+      DB.select('casino_tables', 'select=*,profiles(username)&status=eq.open&order=last_active.desc&limit=50'),
+      DB.select('table_seats', 'select=table_id,user_id,bought_in&status=eq.seated'),
+      DB.select('tournaments', 'select=*,tournament_entries(user_id,paid,place,prize),tournament_invites(user_id)&order=created_at.desc&limit=30'),
+    ]);
+    Dash.data = { stats, players, txs, tables, seats, tourneys };
+    renderDashboard();
+  } catch (e) { $('#dash').innerHTML = `<div class="panel"><h3 style="margin:0 0 8px;font-family:var(--serif);color:var(--gold-hi);font-weight:400">Could not load the dashboard</h3><div class="sub">${esc(e.message)}</div></div>`; }
+}
+const isLive = p => p.last_seen && Date.now() - new Date(p.last_seen).getTime() < 120000;
+const ago = t => { if (!t) return 'never'; const s = Math.round((Date.now() - new Date(t).getTime()) / 1000); return s < 60 ? 'just now' : s < 3600 ? Math.round(s / 60) + ' min ago' : s < 86400 ? Math.round(s / 3600) + ' h ago' : Math.round(s / 86400) + ' d ago'; };
+function renderDashboard() {
+  const { stats: s, players, txs, tables, seats, tourneys } = Dash.data;
+  const nameOfId = id => { const p = players.find(x => x.id === id); return p ? p.username : '—'; };
+  const tile = (k, v, cls) => `<div class="tile"><div class="k">${k}</div><div class="v ${cls || ''}">${v}</div></div>`;
+  const tiles = `<div class="tiles">${tile('Live players', fmt(s.live), 'live')}${tile('Accounts', fmt(s.players))}${tile('Open tables', fmt(s.open_tables))}${tile('Chips in accounts', fmt(s.in_accounts))}${tile('Chips at tables', fmt(s.at_tables))}${tile('In tournament pools', fmt(s.in_tournaments))}${tile('The Bank', fmt(s.bank))}${tile('Loan Shark debt', fmt(s.debt))}${tile('Flagged (7 days)', fmt(s.flagged))}</div>`;
+  const prow = p => `<tr><td><span class="dot${isLive(p) ? ' on' : ''}"></span>${esc(p.username)}${p.is_owner ? ' <em style="color:var(--gold);font-style:normal;font-size:.7em">owner</em>' : ''}<div style="font-size:.68rem;color:var(--muted)">${isLive(p) ? esc(p.location || 'Online') : 'Last seen ' + ago(p.last_seen)}</div></td><td class="num">${fmt(p.balance)}</td><td class="num" style="color:${p.debt ? '#f0b8c1' : 'inherit'}">${p.debt ? fmt(p.debt) : '—'}</td><td class="num"><button class="btn" data-dgive="${p.id}">Give / Take</button>${p.debt ? ` <button class="btn ghost" data-dforgive="${p.id}">Forgive</button>` : ''}</td></tr>`;
+  const players_ = `<div class="dsec"><div class="panel"><h3>Players <span><button class="btn" id="dMint">Add Chips to the Bank</button> <button class="btn" id="dGiveAll">Gift Everyone</button></span></h3><div class="scrollbox"><table class="dtable"><tr><th>Player</th><th class="num">Balance</th><th class="num">Owes</th><th class="num"></th></tr>${players.map(prow).join('')}</table></div></div></div>`;
+  const tsum = id => seats.filter(x => x.table_id === id).reduce((a, x) => a + Number(x.bought_in), 0);
+  const tbl = `<div class="dsec"><div class="panel"><h3>Open Tables</h3>${tables.length ? `<table class="dtable"><tr><th>Table</th><th>Host</th><th class="num">Bought in</th><th>Active</th><th class="num"></th></tr>${tables.map(t => `<tr><td>${esc(t.code)} · ${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)}</td><td>${esc(t.profiles ? t.profiles.username : '')}</td><td class="num">${fmt(tsum(t.id))}</td><td>${ago(t.last_active)}</td><td class="num"><button class="btn ghost" data-drefund="${t.id}">Refund &amp; Close</button></td></tr>`).join('')}</table>` : '<div class="sub" style="margin:0">No account-chip tables are open.</div>'}<div class="sub" style="margin:10px 0 0">Use Refund &amp; Close only for a table whose host disappeared: it returns everyone's buy-in.</div></div></div>`;
+  const kinds = { signup: 'Signup', buyin: 'Buy-in', cashout: 'Cash-out', loan: 'Loan', refund: 'Refund', gift: 'Gift', reward: 'Reward', adjustment: 'Adjustment', fee: 'Fee', tournament_buyin: 'Tourney buy-in', tournament_prize: 'Tourney prize', tournament_refund: 'Tourney refund', mint: 'Bank +', guarantee: 'Guarantee', table_close: 'Table closed', tournament_leftover: 'Pool leftover', forgive: 'Forgiven' };
+  const list = Dash.txFilter === 'flagged' ? txs.filter(t => t.flagged) : txs;
+  const tx = `<div class="dsec"><div class="panel"><h3>Transactions <span><button class="btn ghost${Dash.txFilter === 'all' ? ' on' : ''}" data-dtx="all">All</button><button class="btn ghost${Dash.txFilter === 'flagged' ? ' on' : ''}" data-dtx="flagged">Flagged</button></span></h3><div class="scrollbox"><table class="dtable"><tr><th>When</th><th>Player</th><th>What</th><th class="num">Player</th><th class="num">Bank</th></tr>${list.map(t => `<tr class="${t.flagged ? 'flag' : ''}"><td>${ago(t.created_at)}</td><td>${esc(t.profiles ? t.profiles.username : '—')}</td><td>${esc(kinds[t.kind] || t.kind)}<div style="font-size:.68rem;color:var(--muted)">${esc(t.note || '')}</div>${t.flagged ? `<button class="btn ghost" data-dclear="${t.id}">Mark reviewed</button>` : ''}</td><td class="num">${t.amount ? (t.amount > 0 ? '+' : '−') + fmt(Math.abs(t.amount)) : ''}</td><td class="num">${t.bank_delta ? (t.bank_delta > 0 ? '+' : '−') + fmt(Math.abs(t.bank_delta)) : ''}</td></tr>`).join('') || '<tr><td colspan="5">Nothing here.</td></tr>'}</table></div><div class="sub" style="margin:10px 0 0">Flagged: unusually large cash-outs. A flag isn't proof of cheating, just worth a look.</div></div></div>`;
+  const st = { registering: 'Registration open', open: 'Room open — seating', running: 'Running', done: 'Finished', cancelled: 'Cancelled' };
+  const trow = t => {
+    const n = t.tournament_entries.length;
+    const acts = t.status === 'done' || t.status === 'cancelled' ? '' : `${t.status !== 'running' ? `<button class="btn primary" data-dopen="${t.id}">${t.room_code ? 'Reopen Room' : 'Open Room'}</button> ` : ''}<button class="btn" data-dinvite="${t.id}">Invite</button> ${t.status !== 'running' ? `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>` : ''}`;
+    const winners = t.status === 'done' ? t.tournament_entries.filter(e => e.place && e.place <= 3).sort((a, b) => a.place - b.place).map(e => `${ordinal(e.place)} ${esc(nameOfId(e.user_id))}${e.prize ? ' (' + fmt(e.prize) + ')' : ''}`).join(', ') : '';
+    return `<div class="trow"><div><div class="tn">${esc(t.name)}${t.site_wide ? '<span class="tag">Site-wide</span>' : ''}${t.invite_only ? '<span class="tag">Invite only</span>' : ''}</div><div class="td">${st[t.status] || t.status} · ${esc(GAMES[t.game] ? GAMES[t.game].name : t.game)} · ${n}/${t.max_players} entered · ${t.tournament_invites.length} invited · Buy-in ${fmt(t.buy_in)} · Pool ${fmt(t.pool)}${t.guarantee ? ` (guarantee ${fmt(t.guarantee)})` : ''}${t.starts_at ? ' · ' + new Date(t.starts_at).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : ''}${winners ? '<br>' + winners : ''}${t.host_id !== DB.uid() ? ' · hosted by ' + esc(nameOfId(t.host_id)) : ''}</div></div><div>${t.host_id === DB.uid() || t.site_wide ? acts : (t.status !== 'done' && t.status !== 'cancelled' ? `<button class="btn ghost danger" data-dcancel="${t.id}">Cancel &amp; Refund</button>` : '')}</div></div>`;
+  };
+  const tour = `<div class="dsec"><div class="panel"><h3>Tournaments <span><button class="btn primary" id="dNewT">Create Site-wide Tournament</button></span></h3>${tourneys.length ? tourneys.map(trow).join('') : '<div class="sub" style="margin:0">No tournaments yet.</div>'}</div></div>`;
+  $('#dash').innerHTML = tiles + `<div class="dgrid"><div>${players_}${tour}</div><div>${tbl}${tx}</div></div>`;
+  $('#dMint').onclick = mintModal; $('#dNewT').onclick = newTourneyModal; $('#dGiveAll').onclick = giveAllModal;
+}
+function giveModal(uid) {
+  const p = Dash.data.players.find(x => x.id === uid); if (!p) return;
+  openModal(`<h2>${esc(p.username)}</h2><div class="sub">Balance ${fmt(p.balance)}. Chips come from (or go back to) the Bank.</div>
+    <div class="row2"><label class="field"><span>Type</span><select id="gKind">${optionList([['gift', 'Gift'], ['reward', 'Reward / prize'], ['adjustment', 'Adjustment'], ['fee', 'Fee (takes chips)']], 'gift')}</select></label>
+    <label class="field"><span>Amount</span><input id="gAmt" type="number" min="1" step="1" value="1000"></label></div>
+    <label class="field"><span>Note (they'll see it in their history)</span><input id="gNote" maxlength="140" placeholder="e.g. Tournament champion bonus"></label>
+    <label class="chk"><input type="checkbox" id="gTake"> Take chips away instead of giving</label>
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="gGo">Confirm</button></div>`);
+  $('#gKind').onchange = () => { $('#gTake').checked = $('#gKind').value === 'fee'; };
+  $('#gGo').onclick = async () => {
+    const amt = Math.floor(+$('#gAmt').value); if (!(amt > 0)) return toast('Enter an amount.');
+    const take = $('#gTake').checked || $('#gKind').value === 'fee';
+    try { await DB.rpc('admin_adjust', { p_user: uid, p_amount: take ? -amt : amt, p_kind: $('#gKind').value, p_note: $('#gNote').value.trim() }); closeModal(); toast(`${take ? 'Took' : 'Gave'} ${fmt(amt)} ${take ? 'from' : 'to'} ${p.username}.`); loadDashboard(); }
+    catch (e) { toast(e.message, 5000); }
+  };
+}
+function giveAllModal() {
+  openModal(`<h2>Gift Everyone</h2><div class="sub">Gives the same amount to every account (${Dash.data.players.length}) from the Bank.</div>
+    <div class="row2"><label class="field"><span>Amount each</span><input id="gaAmt" type="number" min="1" value="1000"></label><label class="field"><span>Note</span><input id="gaNote" maxlength="140" value="A gift from the house"></label></div>
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="gaGo">Send Gifts</button></div>`);
+  $('#gaGo').onclick = async () => {
+    const amt = Math.floor(+$('#gaAmt').value); if (!(amt > 0)) return;
+    $('#gaGo').disabled = true; let n = 0;
+    for (const p of Dash.data.players) { try { await DB.rpc('admin_adjust', { p_user: p.id, p_amount: amt, p_kind: 'gift', p_note: $('#gaNote').value.trim() }); n++; } catch (e) {} }
+    closeModal(); toast(`Sent ${fmt(amt)} to ${n} players.`); loadDashboard();
+  };
+}
+function mintModal() {
+  openModal(`<h2>Add Chips to the Bank</h2><div class="sub">The Bank pays signup bonuses, gifts, guarantees and house-game wins. It currently holds ${fmt(Dash.data.stats.bank)}.</div>
+    <label class="field"><span>Amount</span><input id="mAmt" type="number" min="1" value="1000000"></label>
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="mGo">Add</button></div>`);
+  $('#mGo').onclick = async () => { try { await DB.rpc('admin_mint', { p_amount: Math.floor(+$('#mAmt').value) }); closeModal(); loadDashboard(); } catch (e) { toast(e.message); } };
+}
+function playerPicker(selected) {
+  return `<div class="pick-list">${Dash.data.players.map(p => `<label><input type="checkbox" data-pp="${p.id}"${selected && selected.includes(p.id) ? ' checked' : ''}> ${esc(p.username)}</label>`).join('')}</div>`;
+}
+function newTourneyModal() {
+  const local = new Date(Date.now() + 86400000); local.setMinutes(0, 0, 0);
+  const iso = new Date(local.getTime() - local.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  openModal(`<h2>Create a Site-wide Tournament</h2><div class="sub">It shows up in every invited player's lobby. They register (paying the buy-in), then you open the room when it's time.</div>
+    ${tourneyFields({ name: 'The Schatz Championship', maxPlayers: 21 })}
+    <div class="row2"><label class="field"><span>Buy-in</span><select id="tFee">${optionList(FEE_OPTS.map(([v, l]) => [v, v ? fmt(v) : 'Free']), 1000)}</select></label>
+    <label class="field"><span>Guarantee from the Bank (added to the pool)</span><input id="tGuar" type="number" min="0" step="500" value="0"></label></div>
+    <label class="field"><span>Start time (shown to players)</span><input id="tWhen" type="datetime-local" value="${iso}"></label>
+    <label class="chk"><input type="checkbox" id="tInv" checked> Invite only (only the players you pick can register)</label>
+    ${playerPicker([])}
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="tCreate">Create Tournament</button></div>`);
+  $('#tCreate').onclick = async () => {
+    const f = readTourneyFields();
+    const picks = [...document.querySelectorAll('[data-pp]')].filter(x => x.checked).map(x => x.dataset.pp);
+    const when = $('#tWhen').value ? new Date($('#tWhen').value).toISOString() : null;
+    try {
+      const id = await DB.rpc('create_tournament', { p_name: f.name, p_game: f.game, p_site: true, p_invite_only: $('#tInv').checked, p_buy_in: +$('#tFee').value, p_guarantee: Math.max(0, Math.floor(+$('#tGuar').value) || 0), p_stack: f.stack, p_level_mins: f.levelMins, p_start_stakes: f.stakes, p_max: f.maxPlayers, p_prizes: PRIZE_SPLITS[f.split] || [], p_starts: when });
+      if (picks.length) await DB.rpc('invite_players', { p_tid: id, p_users: picks });
+      closeModal(); toast('Tournament created.'); loadDashboard();
+    } catch (e) { toast(e.message, 5000); }
+  };
+}
+function inviteModal(tid) {
+  const t = Dash.data.tourneys.find(x => x.id === tid); if (!t) return;
+  openModal(`<h2>Invite Players</h2><div class="sub">${esc(t.name)} · already invited players stay invited.</div>${playerPicker(t.tournament_invites.map(i => i.user_id))}
+    <div class="mfoot"><button class="btn ghost" data-close>Cancel</button><button class="btn primary" id="iGo">Send Invites</button></div>`);
+  $('#iGo').onclick = async () => {
+    const picks = [...document.querySelectorAll('[data-pp]')].filter(x => x.checked).map(x => x.dataset.pp);
+    try { await DB.rpc('invite_players', { p_tid: tid, p_users: picks }); closeModal(); toast('Invites sent.'); loadDashboard(); } catch (e) { toast(e.message); }
+  };
+}
+document.addEventListener('click', async e => {
+  const t = e.target.closest('[data-dgive],[data-dforgive],[data-drefund],[data-dtx],[data-dclear],[data-dopen],[data-dinvite],[data-dcancel]');
+  if (!t || $('#dashScreen').classList.contains('hidden') && !t.closest('#modalCard')) return;
+  const d = t.dataset;
+  try {
+    if (d.dgive) giveModal(d.dgive);
+    else if (d.dforgive) { const p = Dash.data.players.find(x => x.id === d.dforgive); confirmBox('Forgive the loan?', `${p.username} owes ${fmt(p.debt)}. Forgiving clears it.`, 'Forgive', async () => { await DB.rpc('admin_forgive', { p_user: p.id, p_amount: p.debt }); loadDashboard(); }); }
+    else if (d.drefund) confirmBox('Refund & close this table?', 'Everyone still seated gets their buy-in back, and the table closes. Only do this if the host is gone.', 'Refund', async () => { try { const n = await DB.rpc('refund_stale_table', { p_table: d.drefund }); toast(`Refunded ${n} player${n === 1 ? '' : 's'}.`); loadDashboard(); } catch (err) { toast(err.message); } });
+    else if (d.dtx) { Dash.txFilter = d.dtx; renderDashboard(); }
+    else if (d.dclear) { await DB.rpc('admin_clear_flag', { p_tx: +d.dclear }); loadDashboard(); }
+    else if (d.dinvite) inviteModal(d.dinvite);
+    else if (d.dcancel) confirmBox('Cancel this tournament?', 'Every buy-in is refunded and the guarantee goes back to the Bank.', 'Cancel Tournament', async () => { try { await DB.rpc('cancel_tournament', { p_tid: d.dcancel }); loadDashboard(); } catch (err) { toast(err.message); } });
+    else if (d.dopen) {
+      const row = Dash.data.tourneys.find(x => x.id === d.dopen);
+      const m = savedMeta();
+      if (m && m.kind === 'td' && row.room_code === m.code) { closeDashboard(); resumeTable(); }
+      else openSiteTourney(row);
+    }
+  } catch (err) { toast(err.message, 5000); }
+});
+document.addEventListener('DOMContentLoaded', () => {});
+$('#dBack').onclick = closeDashboard;
+$('#dRefresh').onclick = loadDashboard;
 init();
 </script>
 </body>
